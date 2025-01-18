@@ -1,10 +1,18 @@
 {
   "expo": {
+<<<<<<< HEAD
     "name": "happily-ever",
     "slug": "happily-ever",
     "version": "1.0.0",
 
     "scheme": "happily-ever",
+=======
+    "name": "happily-ever-after",
+    "slug": "happily-ever-after",
+    "version": "1.0.0",
+
+    "scheme": "happily-ever-after",
+>>>>>>> bd391e4 (Initial commit)
     "web": {
       "bundler": "metro",
       "output": "static",

@@ -1,6 +1,10 @@
 {
   "cesVersion": "2.12.1",
+<<<<<<< HEAD
   "projectName": "happily-ever",
+=======
+  "projectName": "happily-ever-after",
+>>>>>>> bd391e4 (Initial commit)
   "packages": [
     {
       "name": "expo-router",
