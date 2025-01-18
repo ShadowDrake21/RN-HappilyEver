@@ -1,10 +1,11 @@
+import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const Page = () => {
   return (
     <View>
-      <Text>Page</Text>
+      <Image source={require('assets/onboarding/onboarding-1.png')} />
     </View>
   );
 };
