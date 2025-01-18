@@ -1,11 +1,21 @@
-import { Image } from 'expo-image';
+import { Link } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const Page = () => {
   return (
-    <View>
-      <Image source={require('assets/onboarding/onboarding-1.png')} />
+    <View className="flex-1">
+      <Text>Page 1</Text>
+      <Image
+        source={require('assets/onboarding/onboarding-1.png')}
+        className=" w-full flex-1"
+        resizeMode="contain"
+      />
+      <Link href="./onboarding-second">
+        <TouchableOpacity>
+          <Text>Next</Text>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 };
