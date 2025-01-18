@@ -1,25 +1,46 @@
 import { Link } from 'expo-router';
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
+import { Button, Text as PaperText } from 'react-native-paper';
+
+import { COLORS } from '~/constants/colors';
 
 const Page = () => {
   return (
-    <View className="flex-1">
-      <Text>Page 2</Text>
+    <View className="flex-1 justify-between">
       <Image
         source={require('assets/onboarding/onboarding-2.png')}
-        className=" w-full flex-1"
+        className="h-[400] w-full"
         resizeMode="contain"
       />
-      <Link href="./onboarding-third">
-        <TouchableOpacity>
-          <Text>Next</Text>
-        </TouchableOpacity>
-      </Link>
+
+      <PaperText
+        variant="displaySmall"
+        style={{
+          color: COLORS.text,
+          textAlign: 'center',
+          fontFamily: 'Poppins-Regular',
+          fontWeight: '600',
+        }}>
+        Chat and connect deeply. Build lasting bonds.
+      </PaperText>
+      <View>
+        <Link href="/auth" asChild>
+          <Button mode="text" textColor={COLORS.accent2} style={{ paddingVertical: 10 }}>
+            <Text>Skip</Text>
+          </Button>
+        </Link>
+        <Link href="./onboarding-third" asChild>
+          <Button
+            mode="contained"
+            buttonColor={COLORS.accent3}
+            style={{ paddingVertical: 5, borderRadius: 30 }}>
+            <Text>Next</Text>
+          </Button>
+        </Link>
+      </View>
     </View>
   );
 };
 
 export default Page;
-
-const styles = StyleSheet.create({});
