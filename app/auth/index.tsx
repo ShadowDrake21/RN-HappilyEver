@@ -1,13 +1,76 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { makeRedirectUri } from 'expo-auth-session';
+import * as QueryParams from 'expo-auth-session/build/QueryParams';
 import { Link, useRouter } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Text as PaperText } from 'react-native-paper';
 
+import SocialButton from '~/components/SocialButton';
 import { COLORS } from '~/constants/colors';
+import { supabase } from '~/utils/supabase';
+
+WebBrowser.maybeCompleteAuthSession();
+const redirectTo = makeRedirectUri();
 
 const Page = () => {
   const router = useRouter();
+  const createSessionFromUrl = async (url: string) => {
+    const { params, errorCode } = QueryParams.getQueryParams(url);
+
+    if (errorCode) throw new Error(errorCode);
+    const { access_token, refresh_token } = params;
+
+    if (!access_token) return;
+
+    const { data, error } = await supabase.auth.setSession({
+      access_token,
+      refresh_token,
+    });
+    if (error) throw error;
+    return data.session;
+  };
+
+  const performOAuth = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+      options: {
+        redirectTo,
+        skipBrowserRedirect: true,
+      },
+    });
+    if (error) throw error;
+
+    const res = await WebBrowser.openAuthSessionAsync(data?.url ?? '', redirectTo);
+
+    if (res.type === 'success') {
+      const { url } = res;
+      const session = await createSessionFromUrl(url);
+
+      console.log(session);
+    }
+  };
+
+  const performOAuthGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo,
+        skipBrowserRedirect: true,
+      },
+    });
+    if (error) throw error;
+
+    const res = await WebBrowser.openAuthSessionAsync(data?.url ?? '', redirectTo);
+
+    if (res.type === 'success') {
+      const { url } = res;
+      const session = await createSessionFromUrl(url);
+
+      console.log(session);
+    }
+  };
   return (
     <View style={{ flex: 1 }}>
       <Image
@@ -28,24 +91,9 @@ const Page = () => {
         Let's you in
       </PaperText>
       <View className="gap-2">
-        <TouchableOpacity
-          className="w-full flex-row items-center justify-center gap-2 rounded-xl py-5"
-          style={{ backgroundColor: COLORS.lightDark }}>
-          <AntDesign name="facebook-square" size={24} color="white" />
-          <Text className="font-poppins-medium text-white">Continue with Facebook</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          className="w-full flex-row items-center justify-center gap-2 rounded-xl py-5"
-          style={{ backgroundColor: COLORS.lightDark }}>
-          <AntDesign name="google" size={24} color="white" />
-          <Text className="font-poppins-medium text-white">Continue with Google</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          className="w-full flex-row items-center justify-center gap-2 rounded-xl py-5"
-          style={{ backgroundColor: COLORS.lightDark }}>
-          <AntDesign name="apple1" size={24} color="white" />
-          <Text className="font-poppins-medium text-white">Continue with Apple</Text>
-        </TouchableOpacity>
+        <SocialButton icon="facebook-square" onPress={performOAuth} socialName="Facebook" />
+        <SocialButton icon="google" onPress={performOAuthGoogle} socialName="Google" />
+        <SocialButton icon="apple1" onPress={() => console.log('Apple')} socialName="Apple" />
       </View>
       <Text className="self-center py-7 font-poppins-medium text-white">or</Text>
       <Button
