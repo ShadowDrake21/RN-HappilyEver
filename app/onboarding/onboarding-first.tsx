@@ -1,15 +1,8 @@
-import { Image } from 'expo-image';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import OnboardingContent from '~/components/OnboardingContent';
+import { onboardingItems } from '~/content/onboarding.content';
 
 const Page = () => {
-  return (
-    <View>
-      <Image source={require('assets/onboarding/onboarding-1.png')} />
-    </View>
-  );
+  return <OnboardingContent pageItem={onboardingItems[0]} />;
 };
 
 export default Page;
-
-const styles = StyleSheet.create({});

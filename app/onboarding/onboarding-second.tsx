@@ -1,14 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+
+import OnboardingContent from '~/components/OnboardingContent';
+import { onboardingItems } from '~/content/onboarding.content';
 
 const Page = () => {
-  return (
-    <View>
-      <Text>Page</Text>
-    </View>
-  );
+  return <OnboardingContent pageItem={onboardingItems[1]} />;
 };
 
 export default Page;
-
-const styles = StyleSheet.create({});

@@ -21,6 +21,24 @@
             "image": "./assets/splash-dark.png"
           }
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Poppins-Thin.ttf",
+            "./assets/fonts/Poppins-Light.ttf",
+            "./assets/fonts/Poppins-Regular.ttf",
+            "./assets/fonts/Poppins-Medium.ttf",
+            "./assets/fonts/Poppins-SemiBold.ttf",
+            "./assets/fonts/Poppins-Bold.ttf",
+            "./assets/fonts/PlayfairDisplay-Italic.ttf",
+            "./assets/fonts/PlayfairDisplay-MediumItalic.ttf",
+            "./assets/fonts/PlayfairDisplay-Regular.ttf",
+            "./assets/fonts/PlayfairDisplay-SemiBold.ttf",
+            "./assets/fonts/PlayfairDisplay-SemiBoldItalic.ttf"
+          ]
+        }
       ]
     ],
     "experiments": {
