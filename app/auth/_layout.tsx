@@ -30,8 +30,32 @@ const Layout = () => {
           ),
         }}
       />
-      <Stack.Screen name="sign-up" />
-      <Stack.Screen name="sign-in" />
+      <Stack.Screen
+        name="sign-up"
+        options={{
+          headerLeft: ({ tintColor }) => (
+            <IconButton
+              icon="arrow-left"
+              iconColor={tintColor}
+              size={20}
+              onPress={() => router.navigate('/auth')}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="sign-in"
+        options={{
+          headerLeft: ({ tintColor }) => (
+            <IconButton
+              icon="arrow-left"
+              iconColor={tintColor}
+              size={20}
+              onPress={() => router.navigate('/auth')}
+            />
+          ),
+        }}
+      />
     </Stack>
   );
 };
