@@ -4,6 +4,7 @@ export const COLORS = {
   accent3: '#FF6F61',
   gray: '#F2F5FA',
   dark: '#28435c',
+  lightDark: '#3a506b',
   light: '#c3abd1',
   secondary1: '#9e6c4f',
   secondary2: '#61402c',
