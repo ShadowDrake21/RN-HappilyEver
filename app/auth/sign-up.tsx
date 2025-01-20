@@ -13,6 +13,7 @@ import { COLORS } from '~/constants/colors';
 import useSignIn from '~/hooks/useSignIn';
 import useSignUp from '~/hooks/useSignUp';
 import { refreshToken, storeTokenData } from '~/storage/refreshToken.storage';
+import { useAuthStore } from '~/store/store';
 import { supabase } from '~/utils/supabase';
 
 const Page = () => {
@@ -30,16 +31,16 @@ const Page = () => {
     },
   });
 
-  const { loading, signUpWithEmail } = useSignUp({
-    email: getValues('email'),
-    password: getValues('password'),
-  });
+  const { loading, signUpWithEmail } = useSignUp();
+
+  const { setUser } = useAuthStore();
 
   const onSubmit = async () => {
-    const res = await signUpWithEmail();
+    const res = await signUpWithEmail(getValues('email'), getValues('password'));
 
     if (res) {
       await storeTokenData(res.refresh_token, res.expires_at);
+      setUser(res.user);
     }
   };
 

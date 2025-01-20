@@ -1,53 +1,22 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import '../global.css';
-import { Stack, useNavigation, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
+import { Stack, useRouter } from 'expo-router';
+import { useEffect } from 'react';
 
-import { refreshToken } from '~/storage/refreshToken.storage';
+import useTokenExpiration from '~/hooks/useTokenExpiration';
+import { useAuthStore } from '~/store/store';
 
 export default function Layout() {
-  const navigation = useNavigation();
-  const [expirationTime, setExpirationTime] = useState<number | null>(null);
+  useTokenExpiration();
+  const { isLoggedIn } = useAuthStore();
+  const router = useRouter();
 
-  const checkTokenExpiration = async () => {
-    if (expirationTime === null) {
-      const storedExpirationTime = await AsyncStorage.getItem('tokenExpirationTime');
-      console.log('checkTokenExpiration -> expirationTime', expirationTime, Date.now());
-
-      if (storedExpirationTime) {
-        const expiresAt = parseInt(storedExpirationTime, 10);
-        setExpirationTime(expiresAt);
-        if (Date.now() >= expiresAt * 1000) {
-          await refreshToken();
-        }
-      }
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.replace('/home');
     } else {
-      if (Date.now() >= expirationTime * 1000) {
-        await refreshToken();
-      }
+      router.replace('/onboarding/onboarding-first');
     }
-  };
-
-  useEffect(() => {
-    const handleAppStateChange = async (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'active') {
-        await checkTokenExpiration();
-      }
-    };
-
-    AppState.addEventListener('change', handleAppStateChange);
-  }, [expirationTime]);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('state', async () => {
-      await checkTokenExpiration();
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [navigation, expirationTime]);
+  }, [isLoggedIn]);
 
   return (
     <Stack

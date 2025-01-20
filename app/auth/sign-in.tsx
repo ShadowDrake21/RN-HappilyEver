@@ -11,6 +11,7 @@ import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
 import useSignIn from '~/hooks/useSignIn';
 import { storeTokenData } from '~/storage/refreshToken.storage';
+import { useAuthStore } from '~/store/store';
 import { supabase } from '~/utils/supabase';
 
 const Page = () => {
@@ -28,18 +29,15 @@ const Page = () => {
     },
   });
 
-  const { loading, signInWithEmail } = useSignIn({
-    email: getValues('email'),
-    password: getValues('password'),
-  });
+  const { loading, signInWithEmail } = useSignIn();
+  const { setUser } = useAuthStore();
 
   const onSubmit = async () => {
-    console.log('email and password', getValues('email'), getValues('password'));
-
-    const res = await signInWithEmail();
+    const res = await signInWithEmail(getValues('email'), getValues('password'));
 
     if (res) {
       await storeTokenData(res.session.refresh_token, res.session.expires_at);
+      setUser(res.user);
     }
   };
 

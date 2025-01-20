@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { supabase } from '~/utils/supabase';
 
-const useSignIn = ({ email, password }: { email: string; password: string }) => {
+const useSignIn = () => {
   const [loading, setLoading] = useState(false);
 
-  const signInWithEmail = async () => {
+  const signInWithEmail = async (email: string, password: string) => {
     setLoading(true);
     const { error, data } = await supabase.auth.signInWithPassword({
       email,

@@ -3,10 +3,10 @@ import { Alert } from 'react-native';
 
 import { supabase } from '~/utils/supabase';
 
-const useSignUp = ({ email, password }: { email: string; password: string }) => {
+const useSignUp = () => {
   const [loading, setLoading] = useState(false);
 
-  const signUpWithEmail = async () => {
+  const signUpWithEmail = async (email: string, password: string) => {
     setLoading(true);
     const {
       data: { session },
