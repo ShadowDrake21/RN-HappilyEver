@@ -10,6 +10,7 @@ import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
 import useSignIn from '~/hooks/useSignIn';
+import { storeTokenData } from '~/storage/refreshToken.storage';
 import { supabase } from '~/utils/supabase';
 
 const Page = () => {
@@ -32,7 +33,15 @@ const Page = () => {
     password: getValues('password'),
   });
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = async () => {
+    console.log('email and password', getValues('email'), getValues('password'));
+
+    const res = await signInWithEmail();
+
+    if (res) {
+      await storeTokenData(res.session.refresh_token, res.session.expires_at);
+    }
+  };
 
   return (
     <View className="flex-1 justify-between" style={{ paddingBottom: bottom }}>

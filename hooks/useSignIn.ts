@@ -12,8 +12,8 @@ const useSignIn = ({ email, password }: { email: string; password: string }) => 
       password,
     });
 
+    console.log('useSignIn -> data | error', data, error);
     if (error) throw new Error(error.message);
-
     setLoading(false);
     return data;
   };

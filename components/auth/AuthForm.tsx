@@ -45,6 +45,7 @@ const AuthForm = ({ control, errors }: AuthFormProps) => {
                 onChangeText={onChange}
                 value={value}
                 left={<TextInput.Icon icon="email" size={24} color={COLORS.grayish} />}
+                autoCapitalize="none"
               />
             )}
             name="email"

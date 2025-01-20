@@ -1,15 +1,18 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View, AppStateStatus, AppState } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import SignInForm from '~/components/auth/AuthForm';
+import AuthForm from '~/components/auth/AuthForm';
 import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
 import useSignIn from '~/hooks/useSignIn';
+import useSignUp from '~/hooks/useSignUp';
+import { refreshToken, storeTokenData } from '~/storage/refreshToken.storage';
 import { supabase } from '~/utils/supabase';
 
 const Page = () => {
@@ -27,12 +30,18 @@ const Page = () => {
     },
   });
 
-  const { loading, signInWithEmail } = useSignIn({
+  const { loading, signUpWithEmail } = useSignUp({
     email: getValues('email'),
     password: getValues('password'),
   });
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = async () => {
+    const res = await signUpWithEmail();
+
+    if (res) {
+      await storeTokenData(res.refresh_token, res.expires_at);
+    }
+  };
 
   return (
     <View className="flex-1 justify-between" style={{ paddingBottom: bottom }}>
@@ -45,7 +54,7 @@ const Page = () => {
         <PaperText variant="headlineMedium" style={styles.title}>
           Create Your Account
         </PaperText>
-        <SignInForm control={control} errors={errors} />
+        <AuthForm control={control} errors={errors} />
         <MainButton onPress={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
           Submit
         </MainButton>
