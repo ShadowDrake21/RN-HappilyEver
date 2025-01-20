@@ -10,19 +10,23 @@ const SocialButton = ({
   icon,
   iconProps = { size: 24, color: 'white' },
   socialName,
+  isStandaloneIcon = false,
 }: {
   onPress: () => void;
   icon: keyof typeof AntDesign.glyphMap;
   iconProps?: Partial<Omit<IconProps, 'name'>>;
   socialName: string;
+  isStandaloneIcon?: boolean;
 }) => {
   return (
     <TouchableOpacity
-      className="w-full flex-row items-center justify-center gap-2 rounded-xl py-5"
+      className={`${isStandaloneIcon ? 'px-10 py-5' : 'w-full p-5'} flex-row items-center justify-center gap-2 rounded-xl `}
       style={{ backgroundColor: COLORS.lightDark }}
       onPress={onPress}>
       <AntDesign name={icon} {...iconProps} />
-      <Text className="font-poppins-medium text-white">Continue with Facebook</Text>
+      {!isStandaloneIcon ? (
+        <Text className="font-poppins-medium text-white">Continue with {socialName}</Text>
+      ) : null}
     </TouchableOpacity>
   );
 };

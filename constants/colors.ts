@@ -13,4 +13,5 @@ export const COLORS = {
   text: '#FFFFFF',
   subtext: '#B0C4DE',
   error: '#FF0000',
+  mainPurple: '#9600ff',
 };

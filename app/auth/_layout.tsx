@@ -56,6 +56,19 @@ const Layout = () => {
           ),
         }}
       />
+      <Stack.Screen
+        name="reset-password"
+        options={{
+          headerLeft: ({ tintColor }) => (
+            <IconButton
+              icon="arrow-left"
+              iconColor={tintColor}
+              size={20}
+              onPress={() => router.navigate('./sign-in')}
+            />
+          ),
+        }}
+      />
     </Stack>
   );
 };
