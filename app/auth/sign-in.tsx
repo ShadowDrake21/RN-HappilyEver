@@ -10,9 +10,8 @@ import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
 import useSignIn from '~/hooks/useSignIn';
-import { storeTokenData } from '~/storage/refreshToken.storage';
+import LocalTokenStorage from '~/storage/LocalTokenStorage';
 import { useAuthStore } from '~/store/store';
-import { supabase } from '~/utils/supabase';
 
 const Page = () => {
   const { bottom } = useSafeAreaInsets();
@@ -36,7 +35,9 @@ const Page = () => {
     const res = await signInWithEmail(getValues('email'), getValues('password'));
 
     if (res) {
-      await storeTokenData(res.session.refresh_token, res.session.expires_at);
+      await LocalTokenStorage.setAccessToken(res.session.access_token);
+      await LocalTokenStorage.setRefreshToken(res.session.refresh_token);
+      await LocalTokenStorage.setExpirationTime(res.session.expires_at || 0);
       setUser(res.user);
     }
   };

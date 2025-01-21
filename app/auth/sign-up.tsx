@@ -12,7 +12,7 @@ import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
 import useSignIn from '~/hooks/useSignIn';
 import useSignUp from '~/hooks/useSignUp';
-import { refreshToken, storeTokenData } from '~/storage/refreshToken.storage';
+import LocalTokenStorage from '~/storage/LocalTokenStorage';
 import { useAuthStore } from '~/store/store';
 import { supabase } from '~/utils/supabase';
 
@@ -39,7 +39,12 @@ const Page = () => {
     const res = await signUpWithEmail(getValues('email'), getValues('password'));
 
     if (res) {
-      await storeTokenData(res.refresh_token, res.expires_at);
+      // setUserPersistence(
+      //   res.refresh_token,
+      //   res.expires_at || new Date(new Date().getHours() + 60 * 60 * 1000).getTime()
+      // );
+      await LocalTokenStorage.setAccessToken(res.access_token);
+      await LocalTokenStorage.setRefreshToken(res.refresh_token);
       setUser(res.user);
     }
   };
