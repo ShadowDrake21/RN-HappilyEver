@@ -32,7 +32,8 @@ const OnboardingContent = ({ pageItem }: { pageItem: IOnboardingContent }) => {
           <Button
             mode="contained"
             buttonColor={COLORS.accent3}
-            style={{ paddingVertical: 5, borderRadius: 30 }}>
+            contentStyle={{ paddingVertical: 5 }}
+            style={{ borderRadius: 30 }}>
             <Text>{pageItem.nextText}</Text>
           </Button>
         </Link>

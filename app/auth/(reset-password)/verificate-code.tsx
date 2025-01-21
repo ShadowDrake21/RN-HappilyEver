@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -9,10 +9,7 @@ import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
-import useSignIn from '~/hooks/useSignIn';
-import LocalTokenStorage from '~/storage/LocalTokenStorage';
-import { useAuthStore } from '~/store/store';
-import { setAuthDataToStorage } from '~/utils/helpers.utils';
+import { supabase } from '~/utils/supabase';
 
 const Page = () => {
   const { bottom } = useSafeAreaInsets();
@@ -29,20 +26,8 @@ const Page = () => {
     },
   });
 
-  const { loading, signInWithEmail } = useSignIn();
-  const { setUser } = useAuthStore();
-
   const onSubmit = async () => {
-    const res = await signInWithEmail(getValues('email'), getValues('password'));
-
-    if (res) {
-      setAuthDataToStorage(
-        res.session.access_token,
-        res.session.refresh_token,
-        res.session.expires_in
-      );
-      setUser(res.user, false);
-    }
+    await supabase.auth.resetPasswordForEmail(getValues('email'));
   };
 
   return (
