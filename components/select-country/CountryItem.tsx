@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
@@ -8,17 +8,21 @@ import { ICountry } from '~/types/country.types';
 const CountryItem = ({
   country: { id, name, flags, phoneCode },
   onPress,
-  selectedCountry,
+  isSelected,
 }: {
   country: ICountry;
-  onPress: () => void;
-  selectedCountry: string;
+  onPress: (id: string) => void;
+  isSelected: boolean;
 }) => {
   return (
     <TouchableOpacity
       className="flex-row items-center justify-between gap-5 rounded-3xl p-5"
-      style={{ backgroundColor: COLORS.extraDark }}
-      onPress={onPress}>
+      style={{
+        backgroundColor: COLORS.extraDark,
+        borderWidth: 1,
+        borderColor: isSelected ? COLORS.mainPurple : COLORS.slayish,
+      }}
+      onPress={() => onPress(id)}>
       <View className="flex-row items-center gap-5">
         <Image
           source={{
@@ -42,7 +46,7 @@ const CountryItem = ({
         className="h-5 w-5 rounded-full border"
         style={[
           { borderColor: COLORS.mainPurple },
-          selectedCountry === id && { backgroundColor: COLORS.mainPurple },
+          isSelected && { backgroundColor: COLORS.mainPurple },
         ]}
       />
     </TouchableOpacity>

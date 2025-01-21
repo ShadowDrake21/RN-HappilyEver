@@ -2,7 +2,7 @@ import CountryItem from '@components/select-country/CountryItem';
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
@@ -25,6 +25,10 @@ const Page = () => {
 
   const [selectedCountry, setSelectedCountry] = useState('UA');
 
+  const handlePress = useCallback((id: string) => {
+    setSelectedCountry(id);
+  }, []);
+
   useEffect(() => {
     console.log('selectedCountry', selectedCountry);
   }, [selectedCountry]);
@@ -44,17 +48,19 @@ const Page = () => {
   return (
     <FlashList
       data={countries}
+      style={{ flex: 1 }}
       ItemSeparatorComponent={() => <View className="h-5 bg-transparent" />}
       renderItem={({ item }) => (
         <CountryItem
           country={item}
-          onPress={() => setSelectedCountry(item.id)}
-          selectedCountry={selectedCountry}
+          onPress={() => handlePress(item.id)}
+          isSelected={selectedCountry === item.id}
         />
       )}
       showsVerticalScrollIndicator={false}
       estimatedItemSize={200}
       keyExtractor={(item) => item.id}
+      extraData={selectedCountry}
     />
   );
 };
