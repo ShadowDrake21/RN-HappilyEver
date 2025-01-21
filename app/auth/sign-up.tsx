@@ -14,6 +14,7 @@ import useSignIn from '~/hooks/useSignIn';
 import useSignUp from '~/hooks/useSignUp';
 import LocalTokenStorage from '~/storage/LocalTokenStorage';
 import { useAuthStore } from '~/store/store';
+import { setAuthDataToStorage } from '~/utils/helpers.utils';
 import { supabase } from '~/utils/supabase';
 
 const Page = () => {
@@ -39,13 +40,8 @@ const Page = () => {
     const res = await signUpWithEmail(getValues('email'), getValues('password'));
 
     if (res) {
-      // setUserPersistence(
-      //   res.refresh_token,
-      //   res.expires_at || new Date(new Date().getHours() + 60 * 60 * 1000).getTime()
-      // );
-      await LocalTokenStorage.setAccessToken(res.access_token);
-      await LocalTokenStorage.setRefreshToken(res.refresh_token);
-      setUser(res.user);
+      setAuthDataToStorage(res.access_token, res.refresh_token, res.expires_in);
+      setUser(res.user, true);
     }
   };
 

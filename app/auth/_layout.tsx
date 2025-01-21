@@ -57,7 +57,7 @@ const Layout = () => {
         }}
       />
       <Stack.Screen
-        name="reset-password"
+        name="(reset-password)"
         options={{
           headerLeft: ({ tintColor }) => (
             <IconButton

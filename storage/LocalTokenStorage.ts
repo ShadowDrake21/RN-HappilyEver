@@ -7,45 +7,46 @@ export default class LocalTokenStorage {
   private static readonly refreshToken = 'refreshToken';
   private static readonly expirationTime = 'expirationTime';
 
-  public static setAccessToken(token: string) {
-    return AsyncStorage.setItem(LocalTokenStorage.accessToken, token);
+  private static readonly keys = {
+    accessToken: 'accessToken',
+    refreshToken: 'refreshToken',
+    expirationTime: 'expirationTime',
+  };
+
+  public static async setItem(key: keyof typeof LocalTokenStorage.keys, value: string | number) {
+    try {
+      await AsyncStorage.setItem(key, value + '');
+    } catch (error) {
+      console.error(`Error setting ${key} in Async Storage:`, error);
+    }
   }
 
-  public static async getAccessToken() {
-    return AsyncStorage.getItem(LocalTokenStorage.accessToken);
+  public static async getItem(key: keyof typeof LocalTokenStorage.keys) {
+    try {
+      return await AsyncStorage.getItem(key);
+    } catch (error) {
+      console.error(`Error getting ${key} from Async Storage:`, error);
+    }
   }
 
-  public static removeAccessToken() {
-    return AsyncStorage.removeItem(LocalTokenStorage.accessToken);
+  public static async removeItem(key: keyof typeof LocalTokenStorage.keys) {
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      console.error(`Error removing ${key} from Async Storage:`, error);
+    }
   }
 
-  public static setRefreshToken(token: string) {
-    return AsyncStorage.setItem(LocalTokenStorage.refreshToken, token);
-  }
-
-  public static async getRefreshToken() {
-    return AsyncStorage.getItem(LocalTokenStorage.refreshToken);
-  }
-
-  public static removeRefreshToken() {
-    return AsyncStorage.removeItem(LocalTokenStorage.refreshToken);
-  }
-
-  public static setExpirationTime(time: number) {
-    console.log('setExpirationTime', time);
-    return AsyncStorage.setItem(LocalTokenStorage.expirationTime, time.toString());
-  }
-
-  public static async getExpirationTime() {
-    return AsyncStorage.getItem(LocalTokenStorage.expirationTime);
-  }
-
-  public static removeExpirationTime() {
-    return AsyncStorage.removeItem(LocalTokenStorage.expirationTime);
+  public static clearAll() {
+    return AsyncStorage.multiRemove([
+      LocalTokenStorage.accessToken,
+      LocalTokenStorage.refreshToken,
+      LocalTokenStorage.expirationTime,
+    ]);
   }
 
   public static async refreshAccessToken() {
-    const refreshToken = await LocalTokenStorage.getRefreshToken();
+    const refreshToken = await LocalTokenStorage.getItem('refreshToken');
 
     if (!refreshToken) {
       throw new Error('No refresh token found');
@@ -56,9 +57,9 @@ export default class LocalTokenStorage {
       throw new Error(error.message);
     }
 
-    await LocalTokenStorage.setAccessToken(data.session?.access_token || '');
-    await LocalTokenStorage.setRefreshToken(data.session?.refresh_token || '');
-    await LocalTokenStorage.setExpirationTime(data.session?.expires_at || 0);
+    await LocalTokenStorage.setItem('accessToken', data.session?.access_token || '');
+    await LocalTokenStorage.setItem('refreshToken', data.session?.refresh_token || '');
+    await LocalTokenStorage.setItem('expirationTime', data.session?.expires_at || 0);
 
     return data.session?.access_token;
   }

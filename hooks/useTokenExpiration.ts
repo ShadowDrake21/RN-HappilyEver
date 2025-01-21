@@ -10,7 +10,17 @@ const useTokenExpiration = () => {
 
   const checkTokenExpiration = async () => {
     if (expirationTime === null) {
-      const storedExpirationTime = await AsyncStorage.getItem('expirationTime');
+      const storedExpirationTime = await LocalTokenStorage.getItem('expirationTime');
+      // const refregToken = await LocalTokenStorage.getItem('refreshToken');
+      // const accessToken = await LocalTokenStorage.getItem('accessToken');
+
+      // console.log(
+      //   'checkTokenExpiration: expirationTime, accessToken, refreshToken',
+      //   new Date(+storedExpirationTime! * 1000).toLocaleString(),
+      //   accessToken,
+      //   refregToken,
+      //   Date.now()
+      // );
 
       if (storedExpirationTime) {
         const expiresAt = parseInt(storedExpirationTime, 10);
