@@ -6,7 +6,14 @@ import { useEffect } from 'react';
 import useTokenExpiration from '~/hooks/useTokenExpiration';
 import { useAuthStore } from '~/store/store';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchIntervalInBackground: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const RootLayout = () => {
   useTokenExpiration();
