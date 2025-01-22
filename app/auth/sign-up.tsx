@@ -60,7 +60,6 @@ const Page = () => {
         <MainButton onPress={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
           Submit
         </MainButton>
-        {/* disabled={getFieldState('email').invalid || getFieldState('password').invalid} */}
       </View>
       <View>
         <SignInSocials action="Sign up" />

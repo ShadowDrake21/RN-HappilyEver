@@ -22,11 +22,13 @@ const Page = () => {
   }, []);
 
   const { data: allCountries, isLoading } = useQuery<ICountry[]>({
-    queryFn: () => fetchCountries(),
+    queryFn: () => fetchCountries('https://restcountries.com/v3.1/all?fields=name,flags,idd,cca2'),
     queryKey: ['countries'],
   });
 
   useEffect(() => {
+    console.log('allCountries', allCountries);
+
     setCountries(allCountries);
   }, [allCountries]);
 
@@ -66,8 +68,9 @@ const Page = () => {
         iconColor={COLORS.grayish}
         inputStyle={{ color: COLORS.text }}
       />
+
       <FlashList
-        data={countries}
+        data={countries || []}
         style={{ flex: 1 }}
         ItemSeparatorComponent={() => <View className="h-5 bg-transparent" />}
         renderItem={({ item }) => (
