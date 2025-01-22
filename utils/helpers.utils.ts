@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import LocalTokenStorage from '~/storage/LocalTokenStorage';
 
 export const setAuthDataToStorage = async (
