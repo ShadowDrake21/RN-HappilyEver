@@ -9,16 +9,18 @@ import { Searchbar, Text as PaperText } from 'react-native-paper';
 
 import MainButtonLink from '~/components/ui/MainButtonLink';
 import { COLORS } from '~/constants/colors';
+import { useMainSettings } from '~/context/MainSettingsContext';
 import { ICountry } from '~/types/country.types';
 import { fetchCountries } from '~/utils/fetch.utils';
 
 const Page = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [countries, setCountries] = useState<ICountry[] | undefined>(undefined);
-  const [selectedCountry, setSelectedCountry] = useState('');
+
+  const { countryId, setCountryId } = useMainSettings();
 
   const handlePress = useCallback((id: string) => {
-    setSelectedCountry(id);
+    setCountryId(id);
   }, []);
 
   const { data: allCountries, isLoading } = useQuery<ICountry[]>({
@@ -35,11 +37,13 @@ const Page = () => {
   const debouncedSearch = useMemo(
     () =>
       debounce((search: string) => {
-        setCountries(() =>
-          allCountries?.filter((country) =>
+        setCountries(() => {
+          console.log('search', search);
+
+          return allCountries?.filter((country) =>
             country.name.common.toLowerCase().includes(search.toLowerCase())
-          )
-        );
+          );
+        });
       }, 500),
     []
   );
@@ -77,13 +81,13 @@ const Page = () => {
           <CountryItem
             country={item}
             onPress={() => handlePress(item.id)}
-            isSelected={selectedCountry === item.id}
+            isSelected={countryId === item.id}
           />
         )}
         showsVerticalScrollIndicator={false}
         estimatedItemSize={200}
         keyExtractor={(item) => item.id}
-        extraData={selectedCountry}
+        extraData={countryId}
         ListEmptyComponent={() => (
           <PaperText
             variant="labelLarge"
@@ -93,7 +97,7 @@ const Page = () => {
         )}
       />
 
-      <MainButtonLink href="./fill-profile-data" disabled={!selectedCountry}>
+      <MainButtonLink href="./fill-profile-data" disabled={!countryId}>
         Continue
       </MainButtonLink>
     </View>

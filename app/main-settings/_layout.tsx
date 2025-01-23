@@ -5,8 +5,9 @@ import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { COLORS } from '~/constants/colors';
+import { MainSettingsProvider } from '~/context/MainSettingsContext';
 
-const Layout = () => {
+const MainSettingsLayout = () => {
   const router = useRouter();
   const { bottom } = useSafeAreaInsets();
 
@@ -46,5 +47,11 @@ const Layout = () => {
     </Stack>
   );
 };
+
+const Layout = () => (
+  <MainSettingsProvider>
+    <MainSettingsLayout />
+  </MainSettingsProvider>
+);
 
 export default Layout;

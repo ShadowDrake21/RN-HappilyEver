@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
-import { ICountry } from '~/types/country.types';
+import { ICountry } from '@types/country.types';
 
 const CountryItem = ({
   country: { id, name, flags, phoneCode },

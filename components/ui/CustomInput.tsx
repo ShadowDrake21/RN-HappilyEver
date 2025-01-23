@@ -1,19 +1,21 @@
 import React from 'react';
 import { FieldError } from 'react-hook-form';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 import { TextInput, TextInputProps } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
 
 interface CustomInputProps extends TextInputProps {
   errors: FieldError | undefined;
+  addStyle?: StyleProp<TextStyle>;
 }
 
-const CustomInput = ({ errors, ...props }: CustomInputProps) => {
+const CustomInput = ({ errors, addStyle, ...props }: CustomInputProps) => {
   return (
     <TextInput
       style={[
         styles.input,
+        addStyle,
         errors && {
           borderColor: COLORS.error,
         },
