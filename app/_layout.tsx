@@ -23,7 +23,7 @@ const RootLayout = () => {
   useEffect(() => {
     if (isLoggedIn) {
       if (isNewUser) {
-        router.replace('/main-settings/fill-extended-data');
+        router.replace('/main-settings/select-country');
         return;
       }
       router.replace('/home');

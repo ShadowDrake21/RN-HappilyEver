@@ -1,4 +1,4 @@
-export interface IMainSettingsForm {
+export interface IMainSettingsBasicForm {
   fullName: string;
   username: string;
   gender: string;

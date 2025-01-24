@@ -1,3 +1,4 @@
+import TouchableKeyboardAvoidingView from '@components/shared/TouchableKeyboardAvoidingView';
 import CustomTextArea from '@components/ui/CustomTextInput';
 import MainButton from '@components/ui/MainButton';
 import TextLink from '@components/ui/TextLink';
@@ -53,10 +54,7 @@ const Page = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={top + 40}>
+    <TouchableKeyboardAvoidingView offset={top + 40}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView
           keyboardShouldPersistTaps="handled"
@@ -370,7 +368,7 @@ const Page = () => {
           Skip for now
         </TextLink>
       </View>
-    </KeyboardAvoidingView>
+    </TouchableKeyboardAvoidingView>
   );
 };
 

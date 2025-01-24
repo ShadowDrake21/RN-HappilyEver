@@ -1,23 +1,38 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 import { ICountry } from '~/types/country.types';
-import { IMainSettingsForm } from '~/types/main-settings.types';
+import { IMainSettingsBasicForm, IMainSettingsExtendedForm } from '~/types/main-settings.types';
 
 type MainSettingsContextType = {
   countryId: string;
-  profileForm: IMainSettingsForm | undefined;
+  profileBasicForm: IMainSettingsBasicForm | undefined;
+  profileExtendedForm: IMainSettingsExtendedForm | undefined;
   setCountryId: (id: string) => void;
-  setProfileForm: (form: IMainSettingsForm) => void;
+  setProfileBasicForm: (form: IMainSettingsBasicForm) => void;
+  setProfileExtendedForm: (form: IMainSettingsExtendedForm) => void;
 };
 
 const MainSettingsContext = createContext<MainSettingsContextType | undefined>(undefined);
 
 export const MainSettingsProvider = ({ children }: PropsWithChildren) => {
   const [countryId, setCountryId] = useState('');
-  const [profileForm, setProfileForm] = useState<IMainSettingsForm | undefined>(undefined);
+  const [profileBasicForm, setProfileBasicForm] = useState<IMainSettingsBasicForm | undefined>(
+    undefined
+  );
+  const [profileExtendedForm, setProfileExtendedForm] = useState<
+    IMainSettingsExtendedForm | undefined
+  >(undefined);
 
   return (
-    <MainSettingsContext.Provider value={{ countryId, profileForm, setCountryId, setProfileForm }}>
+    <MainSettingsContext.Provider
+      value={{
+        countryId,
+        profileBasicForm,
+        profileExtendedForm,
+        setCountryId,
+        setProfileBasicForm,
+        setProfileExtendedForm,
+      }}>
       {children}
     </MainSettingsContext.Provider>
   );
