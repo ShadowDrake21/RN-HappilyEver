@@ -45,14 +45,14 @@ const Page = () => {
     [allCountries]
   );
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     console.log('allCountries', allCountries);
+  useFocusEffect(
+    useCallback(() => {
+      console.log('allCountries', allCountries);
 
-  //     setSearchQuery('');
-  //     setCountries(allCountries);
-  //   }, [allCountries])
-  // );
+      setSearchQuery('');
+      setCountries(allCountries);
+    }, [allCountries])
+  );
 
   if (isLoading) {
     return (

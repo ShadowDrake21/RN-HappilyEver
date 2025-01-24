@@ -1,38 +1,53 @@
 import React from 'react';
 import { FieldError } from 'react-hook-form';
-import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
-import { TextInput, TextInputProps } from 'react-native-paper';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputProps,
+  TextStyle,
+  View,
+} from 'react-native';
 
 import { COLORS } from '~/constants/colors';
 
 interface CustomInputProps extends TextInputProps {
   errors: FieldError | undefined;
   addStyle?: StyleProp<TextStyle>;
+  height?: number;
 }
 
-const CustomInput = ({ errors, addStyle, ...props }: CustomInputProps) => {
+const CustomTextArea = ({ errors, addStyle, height, ...props }: CustomInputProps) => {
   return (
     <TextInput
       style={[
         styles.input,
         addStyle,
+        { height },
         errors && {
           borderColor: COLORS.error,
         },
       ]}
-      contentStyle={{ color: COLORS.light }}
       placeholderTextColor={COLORS.lightDark}
+      multiline
+      autoCorrect={false}
+      textBreakStrategy="balanced"
+      lineBreakStrategyIOS="push-out"
       {...props}
     />
   );
 };
 
-export default CustomInput;
+export default CustomTextArea;
 
 const styles = StyleSheet.create({
   input: {
     backgroundColor: COLORS.extraDark,
     borderWidth: 1,
     borderColor: 'transparent',
+    padding: 10,
+    fontSize: 16,
+    color: COLORS.light,
   },
 });
