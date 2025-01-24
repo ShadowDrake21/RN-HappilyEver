@@ -41,70 +41,36 @@ const MainSettingsLayout = () => {
         name="select-country"
         options={{
           title: 'Select Your Country',
-          // headerLeft: ({ tintColor }) => (
-          //   <IconButton
-          //     icon="arrow-left"
-          //     iconColor={tintColor}
-          //     size={20}
-          //     onPress={() => router.push('/auth')}
-          //   />
-          // ),
         }}
       />
       <Stack.Screen
         name="fill-profile-data"
         options={{
           title: 'Fill Your Profile',
-          // headerLeft: ({ tintColor }) => (
-          //   <IconButton
-          //     icon="arrow-left"
-          //     iconColor={tintColor}
-          //     size={20}
-          //     onPress={() => router.push('./select-country')}
-          //   />
-          // ),
+        }}
+      />
+      <Stack.Screen
+        name="fill-extended-data"
+        options={{
+          title: 'Fill Extended Information',
         }}
       />
       <Stack.Screen
         name="add-photos"
         options={{
           title: 'Add Your Best Photos',
-          // headerLeft: ({ tintColor }) => (
-          //   <IconButton
-          //     icon="arrow-left"
-          //     iconColor={tintColor}
-          //     size={20}
-          //     onPress={() => router.push('./fill-profile-data')}
-          //   />
-          // ),
         }}
       />
       <Stack.Screen
         name="select-interests"
         options={{
           title: 'Select Your Interests',
-          // headerLeft: ({ tintColor }) => (
-          //   <IconButton
-          //     icon="arrow-left"
-          //     iconColor={tintColor}
-          //     size={20}
-          //     onPress={() => router.push('./add-photos')}
-          //   />
-          // ),
         }}
       />
       <Stack.Screen
         name="select-ideal-match"
         options={{
           title: 'Select Ideal Match',
-          // headerLeft: ({ tintColor }) => (
-          //   <IconButton
-          //     icon="arrow-left"
-          //     iconColor={tintColor}
-          //     size={20}
-          //     onPress={() => router.push('./select-interests')}
-          //   />
-          // ),
         }}
       />
     </Stack>

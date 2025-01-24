@@ -1,6 +1,5 @@
 import BottomSheet from '@components/ui/BottomSheet';
 import CustomInput from '@components/ui/CustomInput';
-import CustomTextArea from '@components/ui/CustomTextInput';
 import MainButton from '@components/ui/MainButton';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
@@ -12,7 +11,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -21,8 +19,7 @@ import {
   View,
 } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
-import { Button, Icon, Text as PaperText } from 'react-native-paper';
-import PhoneInput from 'react-native-phone-input';
+import { Icon } from 'react-native-paper';
 import { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -67,32 +64,12 @@ const Page = () => {
     formState: { errors },
   } = useForm<IMainSettingsForm>({
     defaultValues: {
-      basics: {
-        fullName: '',
-        username: '',
-        gender: '',
-        birthDate: undefined,
-        phoneNumber: '',
-        occupation: '',
-      },
-      lifeGoals: {
-        goals: '',
-        idealLifestyle: '',
-      },
-      loveRelationships: {
-        relationshipType: '',
-        valuesInPartner: '',
-        dealBreakers: '',
-      },
-      familyFuture: {
-        marriagePerspective: '',
-        childrenInFuture: '',
-        familyLife: '',
-      },
-      personalConnection: {
-        sharedInterests: '',
-        emotionalConnection: '',
-      },
+      fullName: '',
+      username: '',
+      gender: '',
+      birthDate: undefined,
+      phoneNumber: '',
+      occupation: '',
     },
   });
   const onSubmit = (data: any) => {
@@ -138,11 +115,9 @@ const Page = () => {
                     value={value}
                   />
                 )}
-                name="basics.fullName"
+                name="fullName"
               />
-              {errors.basics?.fullName && (
-                <Text style={styles.errorText}>{errors.basics?.fullName.message}</Text>
-              )}
+              {errors.fullName && <Text style={styles.errorText}>{errors.fullName.message}</Text>}
 
               <Controller
                 control={control}
@@ -164,11 +139,9 @@ const Page = () => {
                     value={value}
                   />
                 )}
-                name="basics.username"
+                name="username"
               />
-              {errors.basics?.username && (
-                <Text style={styles.errorText}>{errors.basics.username.message}</Text>
-              )}
+              {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
               <Controller
                 control={control}
                 rules={{
@@ -215,11 +188,9 @@ const Page = () => {
                     dropdownStyle={styles.dropdownMenuStyle}
                   />
                 )}
-                name="basics.gender"
+                name="gender"
               />
-              {errors.basics?.gender && (
-                <Text style={styles.errorText}>{errors.basics.gender.message}</Text>
-              )}
+              {errors.gender && <Text style={styles.errorText}>{errors.gender.message}</Text>}
               <Controller
                 control={control}
                 rules={{
@@ -238,11 +209,9 @@ const Page = () => {
                     </BottomSheet>
                   </>
                 )}
-                name="basics.birthDate"
+                name="birthDate"
               />
-              {errors.basics?.birthDate && (
-                <Text style={styles.errorText}>{errors.basics.birthDate.message}</Text>
-              )}
+              {errors.birthDate && <Text style={styles.errorText}>{errors.birthDate.message}</Text>}
               <Controller
                 control={control}
                 rules={{
@@ -275,18 +244,18 @@ const Page = () => {
                       onChangeText={onChange}
                       value={value}
                       onFocus={() => {
-                        if (getValues('basics.phoneNumber').length === 0) {
-                          setValue('basics.phoneNumber', countries![0].phoneCode);
+                        if (getValues('phoneNumber').length === 0) {
+                          setValue('phoneNumber', countries![0].phoneCode);
                         }
                       }}
                       keyboardType="phone-pad"
                     />
                   </View>
                 )}
-                name="basics.phoneNumber"
+                name="phoneNumber"
               />
-              {errors.basics?.phoneNumber && (
-                <Text style={styles.errorText}>{errors.basics?.phoneNumber.message}</Text>
+              {errors.phoneNumber && (
+                <Text style={styles.errorText}>{errors.phoneNumber.message}</Text>
               )}
               <Controller
                 control={control}
@@ -311,323 +280,12 @@ const Page = () => {
                     value={value}
                   />
                 )}
-                name="basics.occupation"
+                name="occupation"
               />
-              {errors.basics?.occupation && (
-                <Text style={styles.errorText}>{errors.basics?.occupation.message}</Text>
+              {errors.occupation && (
+                <Text style={styles.errorText}>{errors.occupation.message}</Text>
               )}
-              <View className="gap-5">
-                <PaperText
-                  variant="headlineMedium"
-                  style={{ color: COLORS.grayish, fontWeight: 600 }}>
-                  Life Goals
-                </PaperText>
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: {
-                      value: 15,
-                      message: 'Life goals should be at least 15 characters long',
-                    },
-                    maxLength: {
-                      value: 256,
-                      message: 'Life goals should be at most 256 characters long',
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <CustomTextArea
-                      errors={error}
-                      placeholder="What are your life goals?"
-                      addStyle={{ marginHorizontal: 20 }}
-                      height={150}
-                      multiline
-                      textAlignVertical="top"
-                    />
-                  )}
-                  name="lifeGoals.goals"
-                />
-                {errors.lifeGoals?.goals && (
-                  <Text style={styles.errorText}>{errors.lifeGoals.goals.message}</Text>
-                )}
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: {
-                      value: 15,
-                      message: 'Ideal lifestyle should be at least 15 characters long',
-                    },
-                    maxLength: {
-                      value: 256,
-                      message: 'Ideal lifestyle should be at most 256 characters long',
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <CustomTextArea
-                      errors={error}
-                      placeholder="How do you envision your ideal lifestyle?"
-                      addStyle={{ marginHorizontal: 20 }}
-                      height={150}
-                      multiline
-                      textAlignVertical="top"
-                    />
-                  )}
-                  name="lifeGoals.idealLifestyle"
-                />
-                {errors.lifeGoals?.idealLifestyle && (
-                  <Text style={styles.errorText}>{errors.lifeGoals.idealLifestyle.message}</Text>
-                )}
-              </View>
-              <View className="gap-5">
-                <PaperText
-                  variant="headlineMedium"
-                  style={{ color: COLORS.grayish, fontWeight: 600 }}>
-                  Love & Relationships
-                </PaperText>
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: {
-                      value: 15,
-                      message: 'Relationship type should be at least 15 characters long',
-                    },
-                    maxLength: {
-                      value: 256,
-                      message: 'Relationship type should be at most 256 characters long',
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <CustomTextArea
-                      errors={error}
-                      placeholder="What kind of relationship are you looking for?"
-                      addStyle={{ marginHorizontal: 20 }}
-                      height={150}
-                      multiline
-                      textAlignVertical="top"
-                    />
-                  )}
-                  name="loveRelationships.relationshipType"
-                />
-                {errors.loveRelationships?.relationshipType && (
-                  <Text style={styles.errorText}>
-                    {errors.loveRelationships.relationshipType.message}
-                  </Text>
-                )}
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: {
-                      value: 15,
-                      message: 'Values in partner should be at least 15 characters long',
-                    },
-                    maxLength: {
-                      value: 256,
-                      message: 'Values in partner should be at most 256 characters long',
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <CustomTextArea
-                      errors={error}
-                      placeholder="What values are most important to you in a partner?"
-                      addStyle={{ marginHorizontal: 20 }}
-                      height={150}
-                      multiline
-                      textAlignVertical="top"
-                    />
-                  )}
-                  name="loveRelationships.valuesInPartner"
-                />
-                {errors.loveRelationships?.valuesInPartner && (
-                  <Text style={styles.errorText}>
-                    {errors.loveRelationships.valuesInPartner.message}
-                  </Text>
-                )}
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: {
-                      value: 15,
-                      message: 'Deal breakers should be at least 15 characters long',
-                    },
-                    maxLength: {
-                      value: 256,
-                      message: 'Deal breakers should be at most 256 characters long',
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <CustomTextArea
-                      errors={error}
-                      placeholder="Are there any dealbreakers in a relationship for you?"
-                      addStyle={{ marginHorizontal: 20 }}
-                      height={150}
-                      multiline
-                      textAlignVertical="top"
-                    />
-                  )}
-                  name="loveRelationships.dealBreakers"
-                />
-                {errors.loveRelationships?.dealBreakers && (
-                  <Text style={styles.errorText}>
-                    {errors.loveRelationships.dealBreakers.message}
-                  </Text>
-                )}
-              </View>
-              <View className="gap-5">
-                <PaperText
-                  variant="headlineMedium"
-                  style={{ color: COLORS.grayish, fontWeight: 600 }}>
-                  Family & Future
-                </PaperText>
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: {
-                      value: 15,
-                      message: 'Marriage perspective should be at least 15 characters long',
-                    },
-                    maxLength: {
-                      value: 256,
-                      message: 'Marriage perspective should be at most 256 characters long',
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <CustomTextArea
-                      errors={error}
-                      placeholder="What is your perspective on marriage?"
-                      addStyle={{ marginHorizontal: 20 }}
-                      height={150}
-                      multiline
-                      textAlignVertical="top"
-                    />
-                  )}
-                  name="familyFuture.marriagePerspective"
-                />
-                {errors.familyFuture?.marriagePerspective && (
-                  <Text style={styles.errorText}>
-                    {errors.familyFuture.marriagePerspective.message}
-                  </Text>
-                )}
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: {
-                      value: 15,
-                      message: 'Children in future should be at least 15 characters long',
-                    },
-                    maxLength: {
-                      value: 256,
-                      message: 'Children in future should be at most 256 characters long',
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <CustomTextArea
-                      errors={error}
-                      placeholder="Do you see children in your future? If so, how many?"
-                      addStyle={{ marginHorizontal: 20 }}
-                      height={150}
-                      multiline
-                      textAlignVertical="top"
-                    />
-                  )}
-                  name="familyFuture.childrenInFuture"
-                />
-                {errors.familyFuture?.childrenInFuture && (
-                  <Text style={styles.errorText}>
-                    {errors.familyFuture?.childrenInFuture.message}
-                  </Text>
-                )}
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: {
-                      value: 15,
-                      message: 'Family life should be at least 15 characters long',
-                    },
-                    maxLength: {
-                      value: 256,
-                      message: 'Family life future should be at most 256 characters long',
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <CustomTextArea
-                      errors={error}
-                      placeholder="What kind of family life do you envision?"
-                      addStyle={{ marginHorizontal: 20 }}
-                      height={150}
-                      multiline
-                      textAlignVertical="top"
-                    />
-                  )}
-                  name="familyFuture.familyLife"
-                />
-                {errors.familyFuture?.familyLife && (
-                  <Text style={styles.errorText}>{errors.familyFuture?.familyLife.message}</Text>
-                )}
-              </View>
-              <View className="gap-5">
-                <PaperText
-                  variant="headlineMedium"
-                  style={{ color: COLORS.grayish, fontWeight: 600 }}>
-                  Personal Connection
-                </PaperText>
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: {
-                      value: 15,
-                      message: 'Shared interests should be at least 15 characters long',
-                    },
-                    maxLength: {
-                      value: 256,
-                      message: 'Shared interests future should be at most 256 characters long',
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <CustomTextArea
-                      errors={error}
-                      placeholder="What shared interests or activities are important to you in a relationship?"
-                      addStyle={{ marginHorizontal: 20 }}
-                      height={150}
-                      multiline
-                      textAlignVertical="top"
-                    />
-                  )}
-                  name="personalConnection.sharedInterests"
-                />
-                {errors.personalConnection?.sharedInterests && (
-                  <Text style={styles.errorText}>
-                    {errors.personalConnection.sharedInterests.message}
-                  </Text>
-                )}
-                <Controller
-                  control={control}
-                  rules={{
-                    minLength: {
-                      value: 15,
-                      message: 'Emotional connection should be at least 15 characters long',
-                    },
-                    maxLength: {
-                      value: 256,
-                      message: 'Emotional connection future should be at most 256 characters long',
-                    },
-                  }}
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <CustomTextArea
-                      errors={error}
-                      placeholder="How do you approach emotional connection and communication in relationships?"
-                      addStyle={{ marginHorizontal: 20 }}
-                      height={150}
-                      multiline
-                      textAlignVertical="top"
-                    />
-                  )}
-                  name="personalConnection.emotionalConnection"
-                />
-                {errors.personalConnection?.emotionalConnection && (
-                  <Text style={styles.errorText}>
-                    {errors.personalConnection.emotionalConnection.message}
-                  </Text>
-                )}
-              </View>
+
               <View style={{ marginHorizontal: 20 }}>
                 <MainButton onPress={handleSubmit(onSubmit)} disabled={!!errors}>
                   Continue
