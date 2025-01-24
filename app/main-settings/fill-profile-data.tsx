@@ -6,7 +6,19 @@ import { format } from 'date-fns';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { Button, Icon } from 'react-native-paper';
 import PhoneInput from 'react-native-phone-input';
@@ -50,6 +62,7 @@ const Page = () => {
     control,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm<IMainSettingsForm>({
     defaultValues: {
@@ -57,7 +70,7 @@ const Page = () => {
       username: '',
       gender: '',
       birthDate: undefined,
-      phoneNumber: countries && countries[0].phoneCode,
+      phoneNumber: '',
       occupation: '',
     },
   });
@@ -66,7 +79,7 @@ const Page = () => {
   };
 
   return (
-    <View style={{ flex: 1, paddingBottom: bottom }}>
+    <>
       <Stack.Screen
         options={{
           contentStyle: {
@@ -77,175 +90,204 @@ const Page = () => {
           },
         }}
       />
-      <View style={{ flex: 1, gap: 20 }}>
-        <Controller
-          control={control}
-          rules={{
-            required: 'Full Name is required',
-            minLength: { value: 3, message: 'Name should be at least 3 characters long' },
-            maxLength: { value: 40, message: 'Name should be at most 40 characters long' },
-          }}
-          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-            <CustomInput
-              errors={error}
-              placeholder="Full Name"
-              addStyle={{ marginHorizontal: 20 }}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="fullName"
-        />
-        {errors.fullName && <Text style={styles.errorText}>{errors.fullName.message}</Text>}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={90}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
+          <ScrollView
+            contentContainerClassName="flex-1 justify-between grow"
+            style={{ paddingBottom: bottom }}
+            keyboardShouldPersistTaps="handled">
+            <View style={{ flex: 1, gap: 20, paddingTop: 20 }}>
+              <Controller
+                control={control}
+                rules={{
+                  required: 'Full Name is required',
+                  minLength: { value: 3, message: 'Name should be at least 3 characters long' },
+                  maxLength: { value: 40, message: 'Name should be at most 40 characters long' },
+                }}
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                  <CustomInput
+                    errors={error}
+                    placeholder="Full Name"
+                    addStyle={{ marginHorizontal: 20 }}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="fullName"
+              />
+              {errors.fullName && <Text style={styles.errorText}>{errors.fullName.message}</Text>}
 
-        <Controller
-          control={control}
-          rules={{
-            required: 'Username is required',
-            minLength: { value: 3, message: 'Username should be at least 3 characters long' },
-            maxLength: { value: 25, message: 'Username should be at most 25 characters long' },
-          }}
-          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-            <CustomInput
-              errors={error}
-              placeholder="Username"
-              addStyle={{ marginHorizontal: 20 }}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="username"
-        />
-        {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
-        <Controller
-          control={control}
-          rules={{
-            required: 'Gender is required',
-          }}
-          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-            <SelectDropdown
-              data={genders}
-              onSelect={(selectedItem, index) => {
-                onChange(selectedItem.title);
-              }}
-              onBlur={onBlur}
-              defaultValue={value}
-              renderButton={(selectedItem: { title: string; icon: string }, isOpened) => {
-                return (
-                  <View style={styles.dropdownButtonStyle}>
-                    {selectedItem && (
-                      <Icon source={selectedItem.icon} color={COLORS.grayish} size={20} />
-                    )}
-                    <Text style={styles.dropdownButtonTxtStyle}>
-                      {(selectedItem && selectedItem.title) || 'Select your gender'}
-                    </Text>
-                    <Icon
-                      source={isOpened ? 'chevron-down' : 'chevron-up'}
-                      color={COLORS.grayish}
-                      size={20}
+              <Controller
+                control={control}
+                rules={{
+                  required: 'Username is required',
+                  minLength: { value: 3, message: 'Username should be at least 3 characters long' },
+                  maxLength: {
+                    value: 25,
+                    message: 'Username should be at most 25 characters long',
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                  <CustomInput
+                    errors={error}
+                    placeholder="Username"
+                    addStyle={{ marginHorizontal: 20 }}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="username"
+              />
+              {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
+              <Controller
+                control={control}
+                rules={{
+                  required: 'Gender is required',
+                }}
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                  <SelectDropdown
+                    data={genders}
+                    onSelect={(selectedItem, index) => {
+                      onChange(selectedItem.title);
+                    }}
+                    onBlur={onBlur}
+                    defaultValue={value}
+                    renderButton={(selectedItem: { title: string; icon: string }, isOpened) => {
+                      return (
+                        <View style={styles.dropdownButtonStyle}>
+                          {selectedItem && (
+                            <Icon source={selectedItem.icon} color={COLORS.grayish} size={20} />
+                          )}
+                          <Text style={styles.dropdownButtonTxtStyle}>
+                            {(selectedItem && selectedItem.title) || 'Select your gender'}
+                          </Text>
+                          <Icon
+                            source={isOpened ? 'chevron-down' : 'chevron-up'}
+                            color={COLORS.grayish}
+                            size={20}
+                          />
+                        </View>
+                      );
+                    }}
+                    renderItem={(item: { title: string; icon: string }, index, isSelected) => {
+                      return (
+                        <View
+                          style={{
+                            ...styles.dropdownItemStyle,
+                            ...(isSelected && { backgroundColor: '#D2D9DF' }),
+                          }}>
+                          <Icon source={item.icon} color={COLORS.mainPurple} size={20} />
+                          <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
+                        </View>
+                      );
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    dropdownStyle={styles.dropdownMenuStyle}
+                  />
+                )}
+                name="gender"
+              />
+              {errors.gender && <Text style={styles.errorText}>{errors.gender.message}</Text>}
+              <Controller
+                control={control}
+                rules={{
+                  required: 'Username is required',
+                  minLength: { value: 3, message: 'Username should be at least 3 characters long' },
+                  maxLength: {
+                    value: 25,
+                    message: 'Username should be at most 25 characters long',
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                  <>
+                    <TouchableOpacity style={styles.toggleButton} onPress={toggleSheet}>
+                      <Text style={styles.toggleButtonText}>
+                        {value ? format(value, 'do MMMM yyyy') : 'Select your birthday'}
+                      </Text>
+                      <Icon source="calendar" color={COLORS.grayish} size={20} />
+                    </TouchableOpacity>
+                    <BottomSheet isOpen={isOpen} onPress={collapseSheet}>
+                      <CalendarPicker onDateChange={onChange} />
+                    </BottomSheet>
+                  </>
+                )}
+                name="birthDate"
+              />
+              {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
+              <Controller
+                control={control}
+                rules={{
+                  required: 'Username is required',
+                  minLength: { value: 3, message: 'Username should be at least 3 characters long' },
+                  maxLength: {
+                    value: 25,
+                    message: 'Username should be at most 25 characters long',
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                  <View className="mx-6 flex-row items-center gap-5">
+                    <Image
+                      source={{ uri: countries && countries[0].flags.png }}
+                      className="h-16 w-20"
+                      resizeMode="contain"
+                    />
+                    <CustomInput
+                      errors={error}
+                      placeholder="Phone Number"
+                      addStyle={{ flex: 1 }}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      onFocus={() => {
+                        if (getValues('phoneNumber').length === 0) {
+                          setValue('phoneNumber', countries![0].phoneCode);
+                        }
+                      }}
+                      keyboardType="phone-pad"
                     />
                   </View>
-                );
-              }}
-              renderItem={(item: { title: string; icon: string }, index, isSelected) => {
-                return (
-                  <View
-                    style={{
-                      ...styles.dropdownItemStyle,
-                      ...(isSelected && { backgroundColor: '#D2D9DF' }),
-                    }}>
-                    <Icon source={item.icon} color={COLORS.mainPurple} size={20} />
-                    <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
-                  </View>
-                );
-              }}
-              showsVerticalScrollIndicator={false}
-              dropdownStyle={styles.dropdownMenuStyle}
-            />
-          )}
-          name="gender"
-        />
-        {errors.gender && <Text style={styles.errorText}>{errors.gender.message}</Text>}
-        <Controller
-          control={control}
-          rules={{
-            required: 'Username is required',
-            minLength: { value: 3, message: 'Username should be at least 3 characters long' },
-            maxLength: { value: 25, message: 'Username should be at most 25 characters long' },
-          }}
-          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-            <>
-              <TouchableOpacity style={styles.toggleButton} onPress={toggleSheet}>
-                <Text style={styles.toggleButtonText}>
-                  {value ? format(value, 'do MMMM yyyy') : 'Select your birthday'}
-                </Text>
-                <Icon source="calendar" color={COLORS.grayish} size={20} />
-              </TouchableOpacity>
-              <BottomSheet isOpen={isOpen} onPress={collapseSheet}>
-                <CalendarPicker onDateChange={onChange} />
-              </BottomSheet>
-            </>
-          )}
-          name="birthDate"
-        />
-        {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
-        <Controller
-          control={control}
-          rules={{
-            required: 'Username is required',
-            minLength: { value: 3, message: 'Username should be at least 3 characters long' },
-            maxLength: { value: 25, message: 'Username should be at most 25 characters long' },
-          }}
-          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-            <View className="mx-6 flex-row items-center gap-5">
-              <Image
-                source={{ uri: countries && countries[0].flags.png }}
-                className="h-16 w-20"
-                resizeMode="contain"
+                )}
+                name="phoneNumber"
               />
-              <CustomInput
-                errors={error}
-                placeholder="Phone Number"
-                addStyle={{ flex: 1 }}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                keyboardType="phone-pad"
+              {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
+              <Controller
+                control={control}
+                rules={{
+                  required: 'Username is required',
+                  minLength: { value: 3, message: 'Username should be at least 3 characters long' },
+                  maxLength: {
+                    value: 25,
+                    message: 'Username should be at most 25 characters long',
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                  <CustomInput
+                    errors={error}
+                    placeholder="Occupation"
+                    addStyle={{ marginHorizontal: 20 }}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="occupation"
               />
+              {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
             </View>
-          )}
-          name="phoneNumber"
-        />
-        {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
-        <Controller
-          control={control}
-          rules={{
-            required: 'Username is required',
-            minLength: { value: 3, message: 'Username should be at least 3 characters long' },
-            maxLength: { value: 25, message: 'Username should be at most 25 characters long' },
-          }}
-          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-            <CustomInput
-              errors={error}
-              placeholder="Occupation"
-              addStyle={{ marginHorizontal: 20 }}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="occupation"
-        />
-        {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
-      </View>
-      <View style={{ marginHorizontal: 20 }}>
-        <MainButton onPress={handleSubmit(onSubmit)} disabled={!!errors}>
-          Continue
-        </MainButton>
-      </View>
-    </View>
+            <View style={{ marginHorizontal: 20 }}>
+              <MainButton onPress={handleSubmit(onSubmit)} disabled={!!errors}>
+                Continue
+              </MainButton>
+            </View>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </>
   );
 };
 

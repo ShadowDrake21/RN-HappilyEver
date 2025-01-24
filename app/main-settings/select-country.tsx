@@ -1,4 +1,5 @@
 import CountryItem from '@components/select-country/CountryItem';
+import { useFocusEffect } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import debounce from 'lodash/debounce';
@@ -25,12 +26,10 @@ const Page = () => {
 
   const { data: allCountries, isLoading } = useQuery<ICountry[]>({
     queryFn: () => fetchCountries('https://restcountries.com/v3.1/all?fields=name,flags,idd,cca2'),
-    queryKey: ['countries'],
+    queryKey: ['allCountries'],
   });
 
   useEffect(() => {
-    console.log('allCountries', allCountries);
-
     setCountries(allCountries);
   }, [allCountries]);
 
@@ -38,15 +37,22 @@ const Page = () => {
     () =>
       debounce((search: string) => {
         setCountries(() => {
-          console.log('search', search);
-
           return allCountries?.filter((country) =>
             country.name.common.toLowerCase().includes(search.toLowerCase())
           );
         });
       }, 500),
-    []
+    [allCountries]
   );
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     console.log('allCountries', allCountries);
+
+  //     setSearchQuery('');
+  //     setCountries(allCountries);
+  //   }, [allCountries])
+  // );
 
   if (isLoading) {
     return (
