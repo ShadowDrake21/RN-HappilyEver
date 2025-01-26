@@ -1,6 +1,6 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { IconProps } from 'react-native-paper/lib/typescript/components/MaterialCommunityIcon';
 
 import { COLORS } from '~/constants/colors';

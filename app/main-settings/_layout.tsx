@@ -1,6 +1,5 @@
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

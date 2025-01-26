@@ -1,14 +1,6 @@
 import React from 'react';
 import { FieldError } from 'react-hook-form';
-import {
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextInput,
-  TextInputProps,
-  TextStyle,
-  View,
-} from 'react-native';
+import { StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native';
 
 import { COLORS } from '~/constants/colors';
 

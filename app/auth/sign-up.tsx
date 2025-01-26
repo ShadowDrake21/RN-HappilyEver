@@ -1,9 +1,7 @@
 import MediumTitle from '@components/ui/MediumTitle';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Image, StyleSheet, Text, View, AppStateStatus, AppState } from 'react-native';
-import { Text as PaperText } from 'react-native-paper';
+import { Image, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AuthForm from '~/components/auth/AuthForm';
@@ -11,13 +9,9 @@ import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
-import { defaultTitleStyles } from '~/constants/styles';
-import useSignIn from '~/hooks/useSignIn';
 import useSignUp from '~/hooks/useSignUp';
-import LocalTokenStorage from '~/storage/LocalTokenStorage';
 import { useAuthStore } from '~/store/store';
 import { setAuthDataToStorage } from '~/utils/helpers.utils';
-import { supabase } from '~/utils/supabase';
 
 const Page = () => {
   const { bottom } = useSafeAreaInsets();

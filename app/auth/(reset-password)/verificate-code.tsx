@@ -1,8 +1,7 @@
 import MediumTitle from '@components/ui/MediumTitle';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { Text as PaperText } from 'react-native-paper';
+import { Text, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AuthForm from '~/components/auth/AuthForm';
@@ -10,7 +9,6 @@ import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
-import { defaultTitleStyles } from '~/constants/styles';
 import { supabase } from '~/utils/supabase';
 
 const Page = () => {

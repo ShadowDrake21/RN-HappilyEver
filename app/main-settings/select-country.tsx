@@ -1,12 +1,13 @@
 import CountryItem from '@components/select-country/CountryItem';
+import CustomLoader from '@components/ui/CustomLoader';
+import EmptyLabel from '@components/ui/EmptyLabel';
 import { useFocusEffect } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
-import LoaderKit from 'react-native-loader-kit';
-import { Searchbar, Text as PaperText } from 'react-native-paper';
+import { Searchbar } from 'react-native-paper';
 
 import MainButtonLink from '~/components/ui/MainButtonLink';
 import { COLORS } from '~/constants/colors';
@@ -47,21 +48,13 @@ const Page = () => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('allCountries', allCountries);
-
       setSearchQuery('');
       setCountries(allCountries);
     }, [allCountries])
   );
 
   if (isLoading) {
-    return (
-      <LoaderKit
-        style={{ width: 50, height: 50, alignSelf: 'center', flex: 1 }}
-        name="BallSpinFadeLoader"
-        color={COLORS.accent2}
-      />
-    );
+    return <CustomLoader />;
   }
 
   return (
@@ -94,13 +87,7 @@ const Page = () => {
         estimatedItemSize={200}
         keyExtractor={(item) => item.id}
         extraData={countryId}
-        ListEmptyComponent={() => (
-          <PaperText
-            variant="labelLarge"
-            style={{ color: COLORS.grayish, fontWeight: 700, textAlign: 'center' }}>
-            There is no country for this request
-          </PaperText>
-        )}
+        ListEmptyComponent={<EmptyLabel>There is no country for this request</EmptyLabel>}
       />
 
       <MainButtonLink href="./fill-profile-data" disabled={!countryId}>

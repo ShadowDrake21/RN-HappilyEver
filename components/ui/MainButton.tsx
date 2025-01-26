@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import { Button } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
@@ -30,5 +30,3 @@ const MainButton = ({
 };
 
 export default MainButton;
-
-const styles = StyleSheet.create({});

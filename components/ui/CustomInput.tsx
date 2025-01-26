@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { FieldError } from 'react-hook-form';
-import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
+import React from 'react';
+import { StyleProp, StyleSheet, TextStyle } from 'react-native';
 import { TextInput, TextInputProps } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
@@ -11,9 +10,6 @@ interface CustomInputProps extends TextInputProps {
 }
 
 const CustomInput = ({ errors, addStyle, ...props }: CustomInputProps) => {
-  useEffect(() => {
-    console.log('props.value', props.value);
-  }, [props.value]);
   return (
     <TextInput
       style={[
