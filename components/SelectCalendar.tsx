@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { Icon } from 'react-native-paper';
 import { useSharedValue } from 'react-native-reanimated';

@@ -1,18 +1,19 @@
+import CustomInput from '@components/ui/CustomInput';
 import React from 'react';
 import { Controller } from 'react-hook-form';
+import { Image, View } from 'react-native';
 
-import PhoneInput from '../PhoneInput';
 import ProfileBasicFormError from '../ProfileBasicFormError';
 
 import { ProfileBasicFormField } from '~/types/main-settings.types';
 import { getFormRule } from '~/utils/forms.utils';
 
-const ProfileBasicFormPhone = ({
-  control,
-  errors,
-  onFocus,
-  flag,
-}: ProfileBasicFormField & { onFocus: () => void; flag: string }) => {
+type ProfileBasicFormPhoneProps = ProfileBasicFormField & {
+  onFocus: () => void;
+  flag: string;
+};
+
+const ProfileBasicFormPhone = ({ control, errors, onFocus, flag }: ProfileBasicFormPhoneProps) => {
   return (
     <>
       <Controller
@@ -33,14 +34,19 @@ const ProfileBasicFormPhone = ({
           },
         }}
         render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-          <PhoneInput
-            errors={!!error}
-            flag={flag}
-            onChange={onChange}
-            onBlur={onBlur}
-            value={value}
-            onFocus={onFocus}
-          />
+          <View className="mx-6 flex-row items-center gap-5">
+            {flag && <Image source={{ uri: flag }} className="h-16 w-20" resizeMode="contain" />}
+            <CustomInput
+              placeholder="Phone Number"
+              addStyle={{ flex: 1 }}
+              errors={!!error}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              onFocus={onFocus}
+              value={value}
+              keyboardType="phone-pad"
+            />
+          </View>
         )}
         name="phoneNumber"
       />

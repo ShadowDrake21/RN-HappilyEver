@@ -1,6 +1,4 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
-import { StyleSheet, Text, View } from 'react-native';
 
 import { useMainSettings } from '~/context/MainSettingsContext';
 import { IMainSettingsBasicForm } from '~/types/main-settings.types';
@@ -32,5 +30,3 @@ const useProfileBasicForm = () => {
 };
 
 export default useProfileBasicForm;
-
-const styles = StyleSheet.create({});

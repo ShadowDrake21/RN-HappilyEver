@@ -40,12 +40,12 @@ const ProfileBasicForm = () => {
     <View className="flex-1 gap-[15] pt-5">
       <ProfileBasicFormFullName control={control} errors={errors.fullName} />
       <ProfileBasicFormUsername control={control} errors={errors.username} />
-      <ProfileBasicFormDropdown control={control} errors={errors.username} />
-      <ProfileBasicFormCalendar control={control} errors={errors.username} />
+      <ProfileBasicFormDropdown control={control} errors={errors.gender} />
+      <ProfileBasicFormCalendar control={control} errors={errors.birthDate} />
       <ProfileBasicFormPhone
         control={control}
         errors={errors.phoneNumber}
-        onFocus={() => onFocusPhoneNumber()}
+        onFocus={onFocusPhoneNumber}
         flag={phoneFlag}
       />
       <ProfileBasicFormOccupation control={control} errors={errors.occupation} />

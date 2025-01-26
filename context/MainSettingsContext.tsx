@@ -1,6 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
-import { ICountry } from '~/types/country.types';
 import { IMainSettingsBasicForm, IMainSettingsExtendedForm } from '~/types/main-settings.types';
 
 type MainSettingsContextType = {

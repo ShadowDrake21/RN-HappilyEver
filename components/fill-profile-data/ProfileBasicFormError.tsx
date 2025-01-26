@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldError } from 'react-hook-form';
-import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
 
 const ProfileBasicFormError = ({
   error,

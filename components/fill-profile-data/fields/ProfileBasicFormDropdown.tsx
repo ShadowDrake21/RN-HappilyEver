@@ -1,7 +1,6 @@
 import CustomSelectDropdown from '@components/CustomSelectDropdown';
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { StyleSheet, Text, View } from 'react-native';
 
 import ProfileBasicFormError from '../ProfileBasicFormError';
 

@@ -36,3 +36,8 @@ export type ProfileBasicFormField = {
   control: Control<IMainSettingsBasicForm, any>;
   errors: FieldError | undefined;
 };
+
+export type ProfileExtendedField = {
+  placeholder: string;
+  name: string;
+};

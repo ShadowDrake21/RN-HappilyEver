@@ -1,3 +1,4 @@
+import MediumTitle from '@components/ui/MediumTitle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,6 +11,7 @@ import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
+import { defaultTitleStyles } from '~/constants/styles';
 import useSignIn from '~/hooks/useSignIn';
 import useSignUp from '~/hooks/useSignUp';
 import LocalTokenStorage from '~/storage/LocalTokenStorage';
@@ -53,9 +55,7 @@ const Page = () => {
           className="h-[200px] w-[200px] self-center"
           resizeMode="contain"
         />
-        <PaperText variant="headlineMedium" style={styles.title}>
-          Create Your Account
-        </PaperText>
+        <MediumTitle>Create Your Account</MediumTitle>
         <AuthForm control={control} errors={errors} />
         <MainButton onPress={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
           Submit
@@ -73,13 +73,3 @@ const Page = () => {
 };
 
 export default Page;
-
-const styles = StyleSheet.create({
-  title: {
-    color: COLORS.text,
-    fontFamily: 'Poppins-Regular',
-    fontWeight: '600',
-    textAlign: 'center',
-    paddingBottom: 20,
-  },
-});

@@ -15,7 +15,7 @@ const ProfileBasicFormCalendar = ({ control, errors }: ProfileBasicFormField) =>
         rules={{
           required: getFormRule('required'),
         }}
-        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
           <SelectCalendar value={value} onChange={onChange} error={!!error} />
         )}
         name="birthDate"
