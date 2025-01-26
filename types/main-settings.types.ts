@@ -1,3 +1,5 @@
+import { Control, FieldError } from 'react-hook-form';
+
 export interface IMainSettingsBasicForm {
   fullName: string;
   username: string;
@@ -27,3 +29,10 @@ export interface IMainSettingsExtendedForm {
     emotionalConnection: string;
   };
 }
+
+export type SelectedFormItem = { title: string; icon: string };
+
+export type ProfileBasicFormField = {
+  control: Control<IMainSettingsBasicForm, any>;
+  errors: FieldError | undefined;
+};

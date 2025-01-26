@@ -6,7 +6,7 @@ import { TextInput, TextInputProps } from 'react-native-paper';
 import { COLORS } from '~/constants/colors';
 
 interface CustomInputProps extends TextInputProps {
-  errors: FieldError | undefined;
+  errors: boolean;
   addStyle?: StyleProp<TextStyle>;
 }
 
