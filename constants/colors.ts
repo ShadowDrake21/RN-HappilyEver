@@ -17,3 +17,12 @@ export const COLORS = {
 
   slayish: '#5c5879',
 };
+
+export const CONFIRMATION_CODE_FIELD_STYLES = {
+  cellSize: 50,
+  cellBorderRadius: 8,
+  defaultCellBgColor: COLORS.accent2,
+  notEmptyCellBgColor: COLORS.mainPurple,
+  activeCellBgColor: COLORS.light,
+  textColor: COLORS.mainPurple,
+};

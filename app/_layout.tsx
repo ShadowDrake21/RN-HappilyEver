@@ -1,10 +1,17 @@
 import '../global.css';
+import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Stack, useRouter } from 'expo-router';
-import { useEffect } from 'react';
+import { Redirect, Stack, useRouter } from 'expo-router';
 
-import useTokenExpiration from '~/hooks/useTokenExpiration';
-import { useAuthStore } from '~/store/store';
+import { tokenCache } from '~/cache';
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+if (!publishableKey) {
+  throw new Error(
+    'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env'
+  );
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,22 +22,16 @@ const queryClient = new QueryClient({
   },
 });
 
-const RootLayout = () => {
-  useTokenExpiration();
-  const { isLoggedIn, isNewUser } = useAuthStore();
-  const router = useRouter();
+// CLERK
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      if (isNewUser) {
-        router.replace('/main-settings/select-country');
-        return;
-      }
-      router.replace('/home');
-    } else {
-      router.replace('/onboarding/onboarding-first');
-    }
-  }, [isLoggedIn]);
+const RootLayout = () => {
+  // useTokenExpiration();
+
+  const { isSignedIn } = useAuth();
+
+  if (isSignedIn) {
+    return <Redirect href="/home" />;
+  }
 
   return (
     <Stack
@@ -45,9 +46,13 @@ const RootLayout = () => {
 };
 
 const Layout = () => (
-  <QueryClientProvider client={queryClient}>
-    <RootLayout />
-  </QueryClientProvider>
+  <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+    <ClerkLoaded>
+      <QueryClientProvider client={queryClient}>
+        <RootLayout />
+      </QueryClientProvider>
+    </ClerkLoaded>
+  </ClerkProvider>
 );
 
 export default Layout;
