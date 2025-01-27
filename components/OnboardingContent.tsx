@@ -1,7 +1,9 @@
 import { Link } from 'expo-router';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { Button, Text as PaperText } from 'react-native-paper';
+import { Image, Text, View } from 'react-native';
+import { Button } from 'react-native-paper';
+
+import SmallDisplayTitle from './ui/SmallDisplayTitle';
 
 import { COLORS } from '~/constants/colors';
 import { IOnboardingContent } from '~/types/onboarding.types';
@@ -10,16 +12,7 @@ const OnboardingContent = ({ pageItem }: { pageItem: IOnboardingContent }) => {
   return (
     <View className="flex-1 justify-between">
       <Image source={pageItem.image} className="h-[400] w-full" resizeMode="contain" />
-      <PaperText
-        variant="displaySmall"
-        style={{
-          color: COLORS.text,
-          textAlign: 'center',
-          fontFamily: 'Poppins-Regular',
-          fontWeight: '600',
-        }}>
-        {pageItem.text}
-      </PaperText>
+      <SmallDisplayTitle>{pageItem.text}</SmallDisplayTitle>
       <View>
         {pageItem.isSkipAvailable && (
           <Link href="/auth" asChild>
@@ -43,5 +36,3 @@ const OnboardingContent = ({ pageItem }: { pageItem: IOnboardingContent }) => {
 };
 
 export default OnboardingContent;
-
-const styles = StyleSheet.create({});

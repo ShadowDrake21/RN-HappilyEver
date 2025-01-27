@@ -1,8 +1,9 @@
-import React, { memo, useEffect } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { memo } from 'react';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
+import { unknownFlag } from '~/constants/links';
 import { ICountry } from '~/types/country.types';
 
 const CountryItem = ({
@@ -26,9 +27,7 @@ const CountryItem = ({
       <View className="flex-row items-center gap-5">
         <Image
           source={{
-            uri:
-              flags.png ??
-              'https://upload.wikimedia.org/wikipedia/commons/2/2e/Unknown_flag_-_European_version.png',
+            uri: flags.png ?? unknownFlag,
           }}
           alt={flags.alt}
           className="h-20 w-20 rounded-full"
@@ -54,5 +53,3 @@ const CountryItem = ({
 };
 
 export default memo(CountryItem);
-
-const styles = StyleSheet.create({});

@@ -1,7 +1,7 @@
+import MediumTitle from '@components/ui/MediumTitle';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { Text as PaperText } from 'react-native-paper';
+import { Image, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AuthForm from '~/components/auth/AuthForm';
@@ -10,7 +10,6 @@ import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
 import useSignIn from '~/hooks/useSignIn';
-import LocalTokenStorage from '~/storage/LocalTokenStorage';
 import { useAuthStore } from '~/store/store';
 import { setAuthDataToStorage } from '~/utils/helpers.utils';
 
@@ -53,9 +52,7 @@ const Page = () => {
           className="h-[200px] w-[200px] self-center"
           resizeMode="contain"
         />
-        <PaperText variant="headlineMedium" style={styles.title}>
-          Login to Your Account
-        </PaperText>
+        <MediumTitle>Login to Your Account</MediumTitle>
         <AuthForm control={control} errors={errors} />
         <MainButton onPress={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
           Submit
@@ -79,13 +76,3 @@ const Page = () => {
 };
 
 export default Page;
-
-const styles = StyleSheet.create({
-  title: {
-    color: COLORS.text,
-    fontFamily: 'Poppins-Regular',
-    fontWeight: '600',
-    textAlign: 'center',
-    paddingBottom: 20,
-  },
-});

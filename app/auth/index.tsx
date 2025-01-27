@@ -1,10 +1,11 @@
+import SmallDisplayTitle from '@components/ui/SmallDisplayTitle';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { makeRedirectUri } from 'expo-auth-session';
 import * as QueryParams from 'expo-auth-session/build/QueryParams';
 import { Link, useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Text as PaperText } from 'react-native-paper';
 
 import SocialButton from '~/components/SocialButton';
@@ -79,17 +80,8 @@ const Page = () => {
         resizeMode="contain"
       />
 
-      <PaperText
-        variant="displaySmall"
-        style={{
-          color: COLORS.text,
-          textAlign: 'center',
-          fontFamily: 'Poppins-Regular',
-          fontWeight: '600',
-          paddingVertical: 20,
-        }}>
-        Let's you in
-      </PaperText>
+      <SmallDisplayTitle addStyle={{ paddingVertical: 20 }}> Let's you in</SmallDisplayTitle>
+
       <View className="gap-2">
         <SocialButton icon="facebook-square" onPress={performOAuth} socialName="Facebook" />
         <SocialButton icon="google" onPress={performOAuthGoogle} socialName="Google" />
@@ -118,5 +110,3 @@ const Page = () => {
 };
 
 export default Page;
-
-const styles = StyleSheet.create({});

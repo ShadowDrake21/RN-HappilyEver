@@ -1,29 +1,33 @@
 import CountryItem from '@components/select-country/CountryItem';
+import CustomLoader from '@components/ui/CustomLoader';
+import EmptyLabel from '@components/ui/EmptyLabel';
+import { useFocusEffect } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
-import LoaderKit from 'react-native-loader-kit';
-import { Searchbar, Text as PaperText } from 'react-native-paper';
+import { Searchbar } from 'react-native-paper';
 
 import MainButtonLink from '~/components/ui/MainButtonLink';
 import { COLORS } from '~/constants/colors';
+import { useMainSettings } from '~/context/MainSettingsContext';
 import { ICountry } from '~/types/country.types';
 import { fetchCountries } from '~/utils/fetch.utils';
 
 const Page = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [countries, setCountries] = useState<ICountry[] | undefined>(undefined);
-  const [selectedCountry, setSelectedCountry] = useState('');
+
+  const { countryId, setCountryId } = useMainSettings();
 
   const handlePress = useCallback((id: string) => {
-    setSelectedCountry(id);
+    setCountryId(id);
   }, []);
 
   const { data: allCountries, isLoading } = useQuery<ICountry[]>({
-    queryFn: () => fetchCountries(),
-    queryKey: ['countries'],
+    queryFn: () => fetchCountries('https://restcountries.com/v3.1/all?fields=name,flags,idd,cca2'),
+    queryKey: ['allCountries'],
   });
 
   useEffect(() => {
@@ -33,23 +37,24 @@ const Page = () => {
   const debouncedSearch = useMemo(
     () =>
       debounce((search: string) => {
-        setCountries(() =>
-          allCountries?.filter((country) =>
+        setCountries(() => {
+          return allCountries?.filter((country) =>
             country.name.common.toLowerCase().includes(search.toLowerCase())
-          )
-        );
+          );
+        });
       }, 500),
-    []
+    [allCountries]
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      setSearchQuery('');
+      setCountries(allCountries);
+    }, [allCountries])
   );
 
   if (isLoading) {
-    return (
-      <LoaderKit
-        style={{ width: 50, height: 50, alignSelf: 'center', flex: 1 }}
-        name="BallSpinFadeLoader"
-        color={COLORS.accent2}
-      />
-    );
+    return <CustomLoader />;
   }
 
   return (
@@ -66,31 +71,26 @@ const Page = () => {
         iconColor={COLORS.grayish}
         inputStyle={{ color: COLORS.text }}
       />
+
       <FlashList
-        data={countries}
+        data={countries || []}
         style={{ flex: 1 }}
         ItemSeparatorComponent={() => <View className="h-5 bg-transparent" />}
         renderItem={({ item }) => (
           <CountryItem
             country={item}
             onPress={() => handlePress(item.id)}
-            isSelected={selectedCountry === item.id}
+            isSelected={countryId === item.id}
           />
         )}
         showsVerticalScrollIndicator={false}
         estimatedItemSize={200}
         keyExtractor={(item) => item.id}
-        extraData={selectedCountry}
-        ListEmptyComponent={() => (
-          <PaperText
-            variant="labelLarge"
-            style={{ color: COLORS.grayish, fontWeight: 700, textAlign: 'center' }}>
-            There is no country for this request
-          </PaperText>
-        )}
+        extraData={countryId}
+        ListEmptyComponent={<EmptyLabel>There is no country for this request</EmptyLabel>}
       />
 
-      <MainButtonLink href="./fill-profile-data" disabled={!selectedCountry}>
+      <MainButtonLink href="./fill-profile-data" disabled={!countryId}>
         Continue
       </MainButtonLink>
     </View>

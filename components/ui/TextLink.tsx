@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import React, { PropsWithChildren } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 
 import { COLORS } from '~/constants/colors';
 
@@ -21,5 +21,3 @@ const TextLink = ({
 };
 
 export default TextLink;
-
-const styles = StyleSheet.create({});
