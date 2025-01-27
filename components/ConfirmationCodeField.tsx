@@ -12,8 +12,13 @@ import { CONFIRMATION_CODE_FIELD_STYLES } from '~/constants/colors';
 
 const { Value } = Animated;
 
-const ConfirmationCodeField = ({ cellCount }: { cellCount: number }) => {
-  const [value, setValue] = useState('');
+type ConfirmationCodeFieldProps = {
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  cellCount: number;
+};
+
+const ConfirmationCodeField = ({ value, setValue, cellCount }: ConfirmationCodeFieldProps) => {
   const ref = useBlurOnFulfill({ value, cellCount });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -56,7 +61,7 @@ export default ConfirmationCodeField;
 const styles = StyleSheet.create({
   codeFieldRoot: {
     height: CONFIRMATION_CODE_FIELD_STYLES.cellSize,
-    marginTop: 30,
+
     paddingHorizontal: 20,
     justifyContent: 'center',
   },

@@ -1,5 +1,7 @@
+import { useSignIn } from '@clerk/clerk-expo';
 import MediumTitle from '@components/ui/MediumTitle';
-import React from 'react';
+import { useRouter } from 'expo-router';
+import React, { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Image, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,12 +11,11 @@ import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
-import useSignIn from '~/hooks/useSignIn';
-import { useAuthStore } from '~/store/store';
-import { setAuthDataToStorage } from '~/utils/helpers.utils';
+import { CustomAlert } from '~/utils/ui.utils';
 
 const Page = () => {
   const { bottom } = useSafeAreaInsets();
+  const router = useRouter();
   const {
     control,
     handleSubmit,
@@ -28,21 +29,31 @@ const Page = () => {
     },
   });
 
-  const { loading, signInWithEmail } = useSignIn();
-  const { setUser } = useAuthStore();
+  const { signIn, setActive, isLoaded } = useSignIn();
 
-  const onSubmit = async () => {
-    const res = await signInWithEmail(getValues('email'), getValues('password'));
+  const onSubmit = async () => {};
 
-    if (res) {
-      setAuthDataToStorage(
-        res.session.access_token,
-        res.session.refresh_token,
-        res.session.expires_in
-      );
-      setUser(res.user, false);
+  const onSignIn = useCallback(async () => {
+    if (!isLoaded) return;
+
+    // Start the sign-in process using the email and password provided
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: getValues('email'),
+        password: getValues('password'),
+      });
+
+      await setActive({ session: signInAttempt.createdSessionId });
+      router.replace('/home');
+    } catch (err) {
+      const errorObject = JSON.parse(JSON.stringify(err, null, 2));
+      const longMessage = errorObject.errors?.[0]?.longMessage || 'An error occurred';
+      console.error(JSON.stringify(err, null, 2));
+      CustomAlert({
+        message: longMessage,
+      });
     }
-  };
+  }, [isLoaded, getValues('email'), getValues('password')]);
 
   return (
     <View className="flex-1 justify-between" style={{ paddingBottom: bottom }}>
@@ -54,7 +65,7 @@ const Page = () => {
         />
         <MediumTitle>Login to Your Account</MediumTitle>
         <AuthForm control={control} errors={errors} />
-        <MainButton onPress={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
+        <MainButton onPress={handleSubmit(onSignIn)} style={{ marginBottom: 20 }}>
           Submit
         </MainButton>
         {/* disabled={getFieldState('email').invalid || getFieldState('password').invalid} */}

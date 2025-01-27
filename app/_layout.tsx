@@ -1,7 +1,8 @@
 import '../global.css';
 import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Redirect, Stack, useRouter } from 'expo-router';
+import { Redirect, Stack, useRouter, useSegments } from 'expo-router';
+import { useEffect } from 'react';
 
 import { tokenCache } from '~/cache';
 
@@ -22,16 +23,24 @@ const queryClient = new QueryClient({
   },
 });
 
-// CLERK
-
 const RootLayout = () => {
-  // useTokenExpiration();
+  const { isLoaded, isSignedIn } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
 
-  const { isSignedIn } = useAuth();
+  useEffect(() => {
+    if (!isLoaded) return;
 
-  if (isSignedIn) {
-    return <Redirect href="/home" />;
-  }
+    const inTabsGroup = segments[0] === 'auth';
+
+    console.log('User changed: ', isSignedIn);
+
+    if (isSignedIn && !inTabsGroup) {
+      router.replace('/home');
+    } else if (!isSignedIn) {
+      router.replace('/onboarding/onboarding-first');
+    }
+  }, [isSignedIn]);
 
   return (
     <Stack
@@ -41,6 +50,7 @@ const RootLayout = () => {
       <Stack.Screen name="onboarding" />
       <Stack.Screen name="auth" />
       <Stack.Screen name="main-settings" />
+      <Stack.Screen name="home" />
     </Stack>
   );
 };

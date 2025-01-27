@@ -1,11 +1,13 @@
 import { useSignUp } from '@clerk/clerk-expo';
 import ConfirmationCodeField from '@components/ConfirmationCodeField';
 import TouchableKeyboardAvoidingView from '@components/shared/TouchableKeyboardAvoidingView';
+import CustomLoader from '@components/ui/CustomLoader';
 import MediumTitle from '@components/ui/MediumTitle';
+import { useHeaderHeight } from '@react-navigation/elements';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Image, Text, View } from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AuthForm from '~/components/auth/AuthForm';
@@ -15,9 +17,9 @@ import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
 import { useAuthStore } from '~/store/store';
 import { setAuthDataToStorage } from '~/utils/helpers.utils';
+import { CustomAlert } from '~/utils/ui.utils';
 
 const Page = () => {
-  const { bottom } = useSafeAreaInsets();
   const {
     control,
     handleSubmit,
@@ -34,12 +36,16 @@ const Page = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
 
   const router = useRouter();
+  const { bottom, top } = useSafeAreaInsets();
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const height = useHeaderHeight();
 
   const onSignUp = async () => {
     if (!isLoaded) return;
 
+    setIsLoading(true);
     // Start sign-up process using email and password provided
     try {
       await signUp.create({
@@ -56,48 +62,66 @@ const Page = () => {
     } catch (err) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
+      const errorObject = JSON.parse(JSON.stringify(err, null, 2));
+      const longMessage = errorObject.errors?.[0]?.longMessage || 'An error occurred';
       console.error(JSON.stringify(err, null, 2));
+      CustomAlert({
+        message: longMessage,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return <CustomLoader />;
+  }
 
   const onVerification = async () => {
     if (!isLoaded) return;
 
     try {
-      // Use the code the user provided to attempt verification
       const signUpAttempt = await signUp.attemptEmailAddressVerification({
         code,
       });
 
-      // If verification was completed, set the session to active
-      // and redirect the user
       if (signUpAttempt.status === 'complete') {
         await setActive({ session: signUpAttempt.createdSessionId });
         router.replace('/');
       } else {
-        // If the status is not complete, check why. User may need to
-        // complete further steps.
         console.error(JSON.stringify(signUpAttempt, null, 2));
       }
     } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
+      const errorObject = JSON.parse(JSON.stringify(err, null, 2));
+      const longMessage = errorObject.errors?.[0]?.longMessage || 'An error occurred';
+
+      CustomAlert({
+        message: longMessage,
+      });
+
       console.error(JSON.stringify(err, null, 2));
     }
   };
 
   if (pendingVerification) {
     return (
-      <TouchableKeyboardAvoidingView offset={60}>
-        <>
+      <TouchableKeyboardAvoidingView offset={top + 100}>
+        <View className="flex-1 justify-center gap-5" style={{ paddingBottom: bottom }}>
+          <MediumTitle style={{ paddingBottom: 0 }}>Enter verification code</MediumTitle>
           <Image
             source={require('assets/auth/verification-code.jpg')}
-            className=" mb-10 h-[400px] w-full rounded-full"
+            style={{
+              aspectRatio: 1,
+              height: 400,
+              alignSelf: 'center',
+              borderRadius: 200,
+              marginBottom: 20,
+            }}
+            resizeMode="cover"
           />
-          <MediumTitle style={{ paddingBottom: 0 }}>Enter verification code</MediumTitle>
-
-          <ConfirmationCodeField cellCount={6} />
-        </>
+          <ConfirmationCodeField cellCount={6} setValue={setCode} value={code} />
+          <MainButton onPress={onVerification}>Verify</MainButton>
+        </View>
       </TouchableKeyboardAvoidingView>
     );
   }
