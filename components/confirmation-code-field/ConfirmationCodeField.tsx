@@ -6,7 +6,7 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
-import ConfirmationCodeFieldCell from './confirmation-code-field/ConfirmationCodeFieldCell';
+import ConfirmationCodeFieldCell from './ConfirmationCodeFieldCell';
 
 import { CONFIRMATION_CODE_FIELD_STYLES } from '~/constants/colors';
 
@@ -46,6 +46,7 @@ const ConfirmationCodeField = ({ value, setValue, cellCount }: ConfirmationCodeF
       textContentType="oneTimeCode"
       renderCell={(cell) => (
         <ConfirmationCodeFieldCell
+          key={cell.index}
           {...cell}
           animationsColor={animationsColor}
           animationsScale={animationsScale}

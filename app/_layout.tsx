@@ -1,8 +1,10 @@
 import '../global.css';
 import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Redirect, Stack, useRouter, useSegments } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 import { tokenCache } from '~/cache';
 
@@ -55,14 +57,18 @@ const RootLayout = () => {
   );
 };
 
-const Layout = () => (
-  <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-    <ClerkLoaded>
-      <QueryClientProvider client={queryClient}>
-        <RootLayout />
-      </QueryClientProvider>
-    </ClerkLoaded>
-  </ClerkProvider>
-);
+const Layout = () => {
+  const { top } = useSafeAreaInsets();
+  return (
+    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+      <ClerkLoaded>
+        <QueryClientProvider client={queryClient}>
+          <RootLayout />
+          <Toast position="top" topOffset={top} />
+        </QueryClientProvider>
+      </ClerkLoaded>
+    </ClerkProvider>
+  );
+};
 
 export default Layout;

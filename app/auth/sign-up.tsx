@@ -1,13 +1,10 @@
-import { useSignUp } from '@clerk/clerk-expo';
-import ConfirmationCodeField from '@components/ConfirmationCodeField';
+import ConfirmationCodeField from '@components/confirmation-code-field/ConfirmationCodeField';
 import TouchableKeyboardAvoidingView from '@components/shared/TouchableKeyboardAvoidingView';
 import CustomLoader from '@components/ui/CustomLoader';
 import MediumTitle from '@components/ui/MediumTitle';
-import { useHeaderHeight } from '@react-navigation/elements';
-import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Image, KeyboardAvoidingView, Platform, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AuthForm from '~/components/auth/AuthForm';
@@ -15,9 +12,9 @@ import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
-import { useAuthStore } from '~/store/store';
-import { setAuthDataToStorage } from '~/utils/helpers.utils';
-import { CustomAlert } from '~/utils/ui.utils';
+import useRegister from '~/hooks/useRegister';
+import useVerify from '~/hooks/useVerify';
+import { callToast } from '~/utils/ui.utils';
 
 const Page = () => {
   const {
@@ -33,75 +30,33 @@ const Page = () => {
     },
   });
 
-  const { isLoaded, signUp, setActive } = useSignUp();
-
-  const router = useRouter();
   const { bottom, top } = useSafeAreaInsets();
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const height = useHeaderHeight();
+
+  const { isLoading: signUpLoading, signUpWithEmail } = useRegister();
+  const { isLoading: verificationLoading, verifyUser } = useVerify();
 
   const onSignUp = async () => {
-    if (!isLoaded) return;
-
-    setIsLoading(true);
-    // Start sign-up process using email and password provided
-    try {
-      await signUp.create({
-        emailAddress: getValues('email'),
-        password: getValues('password'),
-      });
-
-      // Send user an email with verification code
-      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
-
-      // Set 'pendingVerification' to true to display second form
-      // and capture OTP code
-      setPendingVerification(true);
-    } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      const errorObject = JSON.parse(JSON.stringify(err, null, 2));
-      const longMessage = errorObject.errors?.[0]?.longMessage || 'An error occurred';
-      console.error(JSON.stringify(err, null, 2));
-      CustomAlert({
-        message: longMessage,
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    const { email, password } = getValues();
+    const success = await signUpWithEmail(email, password);
+    setPendingVerification(success || false);
   };
-
-  if (isLoading) {
-    return <CustomLoader />;
-  }
 
   const onVerification = async () => {
-    if (!isLoaded) return;
-
-    try {
-      const signUpAttempt = await signUp.attemptEmailAddressVerification({
-        code,
+    const success = await verifyUser(code);
+    if (success) {
+      callToast({
+        type: 'success',
+        text1: 'Congratulations! 🎉',
+        text2: 'Account verified successfully',
       });
-
-      if (signUpAttempt.status === 'complete') {
-        await setActive({ session: signUpAttempt.createdSessionId });
-        router.replace('/');
-      } else {
-        console.error(JSON.stringify(signUpAttempt, null, 2));
-      }
-    } catch (err) {
-      const errorObject = JSON.parse(JSON.stringify(err, null, 2));
-      const longMessage = errorObject.errors?.[0]?.longMessage || 'An error occurred';
-
-      CustomAlert({
-        message: longMessage,
-      });
-
-      console.error(JSON.stringify(err, null, 2));
     }
   };
+
+  if (signUpLoading || verificationLoading) {
+    return <CustomLoader />;
+  }
 
   if (pendingVerification) {
     return (

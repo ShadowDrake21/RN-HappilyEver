@@ -1,7 +1,6 @@
-import { useSignIn } from '@clerk/clerk-expo';
+import CustomLoader from '@components/ui/CustomLoader';
 import MediumTitle from '@components/ui/MediumTitle';
-import { useRouter } from 'expo-router';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Image, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,11 +10,11 @@ import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
-import { CustomAlert } from '~/utils/ui.utils';
+import useLogin from '~/hooks/useLogin';
+import { callToast } from '~/utils/ui.utils';
 
 const Page = () => {
   const { bottom } = useSafeAreaInsets();
-  const router = useRouter();
   const {
     control,
     handleSubmit,
@@ -29,31 +28,16 @@ const Page = () => {
     },
   });
 
-  const { signIn, setActive, isLoaded } = useSignIn();
+  const { isLoading, signInWithEmail } = useLogin();
 
-  const onSubmit = async () => {};
+  const onSignIn = async () => {
+    const { email, password } = getValues();
+    await signInWithEmail(email, password);
+  };
 
-  const onSignIn = useCallback(async () => {
-    if (!isLoaded) return;
-
-    // Start the sign-in process using the email and password provided
-    try {
-      const signInAttempt = await signIn.create({
-        identifier: getValues('email'),
-        password: getValues('password'),
-      });
-
-      await setActive({ session: signInAttempt.createdSessionId });
-      router.replace('/home');
-    } catch (err) {
-      const errorObject = JSON.parse(JSON.stringify(err, null, 2));
-      const longMessage = errorObject.errors?.[0]?.longMessage || 'An error occurred';
-      console.error(JSON.stringify(err, null, 2));
-      CustomAlert({
-        message: longMessage,
-      });
-    }
-  }, [isLoaded, getValues('email'), getValues('password')]);
+  if (isLoading) {
+    return <CustomLoader />;
+  }
 
   return (
     <View className="flex-1 justify-between" style={{ paddingBottom: bottom }}>
@@ -68,7 +52,6 @@ const Page = () => {
         <MainButton onPress={handleSubmit(onSignIn)} style={{ marginBottom: 20 }}>
           Submit
         </MainButton>
-        {/* disabled={getFieldState('email').invalid || getFieldState('password').invalid} */}
         <TextLink
           classes="flex-row items-center justify-center gap-2 self-center"
           href="./reset-password">
