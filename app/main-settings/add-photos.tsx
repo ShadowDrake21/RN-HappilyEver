@@ -1,5 +1,6 @@
 import AddPhotoItem from '@components/add-photos/AddPhotoItem';
 import MainButtonLink from '@components/ui/MainButtonLink';
+import ParagraphText from '@components/ui/ParagraphText';
 import React from 'react';
 import { FlatList, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
@@ -17,10 +18,11 @@ const Page = () => {
   return (
     <View className="flex-1 justify-between" style={{ paddingBottom: bottom }}>
       <View>
-        <PaperText variant="labelLarge" style={{ color: COLORS.text, paddingBottom: 20 }}>
+        <ParagraphText>
           Upload photos that reflect your true self to connect with people who value serious
           relationships and family-oriented commitments.
-        </PaperText>
+        </ParagraphText>
+
         <FlatList
           data={Array.from({ length: AVAILABLE_PHOTOS })}
           renderItem={() => <AddPhotoItem />}

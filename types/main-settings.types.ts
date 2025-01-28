@@ -46,3 +46,14 @@ export type ProfilePhoto = {
   name: string;
   base64: string;
 };
+
+export type ProfileInterestsCategory = {
+  category: string;
+  interests: ProfileInterestItem[];
+};
+
+export type ProfileInterestItem = {
+  title: string;
+  description: string;
+  icon: string;
+};
