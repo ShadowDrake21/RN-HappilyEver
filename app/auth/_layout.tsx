@@ -1,4 +1,5 @@
-import { Stack, useRouter } from 'expo-router';
+import { useAuth } from '@clerk/clerk-expo';
+import { Redirect, Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { IconButton } from 'react-native-paper';
 
@@ -6,6 +7,12 @@ import { COLORS } from '~/constants/colors';
 
 const Layout = () => {
   const router = useRouter();
+  const { isSignedIn } = useAuth();
+
+  if (isSignedIn) {
+    return <Redirect href="/home" />;
+  }
+
   return (
     <Stack
       screenOptions={{

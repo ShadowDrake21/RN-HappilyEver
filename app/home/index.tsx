@@ -1,3 +1,4 @@
+import { useAuth, useSession, useUser } from '@clerk/clerk-expo';
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
@@ -5,21 +6,13 @@ import { useAuthStore } from '~/store/store';
 import { supabase } from '~/utils/supabase';
 
 const Page = () => {
-  const { logOut } = useAuthStore();
-  const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
+  const { signOut } = useAuth();
+  const { session } = useSession();
 
-    if (error) {
-      console.error('Failed to sign out', error);
-      return;
-    }
-
-    logOut();
-  };
   return (
     <View>
       <Text>Page</Text>
-      <Button title="Sign Out" onPress={signOut} />
+      <Button title="Sign Out" onPress={() => signOut()} />
     </View>
   );
 };

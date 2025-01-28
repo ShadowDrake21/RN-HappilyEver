@@ -1,3 +1,4 @@
+import CustomLoader from '@components/ui/CustomLoader';
 import MediumTitle from '@components/ui/MediumTitle';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -9,9 +10,8 @@ import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
-import useSignIn from '~/hooks/useSignIn';
-import { useAuthStore } from '~/store/store';
-import { setAuthDataToStorage } from '~/utils/helpers.utils';
+import useLogin from '~/hooks/useLogin';
+import { callToast } from '~/utils/ui.utils';
 
 const Page = () => {
   const { bottom } = useSafeAreaInsets();
@@ -28,21 +28,16 @@ const Page = () => {
     },
   });
 
-  const { loading, signInWithEmail } = useSignIn();
-  const { setUser } = useAuthStore();
+  const { isLoading, signInWithEmail } = useLogin();
 
-  const onSubmit = async () => {
-    const res = await signInWithEmail(getValues('email'), getValues('password'));
-
-    if (res) {
-      setAuthDataToStorage(
-        res.session.access_token,
-        res.session.refresh_token,
-        res.session.expires_in
-      );
-      setUser(res.user, false);
-    }
+  const onSignIn = async () => {
+    const { email, password } = getValues();
+    await signInWithEmail(email, password);
   };
+
+  if (isLoading) {
+    return <CustomLoader />;
+  }
 
   return (
     <View className="flex-1 justify-between" style={{ paddingBottom: bottom }}>
@@ -54,10 +49,9 @@ const Page = () => {
         />
         <MediumTitle>Login to Your Account</MediumTitle>
         <AuthForm control={control} errors={errors} />
-        <MainButton onPress={handleSubmit(onSubmit)} style={{ marginBottom: 20 }}>
+        <MainButton onPress={handleSubmit(onSignIn)} style={{ marginBottom: 20 }}>
           Submit
         </MainButton>
-        {/* disabled={getFieldState('email').invalid || getFieldState('password').invalid} */}
         <TextLink
           classes="flex-row items-center justify-center gap-2 self-center"
           href="./reset-password">

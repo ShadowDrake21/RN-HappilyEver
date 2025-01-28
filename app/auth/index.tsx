@@ -1,77 +1,17 @@
 import SmallDisplayTitle from '@components/ui/SmallDisplayTitle';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { makeRedirectUri } from 'expo-auth-session';
-import * as QueryParams from 'expo-auth-session/build/QueryParams';
 import { Link, useRouter } from 'expo-router';
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { Button, Text as PaperText } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
 import SocialButton from '~/components/SocialButton';
 import { COLORS } from '~/constants/colors';
-import { supabase } from '~/utils/supabase';
-
-WebBrowser.maybeCompleteAuthSession();
-const redirectTo = makeRedirectUri();
+import useAuthSocials from '~/hooks/useAuthSocials';
 
 const Page = () => {
   const router = useRouter();
-  const createSessionFromUrl = async (url: string) => {
-    const { params, errorCode } = QueryParams.getQueryParams(url);
+  const { onSocialAuth, isLoading } = useAuthSocials();
 
-    if (errorCode) throw new Error(errorCode);
-    const { access_token, refresh_token } = params;
-
-    if (!access_token) return;
-
-    const { data, error } = await supabase.auth.setSession({
-      access_token,
-      refresh_token,
-    });
-    if (error) throw error;
-    return data.session;
-  };
-
-  const performOAuth = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'facebook',
-      options: {
-        redirectTo,
-        skipBrowserRedirect: true,
-      },
-    });
-    if (error) throw error;
-
-    const res = await WebBrowser.openAuthSessionAsync(data?.url ?? '', redirectTo);
-
-    if (res.type === 'success') {
-      const { url } = res;
-      const session = await createSessionFromUrl(url);
-
-      console.log(session);
-    }
-  };
-
-  const performOAuthGoogle = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo,
-        skipBrowserRedirect: true,
-      },
-    });
-    if (error) throw error;
-
-    const res = await WebBrowser.openAuthSessionAsync(data?.url ?? '', redirectTo);
-
-    if (res.type === 'success') {
-      const { url } = res;
-      const session = await createSessionFromUrl(url);
-
-      console.log(session);
-    }
-  };
   return (
     <View style={{ flex: 1 }}>
       <Image
@@ -83,15 +23,20 @@ const Page = () => {
       <SmallDisplayTitle addStyle={{ paddingVertical: 20 }}> Let's you in</SmallDisplayTitle>
 
       <View className="gap-2">
-        <SocialButton icon="facebook-square" onPress={performOAuth} socialName="Facebook" />
-        <SocialButton icon="google" onPress={performOAuthGoogle} socialName="Google" />
-        <SocialButton icon="apple1" onPress={() => console.log('Apple')} socialName="Apple" />
+        <SocialButton
+          icon="facebook-square"
+          onPress={() => onSocialAuth('facebook')}
+          socialName="Facebook"
+        />
+        <SocialButton icon="google" onPress={() => onSocialAuth('google')} socialName="Google" />
+        <SocialButton icon="apple1" onPress={() => onSocialAuth('apple')} socialName="Apple" />
       </View>
       <Text className="self-center py-7 font-poppins-medium text-white">or</Text>
       <Button
         mode="contained"
         buttonColor={COLORS.accent3}
-        style={{ paddingVertical: 10, borderRadius: 30 }}
+        contentStyle={{ paddingVertical: 10 }}
+        style={{ borderRadius: 30 }}
         onPress={() => router.navigate('/auth/sign-in')}>
         Sign in using password
       </Button>

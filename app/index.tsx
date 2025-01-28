@@ -1,6 +1,8 @@
-import { Redirect } from 'expo-router';
+import CustomLoader from '@components/ui/CustomLoader';
 import React from 'react';
 
-export default function Home() {
-  return <Redirect href="./onboarding" />;
-}
+const Index = () => {
+  return <CustomLoader />;
+};
+
+export default Index;

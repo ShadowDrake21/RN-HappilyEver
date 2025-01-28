@@ -1,17 +1,27 @@
 import React, { PropsWithChildren } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 const TouchableKeyboardAvoidingView = ({
   offset,
   children,
-}: { offset: number } & PropsWithChildren) => {
+  style,
+}: { offset: number; style?: ViewStyle } & PropsWithChildren) => {
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={offset}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>{children}</TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={offset}>
+        {children}
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 

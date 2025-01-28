@@ -1,10 +1,20 @@
 import '../global.css';
+import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
-import useTokenExpiration from '~/hooks/useTokenExpiration';
-import { useAuthStore } from '~/store/store';
+import { tokenCache } from '~/cache';
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+if (!publishableKey) {
+  throw new Error(
+    'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env'
+  );
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,21 +26,23 @@ const queryClient = new QueryClient({
 });
 
 const RootLayout = () => {
-  useTokenExpiration();
-  const { isLoggedIn, isNewUser } = useAuthStore();
+  const { isLoaded, isSignedIn } = useAuth();
+  const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoggedIn) {
-      if (isNewUser) {
-        router.replace('/main-settings/select-country');
-        return;
-      }
+    if (!isLoaded) return;
+
+    const inTabsGroup = segments[0] === 'auth';
+
+    console.log('User changed: ', isSignedIn);
+
+    if (isSignedIn && !inTabsGroup) {
       router.replace('/home');
-    } else {
+    } else if (!isSignedIn) {
       router.replace('/onboarding/onboarding-first');
     }
-  }, [isLoggedIn]);
+  }, [isSignedIn]);
 
   return (
     <Stack
@@ -40,14 +52,23 @@ const RootLayout = () => {
       <Stack.Screen name="onboarding" />
       <Stack.Screen name="auth" />
       <Stack.Screen name="main-settings" />
+      <Stack.Screen name="home" />
     </Stack>
   );
 };
 
-const Layout = () => (
-  <QueryClientProvider client={queryClient}>
-    <RootLayout />
-  </QueryClientProvider>
-);
+const Layout = () => {
+  const { top } = useSafeAreaInsets();
+  return (
+    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+      <ClerkLoaded>
+        <QueryClientProvider client={queryClient}>
+          <RootLayout />
+          <Toast position="top" topOffset={top} />
+        </QueryClientProvider>
+      </ClerkLoaded>
+    </ClerkProvider>
+  );
+};
 
 export default Layout;
