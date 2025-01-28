@@ -41,3 +41,8 @@ export type ProfileExtendedField = {
   placeholder: string;
   name: string;
 };
+
+export type ProfilePhoto = {
+  name: string;
+  base64: string;
+};

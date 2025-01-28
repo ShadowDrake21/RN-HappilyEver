@@ -46,6 +46,12 @@
           "configureAndroidBackup": true,
           "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your gallery to select photos for your profile."
+        }
       ]
     ],
     "experiments": {

@@ -30,6 +30,7 @@
     "expo-font": "~13.0.3",
     "expo-haptics": "^14.0.1",
     "expo-image": "~2.0.4",
+    "expo-image-picker": "~16.0.4",
     "expo-linking": "~7.0.4",
     "expo-router": "~4.0.6",
     "expo-secure-store": "~14.0.1",
@@ -60,6 +61,7 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "~0.19.10",
     "react-phone-number-input": "^3.4.11",
+    "uuid": "^11.0.5",
     "zustand": "^4.5.1"
   },
   "devDependencies": {
