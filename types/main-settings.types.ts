@@ -48,12 +48,19 @@ export type ProfilePhoto = {
 };
 
 export type ProfileInterestsCategory = {
+  id: string;
   category: string;
   interests: ProfileInterestItem[];
 };
 
 export type ProfileInterestItem = {
+  id: string;
   title: string;
   description: string;
   icon: string;
+};
+
+export type ProfileInterestsCompressed = {
+  categoryId: string;
+  interestIds: string[];
 };

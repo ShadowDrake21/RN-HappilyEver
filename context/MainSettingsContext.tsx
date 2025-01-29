@@ -3,6 +3,8 @@ import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import {
   IMainSettingsBasicForm,
   IMainSettingsExtendedForm,
+  ProfileInterestsCategory,
+  ProfileInterestsCompressed,
   ProfilePhoto,
 } from '~/types/main-settings.types';
 
@@ -11,12 +13,14 @@ type MainSettingsContextType = {
   profileBasicForm: IMainSettingsBasicForm | undefined;
   profileExtendedForm: IMainSettingsExtendedForm | undefined;
   photos: ProfilePhoto[];
+  interests: ProfileInterestsCompressed[];
   setCountryId: React.Dispatch<React.SetStateAction<string>>;
   setProfileBasicForm: React.Dispatch<React.SetStateAction<IMainSettingsBasicForm | undefined>>;
   setProfileExtendedForm: React.Dispatch<
     React.SetStateAction<IMainSettingsExtendedForm | undefined>
   >;
   setPhotos: React.Dispatch<React.SetStateAction<ProfilePhoto[]>>;
+  setInterests: React.Dispatch<React.SetStateAction<ProfileInterestsCompressed[]>>;
 };
 
 const MainSettingsContext = createContext<MainSettingsContextType | undefined>(undefined);
@@ -30,6 +34,7 @@ export const MainSettingsProvider = ({ children }: PropsWithChildren) => {
     IMainSettingsExtendedForm | undefined
   >(undefined);
   const [photos, setPhotos] = useState<ProfilePhoto[]>([]);
+  const [interests, setInterests] = useState<ProfileInterestsCompressed[]>([]);
 
   return (
     <MainSettingsContext.Provider
@@ -38,10 +43,12 @@ export const MainSettingsProvider = ({ children }: PropsWithChildren) => {
         profileBasicForm,
         profileExtendedForm,
         photos,
+        interests,
         setCountryId,
         setProfileBasicForm,
         setProfileExtendedForm,
         setPhotos,
+        setInterests,
       }}>
       {children}
     </MainSettingsContext.Provider>
