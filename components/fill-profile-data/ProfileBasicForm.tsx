@@ -17,11 +17,11 @@ import { ICountry } from '~/types/country.types';
 import { fetchCountries } from '~/utils/fetch.utils';
 
 const ProfileBasicForm = () => {
-  const { countryId } = useMainSettings();
+  const { state } = useMainSettings();
 
   const { data: countries, isLoading } = useQuery<ICountry[]>({
     queryFn: () =>
-      fetchCountries('https://restcountries.com/v3.1/alpha/' + countryId, {
+      fetchCountries('https://restcountries.com/v3.1/alpha/' + state.countryId, {
         params: { fields: 'name,flags,idd,cca2' },
       }),
     queryKey: ['countries'],

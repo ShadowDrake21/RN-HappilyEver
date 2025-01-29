@@ -1,54 +1,65 @@
-import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useReducer, useState } from 'react';
 
 import {
   IMainSettingsBasicForm,
   IMainSettingsExtendedForm,
-  ProfileInterestsCategory,
-  ProfileInterestsCompressed,
+  ProfileInterestsIds,
   ProfilePhoto,
 } from '~/types/main-settings.types';
 
 type MainSettingsContextType = {
+  state: MainSettingsStateType;
+  dispatch: React.Dispatch<MainSettingsActionType>;
+};
+
+type MainSettingsStateType = {
   countryId: string;
   profileBasicForm: IMainSettingsBasicForm | undefined;
   profileExtendedForm: IMainSettingsExtendedForm | undefined;
   photos: ProfilePhoto[];
-  interests: ProfileInterestsCompressed[];
-  setCountryId: React.Dispatch<React.SetStateAction<string>>;
-  setProfileBasicForm: React.Dispatch<React.SetStateAction<IMainSettingsBasicForm | undefined>>;
-  setProfileExtendedForm: React.Dispatch<
-    React.SetStateAction<IMainSettingsExtendedForm | undefined>
-  >;
-  setPhotos: React.Dispatch<React.SetStateAction<ProfilePhoto[]>>;
-  setInterests: React.Dispatch<React.SetStateAction<ProfileInterestsCompressed[]>>;
+  interests: ProfileInterestsIds[];
 };
+
+type MainSettingsActionType =
+  | { type: 'SET_COUNTRY_ID'; payload: string }
+  | { type: 'SET_PROFILE_BASIC_FORM'; payload: IMainSettingsBasicForm | undefined }
+  | { type: 'SET_PROFILE_EXTENDED_FORM'; payload: IMainSettingsExtendedForm | undefined }
+  | { type: 'SET_PHOTOS'; payload: ProfilePhoto[] }
+  | { type: 'SET_INTERESTS'; payload: ProfileInterestsIds[] };
 
 const MainSettingsContext = createContext<MainSettingsContextType | undefined>(undefined);
 
+const MainSettingsState: MainSettingsStateType = {
+  countryId: '',
+  profileBasicForm: undefined,
+  profileExtendedForm: undefined,
+  photos: [],
+  interests: [],
+};
+
+const reducer = (state: typeof MainSettingsState, action: MainSettingsActionType) => {
+  switch (action.type) {
+    case 'SET_COUNTRY_ID':
+      return { ...state, countryId: action.payload };
+    case 'SET_PROFILE_BASIC_FORM':
+      return { ...state, profileBasicForm: action.payload };
+    case 'SET_PROFILE_EXTENDED_FORM':
+      return { ...state, profileExtendedForm: action.payload };
+    case 'SET_PHOTOS':
+      return { ...state, photos: action.payload };
+    case 'SET_INTERESTS':
+      return { ...state, interests: action.payload };
+  }
+};
+
 export const MainSettingsProvider = ({ children }: PropsWithChildren) => {
-  const [countryId, setCountryId] = useState('');
-  const [profileBasicForm, setProfileBasicForm] = useState<IMainSettingsBasicForm | undefined>(
-    undefined
-  );
-  const [profileExtendedForm, setProfileExtendedForm] = useState<
-    IMainSettingsExtendedForm | undefined
-  >(undefined);
-  const [photos, setPhotos] = useState<ProfilePhoto[]>([]);
-  const [interests, setInterests] = useState<ProfileInterestsCompressed[]>([]);
+  const [state, dispatch] = useReducer(reducer, MainSettingsState);
 
   return (
     <MainSettingsContext.Provider
       value={{
-        countryId,
-        profileBasicForm,
-        profileExtendedForm,
-        photos,
-        interests,
-        setCountryId,
-        setProfileBasicForm,
-        setProfileExtendedForm,
-        setPhotos,
-        setInterests,
+        state,
+        dispatch,
       }}>
       {children}
     </MainSettingsContext.Provider>

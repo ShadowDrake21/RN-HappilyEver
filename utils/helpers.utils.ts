@@ -1,6 +1,6 @@
 import { FieldErrors } from 'react-hook-form';
 
-import { IMainSettingsExtendedForm, ProfileInterestsCategory } from '~/types/main-settings.types';
+import { IMainSettingsExtendedForm, ProfileInterestsIds } from '~/types/main-settings.types';
 
 export const getErrorMessage = (
   errors: FieldErrors<IMainSettingsExtendedForm>,
@@ -10,41 +10,29 @@ export const getErrorMessage = (
   return (errors?.[firstField as keyof IMainSettingsExtendedForm] as any)?.[secondField]?.message;
 };
 
-export const toggleInterest = (
-  currentInterests: ProfileInterestsCategory[],
-  newInterest: ProfileInterestsCategory
-): ProfileInterestsCategory[] => {
-  console.log('interests:', currentInterests);
-  const categoryIndex = currentInterests.findIndex(
-    (item) => item.category === newInterest.category
-  );
+export const addInterest = (all: ProfileInterestsIds[], newInterest: ProfileInterestsIds) => {
+  const updatedInterests = [...all];
+  const index = updatedInterests.findIndex((item) => item.categoryId === newInterest.categoryId);
 
-  console.log('Category Index:', categoryIndex);
-
-  if (categoryIndex === -1) {
-    return [...currentInterests, { ...newInterest, interests: [...newInterest.interests] }];
+  if (index !== -1) {
+    updatedInterests[index].interestIds.push(newInterest.interestIds[0]);
   }
 
-  // Create a deep copy of the existing category
-  const updatedCategory = {
-    ...currentInterests[categoryIndex],
-    interests: [...currentInterests[categoryIndex].interests],
-  };
+  return updatedInterests;
+};
 
-  const interestIndex = updatedCategory.interests.findIndex(
-    (interest) => interest.title === newInterest.interests[0].title
-  );
+export const removeInterest = (all: ProfileInterestsIds[], newInterest: ProfileInterestsIds) => {
+  const updatedInterests = [...all];
+  const index = updatedInterests.findIndex((item) => item.categoryId === newInterest.categoryId);
 
-  if (interestIndex === -1) {
-    updatedCategory.interests.push(newInterest.interests[0]);
-  } else {
-    updatedCategory.interests.splice(interestIndex, 1);
+  if (index !== -1) {
+    updatedInterests[index].interestIds = updatedInterests[index].interestIds.filter(
+      (id) => id !== newInterest.interestIds[0]
+    );
+    if (updatedInterests[index].interestIds.length === 0) {
+      updatedInterests.splice(index, 1);
+    }
   }
 
-  // Return a new array with the updated category
-  return [
-    ...currentInterests.slice(0, categoryIndex),
-    updatedCategory,
-    ...currentInterests.slice(categoryIndex + 1),
-  ];
+  return updatedInterests;
 };

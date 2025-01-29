@@ -1,6 +1,6 @@
 import { ProfileInterestsCategory } from '~/types/main-settings.types';
 
-export const profileIterests: ProfileInterestsCategory[] = [
+export const profileInterests: ProfileInterestsCategory[] = [
   {
     id: 'lr',
     category: 'Love & Relationships',

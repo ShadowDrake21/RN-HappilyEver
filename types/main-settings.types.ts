@@ -60,7 +60,7 @@ export type ProfileInterestItem = {
   icon: string;
 };
 
-export type ProfileInterestsCompressed = {
+export type ProfileInterestsIds = {
   categoryId: string;
   interestIds: string[];
 };

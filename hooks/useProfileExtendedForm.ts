@@ -4,7 +4,7 @@ import { useMainSettings } from '~/context/MainSettingsContext';
 import { IMainSettingsExtendedForm } from '~/types/main-settings.types';
 
 const useProfileExtendedForm = () => {
-  const { setProfileExtendedForm } = useMainSettings();
+  const { dispatch } = useMainSettings();
   const {
     control,
     handleSubmit,
@@ -33,7 +33,7 @@ const useProfileExtendedForm = () => {
   });
 
   const onSubmit = (data: IMainSettingsExtendedForm) => {
-    setProfileExtendedForm(data);
+    dispatch({ type: 'SET_PROFILE_EXTENDED_FORM', payload: data });
   };
 
   return { control, submit: handleSubmit(onSubmit), errors };

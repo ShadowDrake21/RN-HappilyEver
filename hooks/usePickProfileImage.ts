@@ -6,7 +6,7 @@ import { ProfilePhoto } from '~/types/main-settings.types';
 import { callToast } from '~/utils/ui.utils';
 
 const usePickProfileImage = () => {
-  const { photos, setPhotos } = useMainSettings();
+  const { state, dispatch } = useMainSettings();
   const [selectedImage, setSelectedImage] = useState<ProfilePhoto | null>(null);
 
   const pickImageAsync = async () => {
@@ -18,24 +18,27 @@ const usePickProfileImage = () => {
     });
 
     if (!result.canceled) {
-      if (photos.find((photo) => photo.name === result.assets[0].fileName)) {
+      if (state.photos.find((photo) => photo.name === result.assets[0].fileName)) {
         callToast({
           type: 'error',
           text1: 'Image picking error!',
           text2: 'You already added this image.',
         });
       } else {
-        setPhotos((prevPhotos) => [
-          ...prevPhotos.filter((photo) => photo.name !== selectedImage?.name),
+        const updatedPhotos = [
+          ...state.photos.filter((photo) => photo.name !== selectedImage?.name),
           {
             name: result.assets[0].fileName!,
             base64: result.assets[0].base64!,
           },
-        ]);
+        ];
+
         setSelectedImage({
           name: result.assets[0].fileName!,
           base64: result.assets[0].base64!,
         });
+
+        dispatch({ type: 'SET_PHOTOS', payload: updatedPhotos });
       }
     } else {
       callToast({
