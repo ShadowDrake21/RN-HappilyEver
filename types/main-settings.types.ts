@@ -66,7 +66,7 @@ export type ProfileInterestsIds = {
 };
 
 export type ProfileIdealMatch = {
-  id: string;
+  id: 'relationship' | 'marriage' | 'companionship' | 'friendship';
   title: string;
   description: string;
 };

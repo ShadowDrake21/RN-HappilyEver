@@ -2,6 +2,7 @@ import ProfileExtendedFormGroup from '@components/fill-extended-data/ProfileExte
 import TouchableKeyboardAvoidingView from '@components/shared/TouchableKeyboardAvoidingView';
 import MainButton from '@components/ui/MainButton';
 import TextLink from '@components/ui/TextLink';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -17,6 +18,7 @@ import useProfileExtendedForm from '~/hooks/useProfileExtendedForm';
 const Page = () => {
   const { top, bottom } = useSafeAreaInsets();
   const { control, errors, submit } = useProfileExtendedForm();
+  const router = useRouter();
 
   return (
     <>
@@ -49,7 +51,13 @@ const Page = () => {
             fields={personalConnectionContent}
             mainTitle="Personal Connection"
           />
-          <MainButton onPress={submit}>Continue</MainButton>
+          <MainButton
+            onPress={() => {
+              submit();
+              router.push('/main-settings/add-photos');
+            }}>
+            Continue
+          </MainButton>
         </ScrollView>
       </TouchableKeyboardAvoidingView>
       <View className="flex-row justify-end">

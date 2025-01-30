@@ -1,6 +1,5 @@
 import ParagraphText from '@components/ui/ParagraphText';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 
 import { profileInterests } from '~/content/profile-interests.content';
 import { ProfileInterestsIds } from '~/types/main-settings.types';
@@ -17,5 +16,3 @@ const SelectedInterestsListItem = ({ interest }: { interest: ProfileInterestsIds
 };
 
 export default SelectedInterestsListItem;
-
-const styles = StyleSheet.create({});
