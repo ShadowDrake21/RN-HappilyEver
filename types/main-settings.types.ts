@@ -64,3 +64,9 @@ export type ProfileInterestsIds = {
   categoryId: string;
   interestIds: string[];
 };
+
+export type ProfileIdealMatch = {
+  id: string;
+  title: string;
+  description: string;
+};

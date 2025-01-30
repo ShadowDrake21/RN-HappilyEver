@@ -38,7 +38,7 @@ const RootLayout = () => {
     console.log('User changed: ', isSignedIn);
 
     if (isSignedIn && !inTabsGroup) {
-      router.replace('/main-settings/add-photos');
+      router.replace('/main-settings/select-ideal-match');
     } else if (!isSignedIn) {
       router.replace('/onboarding/onboarding-first');
     }
