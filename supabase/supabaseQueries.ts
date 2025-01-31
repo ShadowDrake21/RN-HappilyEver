@@ -13,7 +13,7 @@ import { callAlert, callToast } from '~/utils/ui.utils';
 
 const handleSupabaseError = (message: string, error: any) => {
   if (error) {
-    console.log(`${message}: ${error.message}`);
+    console.log(`${message}: ${JSON.stringify(error)}`);
     callAlert({ title: `${message}`, message: error.message });
     throw new Error(`${message}: ${error}`);
   }
@@ -42,7 +42,9 @@ export const getUserCountryId = async (token: string, user_id: string) => {
 export const setUserCountryId = async (token: string, user_id: string, country_id: string) => {
   const supabase = await supabaseClient(token);
 
-  const { error } = await supabase.from('profiles_locations').insert({ user_id, country_id });
+  const { error } = await supabase
+    .from('profiles_locations')
+    .upsert({ user_id, country_id }, { onConflict: 'user_id' });
   handleSupabaseError('Error fetching profiles', error);
 };
 
@@ -62,6 +64,8 @@ export const setProfile = async (
   console.log('Setting profile');
   const supabase = await supabaseClient(token);
 
+  console.log('profile', profile);
+
   const { error } = await supabase
     .from('profiles')
     .upsert({ user_id, ...profile }, { onConflict: 'user_id' });
@@ -72,7 +76,7 @@ export const setProfile = async (
 export const getProfileQuestions = async (token: string, user_id: string) => {
   const supabase = await supabaseClient(token);
   const { data, error } = await supabase
-    .from('profile_questions')
+    .from('profiles_questions')
     .select('*')
     .eq('user_id', user_id);
   handleSupabaseError('Error fetching profile questions', error);
@@ -88,11 +92,14 @@ export const setProfileQuestions = async (
   const supabase = await supabaseClient(token);
   const formatedQuestions = formatProfileQuestions(user_id, answers);
 
-  console.log('formatedQuestions');
+  console.log('formatedQuestions', formatedQuestions);
   for (const item of formatedQuestions) {
-    const { error } = await supabase
-      .from('profile_questions')
-      .upsert(item, { onConflict: 'user_id, answer' });
+    const { data, error, status, statusText } = await supabase
+      .from('profiles_questions')
+      .upsert(item, { onConflict: 'user_id, question' });
+
+    console.log('Supabase response:', { data, error, status, statusText });
+
     handleSupabaseError('Error setting profile questions', error);
   }
 };
@@ -119,7 +126,7 @@ export const setProfilePhoto = async (token: string, user_id: string, photo: Pro
 export const getProfileInterests = async (token: string, user_id: string) => {
   const supabase = await supabaseClient(token);
   const { data, error } = await supabase
-    .from('profile_interests')
+    .from('profiles_interests')
     .select('*')
     .eq('user_id', user_id);
 
@@ -135,15 +142,18 @@ export const setProfileInterests = async (
 ) => {
   const supabase = await supabaseClient(token);
   const { error } = await supabase
-    .from('profile_interests')
-    .upsert([{ user_id, interests }, { onConflict: 'user_id' }]);
+    .from('profiles_interests')
+    .upsert({ user_id, interests }, { onConflict: 'user_id' });
 
   handleSupabaseError('Error setting profile interests', error);
 };
 
 export const getProfileIdealMatch = async (token: string, user_id: string) => {
   const supabase = await supabaseClient(token);
-  const { error } = await supabase.from('profile_ideal_match').select('*').eq('user_id', user_id);
+  const { error } = await supabase
+    .from('profiles_ideal_matches')
+    .select('*')
+    .eq('user_id', user_id);
 
   handleSupabaseError('Error fetching profile ideal match', error);
 };
@@ -155,7 +165,7 @@ export const setProfileIdealMatch = async (
 ) => {
   const supabase = await supabaseClient(token);
   const { error } = await supabase
-    .from('profile_ideal_match')
+    .from('profiles_ideal_matches')
     .upsert({ user_id, type }, { onConflict: 'user_id' });
 
   handleSupabaseError('Error setting profile ideal match', error);
