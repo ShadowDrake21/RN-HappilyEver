@@ -5,14 +5,11 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { useMainSettings } from '~/context/MainSettingsContext';
+import useSaveMainSettings from '~/hooks/useSaveMainSettings';
 import { setProfileQuestions } from '~/supabase/supabaseQueries';
 
 const Page = () => {
-  const { state, dispatch } = useMainSettings();
-
-  const onSaveData = () => {
-    // if (state.profileExtendedForm) setProfileQuestions(state.profileExtendedForm);
-  };
+  const { saveMainSettings } = useSaveMainSettings();
 
   return (
     <View className="flex-1 gap-5">
@@ -20,7 +17,7 @@ const Page = () => {
         What are you looking for in a meaningful relationship?
       </ParagraphText>
       <SelectIdealMathList />
-      <MainButton onPress={onSaveData}>Finish</MainButton>
+      <MainButton onPress={saveMainSettings}>Finish</MainButton>
     </View>
   );
 };

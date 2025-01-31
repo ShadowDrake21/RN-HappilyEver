@@ -16,9 +16,9 @@ const Layout = () => {
           paddingBottom: bottom + 10,
         },
       }}>
-      <Stack.Screen name="onboarding-first" options={{}} />
-      <Stack.Screen name="onboarding-second" options={{}} />
-      <Stack.Screen name="onboarding-third" options={{}} />
+      <Stack.Screen name="onboarding-first" />
+      <Stack.Screen name="onboarding-second" />
+      <Stack.Screen name="onboarding-third" />
     </Stack>
   );
 };

@@ -38,7 +38,7 @@ const RootLayout = () => {
     console.log('User changed: ', isSignedIn);
 
     if (isSignedIn && !inTabsGroup) {
-      router.replace('/main-settings/fill-extended-data');
+      router.replace('/main-settings/select-country');
     } else if (!isSignedIn) {
       router.replace('/onboarding/onboarding-first');
     }

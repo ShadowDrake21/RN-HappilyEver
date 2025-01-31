@@ -35,6 +35,7 @@ export type SelectedFormItem = { title: string; icon: string };
 export type ProfileBasicFormField = {
   control: Control<IMainSettingsBasicForm, any>;
   errors: FieldError | undefined;
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined;
 };
 
 export type ProfileExtendedField = {

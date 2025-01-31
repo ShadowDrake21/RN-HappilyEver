@@ -1,5 +1,6 @@
 import MainButton from '@components/ui/MainButton';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -17,6 +18,7 @@ import { ICountry } from '~/types/country.types';
 import { fetchCountries } from '~/utils/fetch.utils';
 
 const ProfileBasicForm = () => {
+  const router = useRouter();
   const { state } = useMainSettings();
 
   const { data: countries, isLoading } = useQuery<ICountry[]>({
@@ -36,6 +38,11 @@ const ProfileBasicForm = () => {
 
   const phoneFlag = countries ? countries[0].flags.png : unknownFlag;
 
+  const onFormSubmit = () => {
+    submit();
+    router.push('/main-settings/fill-extended-data');
+  };
+
   return (
     <View className="flex-1 gap-[15] pt-5">
       <ProfileBasicFormFullName control={control} errors={errors.fullName} />
@@ -51,7 +58,7 @@ const ProfileBasicForm = () => {
       <ProfileBasicFormOccupation control={control} errors={errors.occupation} />
 
       <View className="mx-5">
-        <MainButton onPress={submit}>Continue</MainButton>
+        <MainButton onPress={onFormSubmit}>Continue</MainButton>
       </View>
     </View>
   );

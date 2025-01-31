@@ -9,7 +9,6 @@ import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
-import { supabase } from '~/utils/supabase';
 
 const Page = () => {
   const { bottom } = useSafeAreaInsets();
@@ -26,9 +25,7 @@ const Page = () => {
     },
   });
 
-  const onSubmit = async () => {
-    await supabase.auth.resetPasswordForEmail(getValues('email'));
-  };
+  const onSubmit = async () => {};
 
   return (
     <View className="flex-1 justify-between" style={{ paddingBottom: bottom }}>

@@ -4,7 +4,7 @@ import { useMainSettings } from '~/context/MainSettingsContext';
 import { IMainSettingsBasicForm } from '~/types/main-settings.types';
 
 const useProfileBasicForm = () => {
-  const { dispatch } = useMainSettings();
+  const { state, dispatch } = useMainSettings();
   const {
     control,
     handleSubmit,
