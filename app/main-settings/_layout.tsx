@@ -5,39 +5,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { COLORS } from '~/constants/colors';
 import { MainSettingsProvider, useMainSettings } from '~/context/MainSettingsContext';
-import { MainSettingsActionType } from '~/types/main-settings.types';
-
-type MainSettingsScreenProps = {
-  name: string;
-  title: string;
-  action: MainSettingsActionType;
-};
-
-const MainSettingsScreen = ({ name, title, action }: MainSettingsScreenProps) => {
-  const router = useRouter();
-  const { dispatch } = useMainSettings();
-
-  return (
-    <Stack.Screen
-      name={name}
-      options={{
-        title,
-        headerLeft: ({ tintColor }) => (
-          <HeaderLeftButton
-            tintColor={tintColor}
-            onPress={() => {
-              dispatch(action);
-              router.back();
-            }}
-          />
-        ),
-      }}
-    />
-  );
-};
 
 const MainSettingsLayout = () => {
   const { bottom } = useSafeAreaInsets();
+  const router = useRouter();
+  const { dispatch } = useMainSettings();
 
   const screenOptions = {
     contentStyle: {
@@ -59,35 +31,95 @@ const MainSettingsLayout = () => {
 
   return (
     <Stack screenOptions={screenOptions}>
-      <MainSettingsScreen
+      <Stack.Screen
         name="select-country"
-        title="Select Your Country"
-        action={{ type: 'SET_COUNTRY_ID', payload: '' }}
+        options={{
+          title: 'Select Your Country',
+          headerLeft: ({ tintColor }) => (
+            <HeaderLeftButton
+              tintColor={tintColor}
+              onPress={() => {
+                dispatch({ type: 'SET_COUNTRY_ID', payload: '' });
+                router.back();
+              }}
+            />
+          ),
+        }}
       />
-      <MainSettingsScreen
+      <Stack.Screen
         name="fill-profile-data"
-        title="Fill Your Profile"
-        action={{ type: 'SET_PROFILE_BASIC_FORM', payload: undefined }}
+        options={{
+          title: 'Fill Your Profile',
+          headerLeft: ({ tintColor }) => (
+            <HeaderLeftButton
+              tintColor={tintColor}
+              onPress={() => {
+                dispatch({ type: 'SET_PROFILE_BASIC_FORM', payload: undefined });
+                router.back();
+              }}
+            />
+          ),
+        }}
       />
-      <MainSettingsScreen
+      <Stack.Screen
         name="fill-extended-data"
-        title="Fill Extended Information"
-        action={{ type: 'SET_PROFILE_EXTENDED_FORM', payload: undefined }}
+        options={{
+          title: 'Fill Extended Information',
+          headerLeft: ({ tintColor }) => (
+            <HeaderLeftButton
+              tintColor={tintColor}
+              onPress={() => {
+                dispatch({ type: 'SET_PROFILE_EXTENDED_FORM', payload: undefined });
+                router.back();
+              }}
+            />
+          ),
+        }}
       />
-      <MainSettingsScreen
+      <Stack.Screen
         name="add-photos"
-        title="Add Your Best Photos"
-        action={{ type: 'SET_PHOTOS', payload: [] }}
+        options={{
+          title: 'Add Your Best Photos',
+          headerLeft: ({ tintColor }) => (
+            <HeaderLeftButton
+              tintColor={tintColor}
+              onPress={() => {
+                dispatch({ type: 'SET_PHOTOS', payload: [] });
+                router.back();
+              }}
+            />
+          ),
+        }}
       />
-      <MainSettingsScreen
+      <Stack.Screen
         name="select-interests"
-        title="Select Your Interests"
-        action={{ type: 'SET_INTERESTS', payload: [] }}
+        options={{
+          title: 'Select Your Interests',
+          headerLeft: ({ tintColor }) => (
+            <HeaderLeftButton
+              tintColor={tintColor}
+              onPress={() => {
+                dispatch({ type: 'SET_INTERESTS', payload: [] });
+                router.back();
+              }}
+            />
+          ),
+        }}
       />
-      <MainSettingsScreen
+      <Stack.Screen
         name="select-ideal-match"
-        title="Select Ideal Match"
-        action={{ type: 'SET_IDEAL_MATCH', payload: undefined }}
+        options={{
+          title: 'Select Ideal Match',
+          headerLeft: ({ tintColor }) => (
+            <HeaderLeftButton
+              tintColor={tintColor}
+              onPress={() => {
+                dispatch({ type: 'SET_IDEAL_MATCH', payload: undefined });
+                router.back();
+              }}
+            />
+          ),
+        }}
       />
     </Stack>
   );

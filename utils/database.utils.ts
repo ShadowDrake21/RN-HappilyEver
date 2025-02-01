@@ -19,11 +19,13 @@ export const formatProfileQuestions = (user_id: string, answers: IMainSettingsEx
   return result;
 };
 
-export const handleSupabaseError = (message: string, error: any) => {
+export const handleSupabaseError = (error: unknown) => {
+  const [title, message] = (error as { message: string }).message.split(': ') as unknown as string;
+  callAlert({ title, message: message.charAt(0).toUpperCase() + message.slice(1) });
   if (error) {
     callAlert({
-      title: `${message}`,
-      message: error.message,
+      title,
+      message,
       buttons: [{ text: 'OK', isPreferred: true, style: 'destructive' }],
     });
   }

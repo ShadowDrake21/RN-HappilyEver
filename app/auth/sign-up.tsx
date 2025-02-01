@@ -1,3 +1,4 @@
+import { useUser } from '@clerk/clerk-expo';
 import ConfirmationCodeField from '@components/confirmation-code-field/ConfirmationCodeField';
 import TouchableKeyboardAvoidingView from '@components/shared/TouchableKeyboardAvoidingView';
 import CustomLoader from '@components/ui/CustomLoader';
@@ -14,6 +15,7 @@ import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
 import useRegister from '~/hooks/useRegister';
 import useVerify from '~/hooks/useVerify';
+import { useUserStorage } from '~/store/store';
 import { callToast } from '~/utils/ui.utils';
 
 const Page = () => {
@@ -30,6 +32,7 @@ const Page = () => {
     },
   });
 
+  const { setIsNewUser } = useUserStorage();
   const { bottom, top } = useSafeAreaInsets();
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState('');
@@ -51,6 +54,7 @@ const Page = () => {
         text1: 'Congratulations! 🎉',
         text2: 'Account verified successfully',
       });
+      setIsNewUser(true);
     }
   };
 

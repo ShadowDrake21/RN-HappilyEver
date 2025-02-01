@@ -1,13 +1,21 @@
 import { useAuth, useSession, useUser } from '@clerk/clerk-expo';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
-import { useAuthStore } from '~/store/store';
-import { supabase } from '~/utils/supabase';
+import useMainSettingsOperations from '~/hooks/useMainSettingsOperations';
 
 const Page = () => {
   const { signOut } = useAuth();
   const { session } = useSession();
+  const { fetchMainSettingsAvalability } = useMainSettingsOperations();
+
+  useEffect(() => {
+    if (session) {
+      console.log('session', !!session);
+
+      fetchMainSettingsAvalability();
+    }
+  }, []);
 
   return (
     <View>

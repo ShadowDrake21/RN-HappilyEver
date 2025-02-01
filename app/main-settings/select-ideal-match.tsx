@@ -5,7 +5,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { useMainSettings } from '~/context/MainSettingsContext';
-import useSaveMainSettings from '~/hooks/useSaveMainSettings';
+import useSaveMainSettings from '~/hooks/useMainSettingsOperations';
 import { setProfileQuestions } from '~/supabase/supabase-typed.requests';
 
 const Page = () => {

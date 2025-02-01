@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
 import { tokenCache } from '~/cache';
+import { useUserStorage } from '~/store/store';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -29,6 +30,7 @@ const RootLayout = () => {
   const { isLoaded, isSignedIn } = useAuth();
   const segments = useSegments();
   const router = useRouter();
+  const { isNewUser } = useUserStorage();
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -38,7 +40,7 @@ const RootLayout = () => {
     console.log('User changed: ', isSignedIn);
 
     if (isSignedIn && !inTabsGroup) {
-      router.replace('/main-settings/select-country');
+      router.replace('/home');
     } else if (!isSignedIn) {
       router.replace('/onboarding/onboarding-first');
     }

@@ -1,16 +1,21 @@
 import { supabaseClient } from './supabase.client';
 
-import { handleSupabaseError } from '~/utils/database.utils';
-
-export const getData = async (token: string, table: string, filters: Record<string, any> = {}) => {
+export const getData = async (
+  token: string,
+  table: string,
+  filters: Record<string, any> = {},
+  selection: string = '*'
+) => {
   const supabase = await supabaseClient(token);
-  let query = supabase.from(table).select('*');
+  let query = supabase.from(table).select(selection);
   for (const [key, value] of Object.entries(filters)) {
     query = query.eq(key, value);
   }
   const { data, error } = await query;
-  handleSupabaseError(`Error fetching data from ${table}`, error);
 
+  if (error) {
+    throw new Error(`Error getting data from ${table}: ${error.message}`);
+  }
   return data;
 };
 
@@ -25,5 +30,7 @@ export const setData = async (
     : conflictColumns;
   const supabase = await supabaseClient(token);
   const { error } = await supabase.from(table).upsert(data, { onConflict: updatedConflictColumns });
-  handleSupabaseError(`Error setting data in ${table}`, error);
+  if (error) {
+    throw new Error(`Error setting data to ${table}: ${error.message}`);
+  }
 };

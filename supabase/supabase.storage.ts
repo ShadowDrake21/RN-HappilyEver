@@ -27,6 +27,8 @@ export const emptyUserBucket = async (token: string, user_id: string) => {
   return data;
 };
 
+// DELETE IMAGES AFTER UPDATING
+
 export const uploadImage = async ({
   userId,
   token,
@@ -45,8 +47,7 @@ export const uploadImage = async ({
     });
 
   if (error) {
-    console.log('error', error);
-    return;
+    throw error;
   }
 
   return data;
