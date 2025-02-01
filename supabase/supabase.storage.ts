@@ -1,23 +1,9 @@
 import { decode } from 'base64-arraybuffer';
 
-import { supabaseClient } from './supabaseClient';
+import { supabaseClient } from './supabase.client';
 
 import { ProfilePhoto } from '~/types/main-settings.types';
 import { readFileAsDataURL } from '~/utils/storage.utils';
-
-// export const createUserBucket = async (client: SupabaseClient, user_id: string) => {
-//   const { data, error } = await client.storage.createBucket(user_id, {
-//     public: false,
-//     allowedMimeTypes: ['image/png'],
-//     fileSizeLimit: 1024,
-//   });
-
-//   if (error) {
-//     throw new Error(`Error creating bucket: ${error}`);
-//   }
-
-//   return data;
-// };
 
 export const retrieveUserBucket = async (token: string, user_id: string) => {
   const supabase = await supabaseClient(token);

@@ -1,3 +1,5 @@
+import { callAlert } from './ui.utils';
+
 import { IMainSettingsExtendedForm } from '~/types/main-settings.types';
 
 export const formatProfileQuestions = (user_id: string, answers: IMainSettingsExtendedForm) => {
@@ -15,4 +17,14 @@ export const formatProfileQuestions = (user_id: string, answers: IMainSettingsEx
   });
 
   return result;
+};
+
+export const handleSupabaseError = (message: string, error: any) => {
+  if (error) {
+    callAlert({
+      title: `${message}`,
+      message: error.message,
+      buttons: [{ text: 'OK', isPreferred: true, style: 'destructive' }],
+    });
+  }
 };

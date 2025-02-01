@@ -1,37 +1,11 @@
 import { createContext, PropsWithChildren, useContext, useReducer } from 'react';
 
-import {
-  IMainSettingsBasicForm,
-  IMainSettingsExtendedForm,
-  ProfileIdealMatch,
-  ProfileInterestsIds,
-  ProfilePhoto,
-} from '~/types/main-settings.types';
+import { MainSettingsActionType, MainSettingsStateType } from '~/types/main-settings.types';
 
 type MainSettingsContextType = {
   state: MainSettingsStateType;
   dispatch: React.Dispatch<MainSettingsActionType>;
 };
-
-type MainSettingsStateType = {
-  countryId: string;
-  profileBasicForm: IMainSettingsBasicForm | undefined;
-  profileExtendedForm: IMainSettingsExtendedForm | undefined;
-  photos: ProfilePhoto[];
-  interests: ProfileInterestsIds[];
-  idealMatch: ProfileIdealMatch | undefined;
-};
-
-type MainSettingsActionType =
-  | { type: 'SET_COUNTRY_ID'; payload: string }
-  | { type: 'SET_PROFILE_BASIC_FORM'; payload: IMainSettingsBasicForm | undefined }
-  | { type: 'SET_PROFILE_EXTENDED_FORM'; payload: IMainSettingsExtendedForm | undefined }
-  | { type: 'SET_PHOTOS'; payload: ProfilePhoto[] }
-  | { type: 'SET_INTERESTS'; payload: ProfileInterestsIds[] }
-  | {
-      type: 'SET_IDEAL_MATCH';
-      payload: ProfileIdealMatch | undefined;
-    };
 
 const MainSettingsContext = createContext<MainSettingsContextType | undefined>(undefined);
 

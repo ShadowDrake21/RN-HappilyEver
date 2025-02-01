@@ -1,76 +1,93 @@
+import HeaderLeftButton from '@components/main-settings/HeaderLeftButton';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
-import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { COLORS } from '~/constants/colors';
-import { MainSettingsProvider } from '~/context/MainSettingsContext';
+import { MainSettingsProvider, useMainSettings } from '~/context/MainSettingsContext';
+import { MainSettingsActionType } from '~/types/main-settings.types';
 
-const MainSettingsLayout = () => {
+type MainSettingsScreenProps = {
+  name: string;
+  title: string;
+  action: MainSettingsActionType;
+};
+
+const MainSettingsScreen = ({ name, title, action }: MainSettingsScreenProps) => {
   const router = useRouter();
-  const { bottom } = useSafeAreaInsets();
+  const { dispatch } = useMainSettings();
 
   return (
-    <Stack
-      screenOptions={{
-        contentStyle: {
-          backgroundColor: COLORS.dark,
-          paddingHorizontal: 20,
-          paddingBottom: bottom + 10,
-          paddingTop: 20,
-        },
-        headerTintColor: COLORS.text,
-        headerStyle: {
-          backgroundColor: COLORS.dark,
-        },
+    <Stack.Screen
+      name={name}
+      options={{
+        title,
         headerLeft: ({ tintColor }) => (
-          <IconButton
-            icon="arrow-left"
-            iconColor={tintColor}
-            size={20}
-            onPress={() => router.back()}
+          <HeaderLeftButton
+            tintColor={tintColor}
+            onPress={() => {
+              dispatch(action);
+              router.back();
+            }}
           />
         ),
-        headerTitleStyle: {
-          fontSize: 20,
-        },
-        headerShadowVisible: false,
-      }}>
-      <Stack.Screen
+      }}
+    />
+  );
+};
+
+const MainSettingsLayout = () => {
+  const { bottom } = useSafeAreaInsets();
+
+  const screenOptions = {
+    contentStyle: {
+      backgroundColor: COLORS.dark,
+      paddingHorizontal: 20,
+      paddingBottom: bottom + 10,
+      paddingTop: 20,
+    },
+    headerTintColor: COLORS.text,
+    headerStyle: {
+      backgroundColor: COLORS.dark,
+    },
+
+    headerTitleStyle: {
+      fontSize: 20,
+    },
+    headerShadowVisible: false,
+  };
+
+  return (
+    <Stack screenOptions={screenOptions}>
+      <MainSettingsScreen
         name="select-country"
-        options={{
-          title: 'Select Your Country',
-        }}
+        title="Select Your Country"
+        action={{ type: 'SET_COUNTRY_ID', payload: '' }}
       />
-      <Stack.Screen
+      <MainSettingsScreen
         name="fill-profile-data"
-        options={{
-          title: 'Fill Your Profile',
-        }}
+        title="Fill Your Profile"
+        action={{ type: 'SET_PROFILE_BASIC_FORM', payload: undefined }}
       />
-      <Stack.Screen
+      <MainSettingsScreen
         name="fill-extended-data"
-        options={{
-          title: 'Fill Extended Information',
-        }}
+        title="Fill Extended Information"
+        action={{ type: 'SET_PROFILE_EXTENDED_FORM', payload: undefined }}
       />
-      <Stack.Screen
+      <MainSettingsScreen
         name="add-photos"
-        options={{
-          title: 'Add Your Best Photos',
-        }}
+        title="Add Your Best Photos"
+        action={{ type: 'SET_PHOTOS', payload: [] }}
       />
-      <Stack.Screen
+      <MainSettingsScreen
         name="select-interests"
-        options={{
-          title: 'Select Your Interests',
-        }}
+        title="Select Your Interests"
+        action={{ type: 'SET_INTERESTS', payload: [] }}
       />
-      <Stack.Screen
+      <MainSettingsScreen
         name="select-ideal-match"
-        options={{
-          title: 'Select Ideal Match',
-        }}
+        title="Select Ideal Match"
+        action={{ type: 'SET_IDEAL_MATCH', payload: undefined }}
       />
     </Stack>
   );

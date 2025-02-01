@@ -8,7 +8,7 @@ import {
   setProfilePhoto,
   setProfileQuestions,
   setUserCountryId,
-} from '~/supabase/supabaseQueries';
+} from '~/supabase/supabase-typed.requests';
 
 const useSaveMainSettings = () => {
   const { state } = useMainSettings();
