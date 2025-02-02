@@ -19,10 +19,10 @@ const Page = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [countries, setCountries] = useState<ICountry[] | undefined>(undefined);
 
-  const { countryId, setCountryId } = useMainSettings();
+  const { state, dispatch } = useMainSettings();
 
   const handlePress = useCallback((id: string) => {
-    setCountryId(id);
+    dispatch({ type: 'SET_COUNTRY_ID', payload: id });
   }, []);
 
   const { data: allCountries, isLoading } = useQuery<ICountry[]>({
@@ -80,17 +80,17 @@ const Page = () => {
           <CountryItem
             country={item}
             onPress={() => handlePress(item.id)}
-            isSelected={countryId === item.id}
+            isSelected={state.countryId === item.id}
           />
         )}
         showsVerticalScrollIndicator={false}
         estimatedItemSize={200}
         keyExtractor={(item) => item.id}
-        extraData={countryId}
+        extraData={state.countryId}
         ListEmptyComponent={<EmptyLabel>There is no country for this request</EmptyLabel>}
       />
 
-      <MainButtonLink href="./fill-profile-data" disabled={!countryId}>
+      <MainButtonLink href="./fill-profile-data" disabled={!state.countryId}>
         Continue
       </MainButtonLink>
     </View>

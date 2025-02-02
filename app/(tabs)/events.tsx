@@ -1,15 +1,14 @@
-import { Tabs } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const Layout = () => {
+const Page = () => {
   return (
-    <Tabs>
-      <Tabs.Screen name="index" />
-    </Tabs>
+    <View>
+      <Text>Page</Text>
+    </View>
   );
 };
 
-export default Layout;
+export default Page;
 
 const styles = StyleSheet.create({});

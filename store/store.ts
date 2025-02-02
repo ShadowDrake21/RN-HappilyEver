@@ -3,26 +3,19 @@ import { User } from '@supabase/supabase-js';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-export interface AuthStoreProps {
-  isLoggedIn: boolean;
-  isNewUser: boolean;
-  user: User | null;
-
-  setUser: (user: User | null, isNewUser: boolean) => void;
-  logOut: () => void;
+export interface UserStoreProps {
+  isNewUser: boolean | null;
+  setIsNewUser: (isNewUser: boolean | null) => void;
 }
 
-export const useAuthStore = create<AuthStoreProps>()(
+export const useUserStorage = create<UserStoreProps>()(
   persist(
     (set) => ({
-      isLoggedIn: false,
-      isNewUser: false,
-      user: null,
-      setUser: (user, isNewUser) => set({ user, isLoggedIn: !!user, isNewUser }),
-      logOut: () => set({ user: null, isLoggedIn: false, isNewUser: false }),
+      isNewUser: null,
+      setIsNewUser: (isNewUser) => set({ isNewUser }),
     }),
     {
-      name: 'auth-storage',
+      name: 'user-storage',
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

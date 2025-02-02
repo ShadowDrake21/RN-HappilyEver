@@ -1,18 +1,6 @@
-import { useState } from 'react';
 import { FieldErrors } from 'react-hook-form';
 
-import LocalTokenStorage from '~/storage/LocalTokenStorage';
-import { IMainSettingsExtendedForm } from '~/types/main-settings.types';
-
-export const setAuthDataToStorage = async (
-  accessToken: string,
-  refreshToken: string,
-  expirationTime: number
-) => {
-  await LocalTokenStorage.setItem('accessToken', accessToken);
-  await LocalTokenStorage.setItem('refreshToken', refreshToken);
-  await LocalTokenStorage.setItem('expirationTime', expirationTime || 0);
-};
+import { IMainSettingsExtendedForm, ProfileInterestsIds } from '~/types/main-settings.types';
 
 export const getErrorMessage = (
   errors: FieldErrors<IMainSettingsExtendedForm>,
@@ -20,4 +8,31 @@ export const getErrorMessage = (
 ): string | undefined => {
   const [firstField, secondField] = fieldName.split('.');
   return (errors?.[firstField as keyof IMainSettingsExtendedForm] as any)?.[secondField]?.message;
+};
+
+export const addInterest = (all: ProfileInterestsIds[], newInterest: ProfileInterestsIds) => {
+  const updatedInterests = [...all];
+  const index = updatedInterests.findIndex((item) => item.categoryId === newInterest.categoryId);
+
+  if (index !== -1) {
+    updatedInterests[index].interestIds.push(newInterest.interestIds[0]);
+  }
+
+  return updatedInterests;
+};
+
+export const removeInterest = (all: ProfileInterestsIds[], newInterest: ProfileInterestsIds) => {
+  const updatedInterests = [...all];
+  const index = updatedInterests.findIndex((item) => item.categoryId === newInterest.categoryId);
+
+  if (index !== -1) {
+    updatedInterests[index].interestIds = updatedInterests[index].interestIds.filter(
+      (id) => id !== newInterest.interestIds[0]
+    );
+    if (updatedInterests[index].interestIds.length === 0) {
+      updatedInterests.splice(index, 1);
+    }
+  }
+
+  return updatedInterests;
 };

@@ -4,7 +4,7 @@ import { useMainSettings } from '~/context/MainSettingsContext';
 import { IMainSettingsBasicForm } from '~/types/main-settings.types';
 
 const useProfileBasicForm = () => {
-  const { setProfileBasicForm } = useMainSettings();
+  const { state, dispatch } = useMainSettings();
   const {
     control,
     handleSubmit,
@@ -23,7 +23,7 @@ const useProfileBasicForm = () => {
   });
 
   const onSubmit = (data: IMainSettingsBasicForm) => {
-    setProfileBasicForm(data);
+    dispatch({ type: 'SET_PROFILE_BASIC_FORM', payload: data });
   };
 
   return { control, submit: handleSubmit(onSubmit), getValues, setValue, errors };

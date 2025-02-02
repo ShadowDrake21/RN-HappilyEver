@@ -1,36 +1,48 @@
-import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useReducer } from 'react';
 
-import { IMainSettingsBasicForm, IMainSettingsExtendedForm } from '~/types/main-settings.types';
+import { MainSettingsActionType, MainSettingsStateType } from '~/types/main-settings.types';
 
 type MainSettingsContextType = {
-  countryId: string;
-  profileBasicForm: IMainSettingsBasicForm | undefined;
-  profileExtendedForm: IMainSettingsExtendedForm | undefined;
-  setCountryId: (id: string) => void;
-  setProfileBasicForm: (form: IMainSettingsBasicForm) => void;
-  setProfileExtendedForm: (form: IMainSettingsExtendedForm) => void;
+  state: MainSettingsStateType;
+  dispatch: React.Dispatch<MainSettingsActionType>;
 };
 
 const MainSettingsContext = createContext<MainSettingsContextType | undefined>(undefined);
 
+const MainSettingsState: MainSettingsStateType = {
+  countryId: '',
+  profileBasicForm: undefined,
+  profileExtendedForm: undefined,
+  photos: [],
+  interests: [],
+  idealMatch: undefined,
+};
+
+const reducer = (state: typeof MainSettingsState, action: MainSettingsActionType) => {
+  switch (action.type) {
+    case 'SET_COUNTRY_ID':
+      return { ...state, countryId: action.payload };
+    case 'SET_PROFILE_BASIC_FORM':
+      return { ...state, profileBasicForm: action.payload };
+    case 'SET_PROFILE_EXTENDED_FORM':
+      return { ...state, profileExtendedForm: action.payload };
+    case 'SET_PHOTOS':
+      return { ...state, photos: action.payload };
+    case 'SET_INTERESTS':
+      return { ...state, interests: action.payload };
+    case 'SET_IDEAL_MATCH':
+      return { ...state, idealMatch: action.payload };
+  }
+};
+
 export const MainSettingsProvider = ({ children }: PropsWithChildren) => {
-  const [countryId, setCountryId] = useState('');
-  const [profileBasicForm, setProfileBasicForm] = useState<IMainSettingsBasicForm | undefined>(
-    undefined
-  );
-  const [profileExtendedForm, setProfileExtendedForm] = useState<
-    IMainSettingsExtendedForm | undefined
-  >(undefined);
+  const [state, dispatch] = useReducer(reducer, MainSettingsState);
 
   return (
     <MainSettingsContext.Provider
       value={{
-        countryId,
-        profileBasicForm,
-        profileExtendedForm,
-        setCountryId,
-        setProfileBasicForm,
-        setProfileExtendedForm,
+        state,
+        dispatch,
       }}>
       {children}
     </MainSettingsContext.Provider>

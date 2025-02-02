@@ -1,12 +1,10 @@
-import React, { PropsWithChildren } from 'react';
-import { StyleProp, TextStyle } from 'react-native';
+import React from 'react';
 import { Text as PaperText } from 'react-native-paper';
 
 import { defaultTitleStyles } from '~/constants/styles';
+import { CustomTextProps } from '~/types/basic.types';
 
-type MediumTitleProps = PropsWithChildren & { style?: StyleProp<TextStyle> };
-
-const MediumTitle = ({ children, style }: MediumTitleProps) => {
+const MediumTitle = ({ children, style }: CustomTextProps) => {
   return (
     <PaperText variant="headlineMedium" style={[defaultTitleStyles, style]}>
       {children}

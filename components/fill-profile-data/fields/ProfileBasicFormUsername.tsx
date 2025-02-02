@@ -7,7 +7,11 @@ import ProfileBasicFormError from '../ProfileBasicFormError';
 import { ProfileBasicFormField } from '~/types/main-settings.types';
 import { getFormRule } from '~/utils/forms.utils';
 
-const ProfileBasicFormUsername = ({ control, errors }: ProfileBasicFormField) => {
+const ProfileBasicFormUsername = ({
+  control,
+  errors,
+  autoCapitalize = 'none',
+}: ProfileBasicFormField) => {
   return (
     <>
       <Controller
@@ -28,6 +32,8 @@ const ProfileBasicFormUsername = ({ control, errors }: ProfileBasicFormField) =>
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            autoCapitalize={autoCapitalize}
+            autoCorrect={false}
           />
         )}
         name="username"
