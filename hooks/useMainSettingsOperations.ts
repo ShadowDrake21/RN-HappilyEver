@@ -17,7 +17,7 @@ import {
 import { callAlert, callToast } from '~/utils/ui.utils';
 
 // TODO: Make better instant data validation
-
+// USE MORE REACT QUERY
 const useMainSettingsOperations = () => {
   const { state } = useMainSettings();
   const { getToken, userId } = useAuth();
@@ -69,6 +69,9 @@ const useMainSettingsOperations = () => {
         }
 
         await updateProfileContentFilledOut(token, userId, true);
+
+        const nameParts = state.profileBasicForm?.fullName.split(' ');
+        user.update({ firstName: nameParts?.[0], lastName: nameParts?.slice(1).join(' ') });
         callToast({ text1: 'Congratulations!', text2: 'Your profile is ready!' });
         router.replace('/home');
       } catch (error) {

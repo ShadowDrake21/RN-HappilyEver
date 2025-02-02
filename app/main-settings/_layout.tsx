@@ -1,4 +1,4 @@
-import HeaderLeftButton from '@components/main-settings/HeaderLeftButton';
+import HeaderLeftButton from '@components/main-settings/HeaderActionButton';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
