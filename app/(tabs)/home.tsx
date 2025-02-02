@@ -1,10 +1,16 @@
 import { useAuth, useSession, useUser } from '@clerk/clerk-expo';
+import SwipperButton from '@components/home/swipper/SwipperButton';
 import HeaderActionButton from '@components/main-settings/HeaderActionButton';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
+import Fontisto from '@expo/vector-icons/Fontisto';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useQuery } from '@tanstack/react-query';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs } from 'expo-router';
 import React, { useEffect } from 'react';
-import { Image, Pressable, View, useWindowDimensions } from 'react-native';
-import { Text as PaperText } from 'react-native-paper';
+import { Image, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Text as PaperText, Chip } from 'react-native-paper';
 import Animated, {
   Extrapolation,
   FadeInDown,
@@ -14,8 +20,13 @@ import Animated, {
 import Carousel, { TAnimationStyle } from 'react-native-reanimated-carousel';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { COLORS } from '~/constants/colors';
+import { mock_users } from '~/content/users.content';
 import useMainSettingsOperations from '~/hooks/useMainSettingsOperations';
-
+import { ICountry } from '~/types/country.types';
+import { IUserProfile } from '~/types/user.types';
+import { fetchCountries } from '~/utils/fetch.utils';
+import { getFullYears } from '~/utils/helpers.utils';
 const Page = () => {
   const { user } = useUser();
   const { signOut } = useAuth();
@@ -34,23 +45,12 @@ const Page = () => {
 
   const headerHeight = 100;
   const PAGE_WIDTH = width;
-  const PAGE_HEIGHT = (height - headerHeight) * 0.7;
+  const PAGE_HEIGHT = (height - headerHeight) * 0.8;
 
   const directionAnimVal = useSharedValue(0);
 
-  const data = [
-    'https://i.pinimg.com/736x/0d/48/da/0d48dab8bb202a0594a3621149457cd8.jpg',
-    'https://i.pinimg.com/736x/12/4d/52/124d522e99598ebab12830548752f0ff.jpg',
-    'https://i.pinimg.com/736x/18/d4/66/18d466fe95be59d2f6b8c7499b395f56.jpg',
-    'https://i.pinimg.com/736x/26/7e/f1/267ef15d3024c65e01a5cb9d9cdc172e.jpg',
-    'https://i.pinimg.com/736x/62/d0/03/62d003e115866aa311b0afbe076b62c0.jpg',
-    'https://i.pinimg.com/736x/2f/d8/2c/2fd82ce9bc1158363c219da88fb2adf5.jpg',
-    'https://i.pinimg.com/736x/5a/ac/c3/5aacc396a82613c9bb422a0d683a3287.jpg',
-    'https://i.pinimg.com/736x/96/19/ee/9619eea768fef8da46d2967963a38eea.jpg',
-    'https://i.pinimg.com/736x/1e/eb/63/1eeb6385d073c6d4246d361e983c5ff7.jpg',
-    'https://i.pinimg.com/736x/93/c8/39/93c8391da28158d061a340b3a3f16672.jpg',
-    'https://i.pinimg.com/736x/cf/7f/af/cf7faf35edccd8e12e9db8a0140f7a6c.jpg',
-  ];
+  const data = [...mock_users];
+
   const animationStyle: TAnimationStyle = React.useCallback(
     (value: number) => {
       'worklet';
@@ -98,15 +98,19 @@ const Page = () => {
                   style={{ width: 50, height: 50, borderRadius: 25 }}
                 />
                 <View className="gap-2">
-                  <PaperText variant="titleSmall">Let’s discover someone special!</PaperText>
-                  <PaperText variant="titleSmall" style={{ fontWeight: 'bold' }}>
+                  <PaperText variant="titleSmall" style={{ color: COLORS.grayish }}>
+                    Let’s discover someone special!
+                  </PaperText>
+                  <PaperText
+                    variant="titleSmall"
+                    style={{ fontWeight: 'bold', color: COLORS.gray }}>
                     {user?.fullName || user?.primaryEmailAddress?.emailAddress}
                   </PaperText>
                 </View>
               </View>
               <View>
                 <Pressable onPress={() => console.log('settings')}>
-                  <Feather name="settings" size={24} color="black" />
+                  <Feather name="settings" size={24} color={COLORS.gray} />
                 </Pressable>
               </View>
             </View>
@@ -134,19 +138,52 @@ const Page = () => {
             });
           }}
           fixedDirection="negative"
-          renderItem={({ index, item }) => <Item key={index} img={item} />}
+          renderItem={({ index, item }) => <Item key={index} item={item} />}
           customAnimation={animationStyle}
           windowSize={5}
         />
+        <View className="absolute -bottom-12 left-0 w-full flex-row items-end justify-center gap-5 p-4">
+          <SwipperButton
+            icon={<MaterialCommunityIcons name="shuffle-variant" size={24} color="grey" />}
+            onPress={() => console.log('Shuffle')}
+            type="secondary"
+          />
+          <SwipperButton
+            icon={<MaterialCommunityIcons name="cancel" size={28} color="red" />}
+            onPress={() => console.log('Remove')}
+            type="secondary"
+          />
+          <SwipperButton
+            icon={<AntDesign name="heart" size={28} color="pink" />}
+            onPress={() => console.log('Like')}
+            type="secondary"
+          />
+          <SwipperButton
+            icon={<AntDesign name="star" size={24} color="yellow" />}
+            onPress={() => console.log('Shuffle')}
+            type="secondary"
+          />
+        </View>
       </View>
     </>
   );
 };
 
-const Item: React.FC<{ img: string }> = ({ img }) => {
+const Item: React.FC<{ item: IUserProfile }> = ({ item }) => {
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
   const width = windowWidth * 0.9;
-  const height = windowHeight * 0.6;
+  const height = windowHeight * 0.9;
+  const isUserActive = true;
+
+  const { data: userCountry, isLoading } = useQuery<ICountry[]>({
+    queryFn: () =>
+      fetchCountries('https://restcountries.com/v3.1/alpha/' + item.countryId.toLowerCase()),
+    queryKey: ['country', item.countryId],
+  });
+
+  useEffect(() => {
+    console.log('userCountry', userCountry);
+  }, [userCountry]);
 
   return (
     <Animated.View
@@ -157,30 +194,74 @@ const Item: React.FC<{ img: string }> = ({ img }) => {
         height,
         alignItems: 'center',
         justifyContent: 'center',
-
         alignSelf: 'center',
+        position: 'relative',
+        borderRadius: 20,
       }}>
       <View
         style={{
-          borderWidth: 1,
-          borderColor: 'black',
           flex: 1,
-          borderRadius: 20,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
         <Image
-          source={{ uri: img }}
+          source={{ uri: item.profileUrl }}
           style={{
             width,
             height,
-            borderRadius: 20,
             flex: 1,
+            borderRadius: 20,
           }}
         />
+        <LinearGradient
+          // Background Linear Gradient
+          colors={['rgba(150,0,255, 0.8)', 'transparent']}
+          style={styles.background}
+        />
+        <View className="absolute bottom-10 left-0 w-full flex-row items-center p-4">
+          <View>
+            <PaperText variant="headlineMedium" style={{ color: 'white', fontWeight: 700 }}>
+              {item.fullName.split(' ')[0]}, {getFullYears(item.birthDate)}
+            </PaperText>
+            <PaperText variant="titleSmall" style={{ color: 'white' }}>
+              {item.occupation}, {userCountry?.[0]?.name?.common}
+            </PaperText>
+          </View>
+          <View className="flex-1 items-center ">
+            <Chip
+              icon={() =>
+                isUserActive ? (
+                  <View
+                    style={{ width: 10, height: 10, backgroundColor: 'green', borderRadius: 50 }}
+                  />
+                ) : (
+                  <View
+                    style={{ width: 10, height: 10, backgroundColor: 'red', borderRadius: 50 }}
+                  />
+                )
+              }
+              onPress={() => console.log('Pressed')}
+              style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+              textStyle={{ color: 'white' }}>
+              {isUserActive ? 'Active' : 'Inactive'}
+            </Chip>
+          </View>
+        </View>
       </View>
     </Animated.View>
   );
 };
 
 export default Page;
+
+const styles = StyleSheet.create({
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    transform: [{ rotate: '180deg' }],
+    height: 400,
+    borderRadius: 20,
+  },
+});

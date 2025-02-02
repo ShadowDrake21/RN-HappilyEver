@@ -64,7 +64,8 @@
     "react-native-web": "~0.19.10",
     "react-phone-number-input": "^3.4.11",
     "uuid": "^11.0.5",
-    "zustand": "^4.5.1"
+    "zustand": "^4.5.1",
+    "expo-linear-gradient": "~14.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
