@@ -70,7 +70,7 @@ const Page = () => {
           <Swipper carouselRef={carouselRef} />
         </View>
 
-        <View className="bottom-9 w-full flex-row items-end justify-center gap-5  ">
+        <View className="bottom-9  w-full flex-row items-end justify-center gap-5">
           <SwipperButton
             icon={<MaterialCommunityIcons name="shuffle-variant" size={24} color="grey" />}
             onPress={() => {

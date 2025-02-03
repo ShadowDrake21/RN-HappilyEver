@@ -11,10 +11,10 @@ const TabsLayout = () => {
       <Tabs.Screen name="home" />
       <Tabs.Screen name="messages" />
       <Tabs.Screen name="likes" />
-      <Tabs.Screen name="profile" />
-      <Tabs.Screen name="premium" />
       <Tabs.Screen name="events" />
       <Tabs.Screen name="search" />
+      <Tabs.Screen name="profile" />
+      <Tabs.Screen name="premium" />
     </Tabs>
   );
 };
