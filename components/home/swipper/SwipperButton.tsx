@@ -14,7 +14,7 @@ const SwipperButton = ({
   return (
     <TouchableOpacity
       className="rounded-full"
-      style={[{ backgroundColor: '#09004c' }, type === 'main' ? { padding: 20 } : { padding: 15 }]}
+      style={[{ backgroundColor: '#09004c' }, type === 'main' ? { padding: 30 } : { padding: 20 }]}
       onPress={onPress}>
       {icon}
     </TouchableOpacity>

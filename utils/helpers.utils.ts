@@ -43,3 +43,11 @@ export const getFullYears = (data: Date | undefined) => {
   const diff = today.getTime() - data.getTime();
   return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
 };
+
+export const shuffleArray = (array: any[]) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
