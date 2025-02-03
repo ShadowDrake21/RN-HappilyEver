@@ -4,9 +4,10 @@ import SwipperButton from '@components/home/swipper/SwipperButton';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Tabs } from 'expo-router';
-import React, { useEffect, useRef } from 'react';
-import { Image, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { Image, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Text as PaperText } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,6 +15,7 @@ import { type SwiperCardRefType } from 'rn-swiper-list';
 
 import { COLORS } from '~/constants/colors';
 import useMainSettingsOperations from '~/hooks/useMainSettingsOperations';
+
 const Page = () => {
   const { user } = useUser();
   const { signOut } = useAuth();
@@ -21,6 +23,7 @@ const Page = () => {
   const { fetchMainSettingsAvalability } = useMainSettingsOperations();
   const { top } = useSafeAreaInsets();
   const carouselRef = useRef<SwiperCardRefType>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
     if (session) {
@@ -28,6 +31,10 @@ const Page = () => {
 
       fetchMainSettingsAvalability();
     }
+  }, []);
+
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
   }, []);
 
   return (
@@ -56,7 +63,10 @@ const Page = () => {
                   </PaperText>
                 </View>
               </View>
-              <View>
+              <View className="flex-row items-center gap-3">
+                <Pressable onPress={() => console.log('settings')}>
+                  <Feather name="search" size={24} color={COLORS.gray} />
+                </Pressable>
                 <Pressable onPress={() => console.log('settings')}>
                   <Feather name="settings" size={24} color={COLORS.gray} />
                 </Pressable>
@@ -94,6 +104,17 @@ const Page = () => {
             type="secondary"
           />
         </View>
+        <BottomSheet
+          ref={bottomSheetRef}
+          onChange={handleSheetChanges}
+          snapPoints={['60%']}
+          backgroundStyle={{ backgroundColor: COLORS.dark }}
+          containerStyle={{ borderRadius: 20 }}
+          onClose={() => console.log('close')}>
+          <BottomSheetView style={styles.contentContainer} collapsable>
+            <Text>Awesome 🎉</Text>
+          </BottomSheetView>
+        </BottomSheet>
       </GestureHandlerRootView>
     </>
   );
@@ -136,4 +157,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  contentContainer: {
+    flex: 1,
+    padding: 36,
+    alignItems: 'center',
+    backgroundColor: COLORS.dark,
+  },
+  // bottomSheet: {
+  //   position: 'absolute',
+  //   top: 0,
+  //   left: 0,
+  //   right: 0,
+  //   bottom: 0,
+  // },
 });

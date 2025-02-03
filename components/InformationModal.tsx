@@ -1,19 +1,8 @@
 import ParagraphText from '@components/ui/ParagraphText';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import {
-  Modal,
-  PaperProvider,
-  Portal,
-  Text as PaperText,
-  Button,
-  Icon,
-  MD3Colors,
-  IconButton,
-} from 'react-native-paper';
-
-import HeaderActionButton from './main-settings/HeaderActionButton';
+import { StyleSheet, View } from 'react-native';
+import { Modal, Text as PaperText, Button, Icon, MD3Colors, IconButton } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
 import { useMatchesModalContext } from '~/context/MatchesModalContext';
