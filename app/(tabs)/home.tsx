@@ -1,17 +1,13 @@
 import { useAuth, useSession, useUser } from '@clerk/clerk-expo';
+import FilterBottomSheet from '@components/home/bottom-sheet/FilterBottomSheet';
 import Swipper from '@components/home/swipper/Swipper';
 import SwipperButton from '@components/home/swipper/SwipperButton';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
-import { Tabs } from 'expo-router';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import BottomSheet from '@gorhom/bottom-sheet';
+import React, { useEffect, useRef, useState } from 'react';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Text as PaperText } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -39,64 +35,46 @@ const Page = () => {
     }
   }, []);
 
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
-
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />
-    ),
-    []
-  );
-
   return (
     <>
-      <Tabs.Screen
-        options={{
-          header: () => (
-            <View className="flex-row items-center justify-between p-4" style={{ paddingTop: top }}>
-              <View className="flex-row items-center gap-3">
-                <Image
-                  source={{
-                    uri:
-                      user?.imageUrl ||
-                      'https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg',
-                  }}
-                  style={{ width: 50, height: 50, borderRadius: 25 }}
-                />
-                <View className="gap-2">
-                  <PaperText variant="titleSmall" style={{ color: COLORS.grayish }}>
-                    Let’s discover someone special!
-                  </PaperText>
-                  <PaperText
-                    variant="titleSmall"
-                    style={{ fontWeight: 'bold', color: COLORS.gray }}>
-                    {user?.fullName || user?.primaryEmailAddress?.emailAddress}
-                  </PaperText>
-                </View>
-              </View>
-              <View className="flex-row items-center gap-3">
-                <Pressable onPress={() => console.log('settings')}>
-                  <Feather name="search" size={24} color={COLORS.gray} />
-                </Pressable>
-                <Pressable
-                  onPress={() => {
-                    if (bottomSheetExpanded) {
-                      bottomSheetRef.current?.close();
-                    } else {
-                      bottomSheetRef.current?.expand();
-                    }
-                    setBottomSheetExpanded((prevValue) => !prevValue);
-                  }}>
-                  <Feather name="settings" size={24} color={COLORS.gray} />
-                </Pressable>
-              </View>
-            </View>
-          ),
-        }}
-      />
       <GestureHandlerRootView style={styles.container}>
+        <View className="flex-row items-center justify-between p-4" style={{ paddingTop: top }}>
+          <View className="flex-row items-center gap-3">
+            <Image
+              source={{
+                uri:
+                  user?.imageUrl ||
+                  'https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg',
+              }}
+              style={{ width: 50, height: 50, borderRadius: 25 }}
+            />
+            <View className="gap-2">
+              <PaperText variant="titleSmall" style={{ color: COLORS.grayish }}>
+                Let’s discover someone special!
+              </PaperText>
+              <PaperText variant="titleSmall" style={{ fontWeight: 'bold', color: COLORS.gray }}>
+                {user?.fullName || user?.primaryEmailAddress?.emailAddress}
+              </PaperText>
+            </View>
+          </View>
+          <View className="flex-row items-center gap-3">
+            <Pressable onPress={() => console.log('settings')}>
+              <Feather name="search" size={24} color={COLORS.gray} />
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                if (bottomSheetExpanded) {
+                  bottomSheetRef.current?.close();
+                } else {
+                  bottomSheetRef.current?.expand();
+                }
+                setBottomSheetExpanded((prevValue) => !prevValue);
+              }}>
+              <Feather name="settings" size={24} color={COLORS.gray} />
+            </Pressable>
+          </View>
+        </View>
+
         <View style={styles.subContainer}>
           <Swipper carouselRef={carouselRef} />
         </View>
@@ -125,18 +103,7 @@ const Page = () => {
             type="secondary"
           />
         </View>
-        <BottomSheet
-          ref={bottomSheetRef}
-          onChange={handleSheetChanges}
-          backdropComponent={renderBackdrop}
-          snapPoints={['60%']}
-          backgroundStyle={{ backgroundColor: COLORS.extraDark }}
-          containerStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
-          index={-1}>
-          <BottomSheetView style={styles.contentContainer} collapsable>
-            <Text>Awesome 🎉</Text>
-          </BottomSheetView>
-        </BottomSheet>
+        <FilterBottomSheet bottomSheetRef={bottomSheetRef} />
       </GestureHandlerRootView>
     </>
   );
@@ -147,10 +114,12 @@ export default Page;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    position: 'relative',
+    // paddingHorizontal: 20,
   },
   subContainer: {
+    paddingHorizontal: 20,
+    flex: 1,
+    alignItems: 'center',
     height: '90%',
   },
   buttonsContainer: {
@@ -181,8 +150,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    padding: 36,
-    alignItems: 'center',
+    padding: 20,
   },
   // bottomSheet: {
   //   position: 'absolute',
@@ -191,4 +159,37 @@ const styles = StyleSheet.create({
   //   right: 0,
   //   bottom: 0,
   // },
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
 });
