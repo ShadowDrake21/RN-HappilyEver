@@ -9,7 +9,6 @@ import Toast from 'react-native-toast-message';
 
 import { tokenCache } from '~/cache';
 import { MatchesModalProvider } from '~/context/MatchesModalContext';
-import { useUserStorage } from '~/store/store';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -32,7 +31,6 @@ const RootLayout = () => {
   const { isLoaded, isSignedIn } = useAuth();
   const segments = useSegments();
   const router = useRouter();
-  const { isNewUser } = useUserStorage();
 
   useEffect(() => {
     if (!isLoaded) return;
