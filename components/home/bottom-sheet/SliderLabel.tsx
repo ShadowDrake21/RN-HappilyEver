@@ -15,7 +15,7 @@ const pointerWidth = width * 0.47;
 
 function LabelBase(props: any) {
   const { position, value, pressed } = props;
-  const scaleValue = React.useRef(new Animated.Value(0.1)); // Behaves oddly if set to 0
+  const scaleValue = React.useRef(new Animated.Value(0.1));
   const cachedPressed = React.useRef(pressed);
 
   React.useEffect(() => {

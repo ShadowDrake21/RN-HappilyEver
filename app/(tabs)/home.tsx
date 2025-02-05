@@ -24,13 +24,10 @@ const Page = () => {
   const { top } = useSafeAreaInsets();
   const carouselRef = useRef<SwiperCardRefType>(null);
 
-  const [bottomSheetExpanded, setBottomSheetExpanded] = useState(false);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
     if (session) {
-      console.log('session', !!session);
-
       fetchMainSettingsAvalability();
     }
   }, []);
@@ -63,12 +60,7 @@ const Page = () => {
             </Pressable>
             <Pressable
               onPress={() => {
-                if (bottomSheetExpanded) {
-                  bottomSheetRef.current?.close();
-                } else {
-                  bottomSheetRef.current?.expand();
-                }
-                setBottomSheetExpanded((prevValue) => !prevValue);
+                bottomSheetRef.current?.expand();
               }}>
               <Feather name="settings" size={24} color={COLORS.gray} />
             </Pressable>
@@ -114,7 +106,6 @@ export default Page;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingHorizontal: 20,
   },
   subContainer: {
     paddingHorizontal: 20,
