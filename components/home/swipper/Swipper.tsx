@@ -1,16 +1,16 @@
-import ParagraphText from '@components/ui/ParagraphText';
-import React, { PropsWithRef, RefObject, useCallback, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Button, Modal, PaperProvider, Portal, Text as PaperText } from 'react-native-paper';
+import MediumTitle from '@components/ui/MediumTitle';
+import { useRouter } from 'expo-router';
+import React, { PropsWithRef, RefObject, useCallback, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Swiper, SwiperCardRefType } from 'rn-swiper-list';
 
 import SwipperItem from './SwipperItem';
-import SwipperModal from '../../InformationModal';
 
 import { mock_users } from '~/content/users.content';
 import { useMatchesModalContext } from '~/context/MatchesModalContext';
 
 const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCardRefType>> }) => {
+  const router = useRouter();
   const [data, setData] = useState([...mock_users]);
   const { setIsVisible } = useMatchesModalContext();
 
@@ -22,8 +22,9 @@ const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCa
           {
             backgroundColor: 'green',
           },
-        ]}
-      />
+        ]}>
+        <MediumTitle>Suggest a Match</MediumTitle>
+      </View>
     );
   }, []);
   const OverlayLabelLeft = useCallback(() => {
@@ -34,8 +35,9 @@ const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCa
           {
             backgroundColor: 'red',
           },
-        ]}
-      />
+        ]}>
+        <MediumTitle>Looking for Someone Else</MediumTitle>
+      </View>
     );
   }, []);
   const OverlayLabelTop = useCallback(() => {
@@ -43,11 +45,27 @@ const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCa
       <View
         style={[
           styles.overlayLabelContainer,
+
           {
             backgroundColor: 'blue',
           },
-        ]}
-      />
+        ]}>
+        <MediumTitle>Explore Potential Match</MediumTitle>
+      </View>
+    );
+  }, []);
+
+  const OverlayLabelBottom = useCallback(() => {
+    return (
+      <View
+        style={[
+          styles.overlayLabelContainer,
+          {
+            backgroundColor: 'orange',
+          },
+        ]}>
+        <MediumTitle>Make the First Move</MediumTitle>
+      </View>
     );
   }, []);
   return (
@@ -72,11 +90,12 @@ const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCa
         console.log('onSwipeLeft', cardIndex);
       }}
       onSwipeTop={(cardIndex) => {
-        console.log('onSwipeTop', cardIndex);
+        router.push(`/user/${data[cardIndex].id}`);
       }}
       OverlayLabelRight={OverlayLabelRight}
       OverlayLabelLeft={OverlayLabelLeft}
       OverlayLabelTop={OverlayLabelTop}
+      OverlayLabelBottom={OverlayLabelBottom}
       onSwipeActive={() => {
         console.log('onSwipeActive');
       }}
@@ -104,5 +123,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 25,
+    justifyContent: 'center',
   },
 });

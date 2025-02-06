@@ -1,7 +1,7 @@
 import ParagraphText from '@components/ui/ParagraphText';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Modal, Text as PaperText, Button, Icon, MD3Colors, IconButton } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
@@ -29,11 +29,12 @@ const InformationModal = () => {
       }}
       contentContainerStyle={containerStyle}
       dismissableBackButton={false}>
-      <IconButton
-        style={{ position: 'absolute', top: 0, right: 0 }}
-        icon={() => <Icon source="close" color={MD3Colors.error50} size={32} />}
-        onPress={() => hideModal()}
-      />
+      <Pressable
+        style={{ position: 'absolute', top: 10, right: 10, zIndex: 100 }}
+        onPress={hideModal}>
+        <Icon source="close" color={MD3Colors.error50} size={32} />
+      </Pressable>
+
       <View className="gap-5 py-5">
         <PaperText variant="headlineSmall" style={{ fontWeight: '700' }}>
           Your Journey to Lasting Love

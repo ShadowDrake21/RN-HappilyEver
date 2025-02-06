@@ -4,6 +4,7 @@ import InformationModal from '@components/InformationModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
+import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
@@ -55,6 +56,7 @@ const RootLayout = () => {
       <Stack.Screen name="auth" />
       <Stack.Screen name="main-settings" />
       <Stack.Screen name="home" />
+      <Stack.Screen name="user" />
     </Stack>
   );
 };
