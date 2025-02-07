@@ -1,5 +1,6 @@
-import ActivityBadge from '@components/shared/ActivityBadge';
 import CustomLoader from '@components/ui/CustomLoader';
+import UserBackgroundCarousel from '@components/user/UserBackgroundCarousel';
+import UserBasicInfo from '@components/user/UserBasicInfo';
 import UserIdealMatch from '@components/user/UserIdealMatch';
 import UserInterests from '@components/user/UserInterests';
 import UserPhotos from '@components/user/UserPhotos';
@@ -8,18 +9,19 @@ import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useQuery } from '@tanstack/react-query';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
-import { Image, ImageBackground, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { COLORS } from '~/constants/colors';
+import { unknownFlag } from '~/constants/links';
 import { mock_full_users } from '~/content/users.content';
 import { ICountry } from '~/types/country.types';
 import { IUserFullProfile } from '~/types/user.types';
 import { fetchCountries } from '~/utils/fetch.utils';
-import { getFullYears } from '~/utils/helpers.utils';
 
+// TODO: ADD PAGINATION TO CONTENT
 const Page = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -30,6 +32,7 @@ const Page = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const isUserActive = true;
   const { width } = useWindowDimensions();
+  const { bottom } = useSafeAreaInsets();
 
   const { data: userCountry, isLoading } = useQuery<ICountry[]>({
     queryFn: () =>
@@ -69,49 +72,42 @@ const Page = () => {
           ),
         }}
       />
-      <ImageBackground source={{ uri: user?.profileUrl }} resizeMode="cover" style={{ flex: 1 }}>
-        <GestureHandlerRootView>
-          <BottomSheet
-            ref={bottomSheetRef}
-            onClose={() => bottomSheetRef.current?.close()}
-            snapPoints={['50%', '80%']}
-            backgroundStyle={{ backgroundColor: COLORS.extraDark, borderRadius: 25 }}
-            containerStyle={[styles.container, { marginTop: top }]}
-            index={0}>
-            {user && (
-              <BottomSheetScrollView
-                contentContainerStyle={{ flex: 1 }}
-                style={styles.contentContainer}>
-                <Text>{user?.profileBasicForm.fullName}</Text>
-                <Text>{getFullYears(user?.profileBasicForm.birthDate)}</Text>
-                <View>
-                  <ActivityBadge isUserActive={isUserActive} />
-                </View>
-                <Text>{user?.profileBasicForm.occupation}</Text>
-                <Text>{user?.profileBasicForm.gender}</Text>
-                <Text>{user?.profileBasicForm.username}</Text>
-                {userCountry && (
-                  <Image
-                    source={{ uri: userCountry[0].flags.png }}
-                    style={{ width: 100, height: 75 }}
-                  />
-                )}
-                <Text>{userCountry ? userCountry[0].name.common : user?.countryId}</Text>
-                <UserQuestions rawQuestions={user.profileExtendedForm} />
-                <UserPhotos photos={user.photos} width={width} />
-                <UserInterests
-                  userName={user.profileBasicForm.fullName}
-                  interestsIds={user.interests}
-                />
-                <UserIdealMatch
-                  userName={user.profileBasicForm.fullName}
-                  idealMatchId={user.idealMatch}
-                />
-              </BottomSheetScrollView>
-            )}
-          </BottomSheet>
-        </GestureHandlerRootView>
-      </ImageBackground>
+      {user?.photos && <UserBackgroundCarousel photos={user?.photos} />}
+      <GestureHandlerRootView style={{ flex: 1, zIndex: 20, position: 'relative' }}>
+        <BottomSheet
+          ref={bottomSheetRef}
+          onClose={() => bottomSheetRef.current?.close()}
+          snapPoints={['20%', '80%']}
+          backgroundStyle={{ backgroundColor: COLORS.extraDark, borderRadius: 25 }}
+          containerStyle={[styles.container, { marginTop: top }]}
+          index={0}>
+          {user && (
+            <BottomSheetScrollView
+              contentContainerStyle={{ flex: 1, paddingBottom: bottom, gap: 15 }}
+              style={styles.contentContainer}>
+              <UserBasicInfo
+                profileBasicForm={user.profileBasicForm}
+                country={{
+                  countryFlagImg: userCountry?.[0].flags?.png || unknownFlag,
+                  countryId: user.countryId,
+                  countryName: userCountry?.[0].name.common || user.countryId,
+                }}
+                isUserActive={isUserActive}
+              />
+              <UserQuestions rawQuestions={user.profileExtendedForm} />
+              <UserPhotos photos={user.photos} width={width} />
+              <UserInterests
+                userName={user.profileBasicForm.fullName}
+                interestsIds={user.interests}
+              />
+              <UserIdealMatch
+                userName={user.profileBasicForm.fullName}
+                idealMatchId={user.idealMatch}
+              />
+            </BottomSheetScrollView>
+          )}
+        </BottomSheet>
+      </GestureHandlerRootView>
     </>
   );
 };

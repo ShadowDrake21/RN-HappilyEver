@@ -8,3 +8,7 @@ export const getInterestsLine = (
     .filter((interest) => profileInterest.interestIds.some((id) => id === interest.id))
     .map((interest) => interest.title)
     .join(', ');
+
+export const formatCategory = (category: string) => {
+  return category.replace(/([a-z])([A-Z])/g, '$1 $2');
+};

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
+import { COLORS } from '~/constants/colors';
 import {
   familyFutureContent,
   lifeGoalsContent,
@@ -8,6 +9,7 @@ import {
   personalConnectionContent,
 } from '~/content/profile-extended-form.content';
 import { IUserQuestion } from '~/types/user.types';
+import { formatCategory } from '~/utils/format.utils';
 
 const questionsContent = [
   ...lifeGoalsContent,
@@ -40,12 +42,18 @@ const UserQuestions = ({ rawQuestions }: { rawQuestions: IUserQuestion[] | undef
 
   return (
     <FlatList
+      scrollEnabled={false}
       data={questions}
-      renderItem={({ item }) => (
+      contentContainerStyle={{ gap: 10 }}
+      renderItem={({ item, index }) => (
         <View>
-          <Text>{item.category}</Text>
-          <Text>{item.question}</Text>
-          <Text>{item.answer}</Text>
+          <Text style={{ color: COLORS.text, textTransform: 'capitalize', fontWeight: '700' }}>
+            {formatCategory(item.category)}:
+          </Text>
+          <Text style={{ color: COLORS.text, fontWeight: '600' }}>
+            {index + 1}. {item.question}
+          </Text>
+          <Text style={{ color: COLORS.text }}>{item.answer}</Text>
         </View>
       )}
       keyExtractor={(item) => item.question}
