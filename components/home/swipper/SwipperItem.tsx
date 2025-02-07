@@ -1,3 +1,4 @@
+import ActivityBadge from '@components/shared/ActivityBadge';
 import { useQuery } from '@tanstack/react-query';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
@@ -49,21 +50,7 @@ const SwipperItem = ({ item }: { item: IUserProfile }) => {
           </PaperText>
         </View>
         <View className="flex-1 items-center ">
-          <Chip
-            icon={() =>
-              isUserActive ? (
-                <View
-                  style={{ width: 10, height: 10, backgroundColor: 'green', borderRadius: 50 }}
-                />
-              ) : (
-                <View style={{ width: 10, height: 10, backgroundColor: 'red', borderRadius: 50 }} />
-              )
-            }
-            onPress={() => console.log('Pressed')}
-            style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
-            textStyle={{ color: 'white' }}>
-            {isUserActive ? 'Active' : 'Inactive'}
-          </Chip>
+          <ActivityBadge isUserActive={isUserActive} onPress={() => console.log('Pressed')} />
         </View>
       </View>
     </View>

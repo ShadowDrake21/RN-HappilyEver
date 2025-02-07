@@ -21,5 +21,5 @@ export interface IUserFullProfile {
     url: string;
   }[];
   interests: ProfileInterestsIds[];
-  idealMatch: ProfileIdealMatch;
+  idealMatch: ProfileIdealMatch['id'];
 }

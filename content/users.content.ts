@@ -17,7 +17,7 @@ export const mock_users: IUserProfile[] = [
     fullName: 'Sophia Martinez',
     username: 'sophia_m',
     gender: 'Female',
-    birthDate: new Date(2006, 2, 24), // March 24, 1998
+    birthDate: new Date(2006, 2, 24),
     phoneNumber: '+1987654321',
     countryId: 'US',
     profileUrl: 'https://i.pinimg.com/736x/12/4d/52/124d522e99598ebab12830548752f0ff.jpg',
@@ -211,11 +211,7 @@ export const mock_full_users: IUserFullProfile[] = [
         interestIds: ['tt6', 'tt3', 'tt1', 'tt2'],
       },
     ],
-    idealMatch: {
-      id: 'relationship',
-      title: 'Long-term relationship',
-      description: 'Looking for a partner to grow and build a future with.',
-    },
+    idealMatch: 'relationship',
   },
   {
     id: '0411cb6b-8171-4132-949f-278a1b474314',
@@ -313,11 +309,7 @@ export const mock_full_users: IUserFullProfile[] = [
         interestIds: ['tt6', 'tt3', 'tt1', 'tt2'],
       },
     ],
-    idealMatch: {
-      id: 'marriage',
-      title: 'Marriage',
-      description: 'Looking for a life partner to build a future with.',
-    },
+    idealMatch: 'marriage',
   },
   {
     id: '0be7b553-b897-4c9f-93bc-46b822f16742',
@@ -416,10 +408,6 @@ export const mock_full_users: IUserFullProfile[] = [
         interestIds: ['tt6', 'tt3', 'tt1', 'tt2'],
       },
     ],
-    idealMatch: {
-      id: 'companionship',
-      title: 'Companionship',
-      description: 'Seeking a kind-hearted person to share life’s journey.',
-    },
+    idealMatch: 'companionship',
   },
 ];
