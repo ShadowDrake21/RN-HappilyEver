@@ -15,11 +15,19 @@ export interface IUserFullProfile {
   profileUrl: string;
   countryId: string;
   profileBasicForm: IMainSettingsBasicForm;
-  profileExtendedForm: { category: string; question: string; answer: string }[] | undefined;
-  photos: {
-    name: string;
-    url: string;
-  }[];
+  profileExtendedForm: IUserQuestion[] | undefined;
+  photos: IUserPhoto[];
   interests: ProfileInterestsIds[];
   idealMatch: ProfileIdealMatch['id'];
+}
+
+export interface IUserPhoto {
+  name: string;
+  url: string;
+}
+
+export interface IUserQuestion {
+  category: string;
+  question: string;
+  answer: string;
 }
