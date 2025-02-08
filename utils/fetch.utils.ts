@@ -6,6 +6,7 @@ export const fetchCountries = async (
   url: string = 'https://restcountries.com/v3.1/all',
   config?: AxiosRequestConfig<any> | undefined
 ): Promise<ICountry[]> => {
+  console.log('fetchCountries', url);
   return axios
     .get(url)
     .then((res) => {

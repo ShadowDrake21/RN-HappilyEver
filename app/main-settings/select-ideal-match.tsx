@@ -4,9 +4,7 @@ import ParagraphText from '@components/ui/ParagraphText';
 import React from 'react';
 import { View } from 'react-native';
 
-import { useMainSettings } from '~/context/MainSettingsContext';
 import useSaveMainSettings from '~/hooks/useMainSettingsOperations';
-import { setProfileQuestions } from '~/supabase/supabase-typed.requests';
 
 const Page = () => {
   const { saveMainSettings } = useSaveMainSettings();

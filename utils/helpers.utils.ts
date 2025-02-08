@@ -36,3 +36,18 @@ export const removeInterest = (all: ProfileInterestsIds[], newInterest: ProfileI
 
   return updatedInterests;
 };
+
+export const getFullYears = (data: Date | undefined) => {
+  if (!data) return 0;
+  const today = new Date();
+  const diff = today.getTime() - data.getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+};
+
+export const shuffleArray = (array: any[]) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};

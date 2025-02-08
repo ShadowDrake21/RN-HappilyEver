@@ -1,5 +1,7 @@
 import { Control, FieldError } from 'react-hook-form';
 
+import { IdealMatch } from './shared.types';
+
 export type MainSettingsStateType = {
   countryId: string;
   profileBasicForm: IMainSettingsBasicForm | undefined;
@@ -87,7 +89,7 @@ export type ProfileInterestsIds = {
 };
 
 export type ProfileIdealMatch = {
-  id: 'relationship' | 'marriage' | 'companionship' | 'friendship';
+  id: IdealMatch;
   title: string;
   description: string;
 };

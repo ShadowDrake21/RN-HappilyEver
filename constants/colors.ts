@@ -5,6 +5,8 @@ export const COLORS = {
   gray: '#F2F5FA',
   grayish: '#acacac',
   extraDark: '#1e354b',
+  extremelyDark: '#13222f',
+
   dark: '#28435c',
   lightDark: '#3a506b',
   light: '#c3abd1',
@@ -14,6 +16,7 @@ export const COLORS = {
   subtext: '#B0C4DE',
   error: '#FF0000',
   mainPurple: '#9600ff',
+  secondaryPurple: '#3e135dca',
 
   slayish: '#5c5879',
 };

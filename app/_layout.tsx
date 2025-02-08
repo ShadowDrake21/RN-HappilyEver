@@ -1,13 +1,15 @@
 import '../global.css';
 import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
+import InformationModal from '@components/InformationModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
+import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
 import { tokenCache } from '~/cache';
-import { useUserStorage } from '~/store/store';
+import { MatchesModalProvider } from '~/context/MatchesModalContext';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -30,7 +32,6 @@ const RootLayout = () => {
   const { isLoaded, isSignedIn } = useAuth();
   const segments = useSegments();
   const router = useRouter();
-  const { isNewUser } = useUserStorage();
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -55,6 +56,7 @@ const RootLayout = () => {
       <Stack.Screen name="auth" />
       <Stack.Screen name="main-settings" />
       <Stack.Screen name="home" />
+      <Stack.Screen name="user" />
     </Stack>
   );
 };
@@ -65,8 +67,11 @@ const Layout = () => {
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
         <QueryClientProvider client={queryClient}>
-          <RootLayout />
-          <Toast position="top" topOffset={top} />
+          <MatchesModalProvider>
+            <RootLayout />
+            <Toast position="top" topOffset={top} />
+            <InformationModal />
+          </MatchesModalProvider>
         </QueryClientProvider>
       </ClerkLoaded>
     </ClerkProvider>
