@@ -1,8 +1,10 @@
 import Feather from '@expo/vector-icons/Feather';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { Pressable } from 'react-native';
 
 import { COLORS } from '~/constants/colors';
 import { MainSettingsProvider } from '~/context/MainSettingsContext';
@@ -10,6 +12,7 @@ const TabsLayout = () => {
   return (
     <Tabs
       screenOptions={{
+        headerTitleStyle: { fontSize: 20 },
         sceneStyle: { backgroundColor: COLORS.extraDark },
         tabBarStyle: {
           backgroundColor: COLORS.extraDark,
@@ -52,6 +55,20 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="profile"
         options={{
+          title: 'Profile',
+          headerStyle: { backgroundColor: COLORS.extraDark },
+          headerTintColor: COLORS.text,
+          headerShadowVisible: false,
+          headerLeft: () => (
+            <Pressable style={{ marginLeft: 10 }} onPress={() => console.log('support')}>
+              <FontAwesome5 name="headset" size={24} color={COLORS.grayish} />
+            </Pressable>
+          ),
+          headerRight: () => (
+            <Pressable style={{ marginRight: 10 }} onPress={() => console.log('edit')}>
+              <Feather name="edit" size={24} color={COLORS.grayish} />
+            </Pressable>
+          ),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account-circle-outline" size={size} color={color} />
           ),

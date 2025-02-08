@@ -6,6 +6,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import BottomSheet from '@gorhom/bottom-sheet';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -18,6 +19,7 @@ import useMainSettingsOperations from '~/hooks/useMainSettingsOperations';
 
 const Page = () => {
   const { user } = useUser();
+  const router = useRouter();
   const { signOut } = useAuth();
   const { session } = useSession();
   const { fetchMainSettingsAvalability } = useMainSettingsOperations();
@@ -55,7 +57,7 @@ const Page = () => {
             </View>
           </View>
           <View className="flex-row items-center gap-3">
-            <Pressable onPress={() => console.log('settings')}>
+            <Pressable onPress={() => router.push('/search')}>
               <Feather name="search" size={24} color={COLORS.gray} />
             </Pressable>
             <Pressable

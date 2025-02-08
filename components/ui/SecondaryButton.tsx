@@ -1,15 +1,17 @@
 import React, { PropsWithChildren } from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 import { Button, Text as PaperText } from 'react-native-paper';
+import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
 import { COLORS } from '~/constants/colors';
 
 type SecondaryButtonProps = PropsWithChildren & {
   onPress: () => void;
   style: ViewStyle;
+  icon?: IconSource;
 };
 
-const SecondaryButton = ({ children, onPress, style }: SecondaryButtonProps) => {
+const SecondaryButton = ({ children, onPress, style, icon }: SecondaryButtonProps) => {
   return (
     <Button
       mode="contained"
@@ -21,6 +23,7 @@ const SecondaryButton = ({ children, onPress, style }: SecondaryButtonProps) => 
         style,
       ]}
       contentStyle={styles.content}
+      icon={icon}
       onPress={onPress}>
       <PaperText variant="labelLarge" style={{ color: COLORS.text }}>
         {children}

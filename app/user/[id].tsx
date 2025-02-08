@@ -21,7 +21,7 @@ import { ICountry } from '~/types/country.types';
 import { IUserFullProfile } from '~/types/user.types';
 import { fetchCountries } from '~/utils/fetch.utils';
 
-// TODO: ADD PAGINATION TO CONTENT
+// TODO: ADD PAGINATION TO CONTENT + FINISH REFACTORING
 const Page = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -117,15 +117,6 @@ export default Page;
 const styles = StyleSheet.create({
   container: { borderTopLeftRadius: 20, borderTopRightRadius: 20 },
   contentContainer: {
-    // flex: 1,
     padding: 20,
   },
-  item: {
-    borderWidth: 1,
-    borderColor: COLORS.gray,
-    borderRadius: 10,
-    marginVertical: 5,
-    paddingHorizontal: 10,
-  },
-  itemTitle: { fontSize: 16, fontWeight: 'bold', color: COLORS.text },
 });
