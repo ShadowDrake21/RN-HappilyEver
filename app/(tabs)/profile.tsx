@@ -6,33 +6,63 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import React, { useRef, useState } from 'react';
-import { ScrollView, Alert, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { COLORS } from '~/constants/colors';
-import useSelectProfileImage from '~/hooks/useSelectProfileImage';
+import usePickImageFromGallery from '~/hooks/usePickProfileImageFromGallery';
+import useTakeProfileImageByCamera from '~/hooks/useTakeProfileImageByCamera';
 
 const Page = () => {
   const { bottom } = useSafeAreaInsets();
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [toggleBottomSheet, setToggleBottomSheet] = useState(false);
+
   const [selectedProfileImage, setSelectedProfileImage] = useState<string>('');
-  const { pickImageAsync, takeImageAsync } = useSelectProfileImage({
-    selectedProfileImage,
-    setSelectedProfileImage,
-  });
+  const [buttonsVisibility, setButtonsVisibility] = useState(false);
+
+  const { pickFromGalleryAsync } = usePickImageFromGallery();
+  const { takeByCameraAsync } = useTakeProfileImageByCamera();
+
+  const onPickFromGallery = async () => {
+    const image = await pickFromGalleryAsync();
+    setSelectedProfileImage(image);
+    setButtonsVisibility(true);
+    bottomSheetRef.current?.close();
+  };
+
+  const onTakeByCamera = async () => {
+    const image = await takeByCameraAsync();
+    setSelectedProfileImage(image);
+    setButtonsVisibility(true);
+    bottomSheetRef.current?.close();
+  };
+
+  const onProfileImagePress = () => {
+    if (toggleBottomSheet) {
+      setToggleBottomSheet(false);
+      bottomSheetRef.current?.close();
+    } else {
+      setToggleBottomSheet(true);
+      bottomSheetRef.current?.expand();
+    }
+  };
+
+  const resetSelectedImage = () => {
+    setSelectedProfileImage('');
+    setButtonsVisibility(false);
+  };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ paddingHorizontal: 20, gap: 20 }}>
           <ProfileSelectImage
-            bottomSheetRef={bottomSheetRef}
-            toggleBottomSheet={toggleBottomSheet}
-            setToggleBottomSheet={setToggleBottomSheet}
-            selectedProfileImage={selectedProfileImage}
-            setSelectedProfileImage={setSelectedProfileImage}
+            onImagePress={onProfileImagePress}
+            isSelection={buttonsVisibility}
+            selectedImage={selectedProfileImage}
+            reset={resetSelectedImage}
           />
 
           <PremiumBanner />
@@ -80,7 +110,7 @@ const Page = () => {
           style={{ padding: 20 }}>
           <SecondaryButton
             style={{ backgroundColor: COLORS.slayish }}
-            onPress={() => takeImageAsync(bottomSheetRef)}
+            onPress={onTakeByCamera}
             icon={({ size }) => (
               <MaterialIcons name="photo-camera" size={size} color={COLORS.text} />
             )}>
@@ -88,7 +118,7 @@ const Page = () => {
           </SecondaryButton>
           <SecondaryButton
             style={{ backgroundColor: COLORS.accent2 }}
-            onPress={() => pickImageAsync(bottomSheetRef)}
+            onPress={onPickFromGallery}
             icon={({ size }) => (
               <MaterialIcons name="photo-library" size={size} color={COLORS.text} />
             )}>
