@@ -8,22 +8,24 @@ import { Pressable } from 'react-native';
 
 import { COLORS } from '~/constants/colors';
 import { MainSettingsProvider } from '~/context/MainSettingsContext';
+import { ProfileImageSelectionProvider } from '~/context/ProfileImageSelectionContext';
 const TabsLayout = () => {
+  const screenOptions = {
+    headerTitleStyle: { fontSize: 20 },
+    sceneStyle: { backgroundColor: COLORS.extraDark },
+    tabBarStyle: {
+      backgroundColor: COLORS.extraDark,
+      borderTopWidth: 0,
+    },
+    tabBarInactiveTintColor: COLORS.grayish,
+    tabBarActiveTintColor: COLORS.mainPurple,
+    tabBarLabelStyle: {
+      textTransform: 'capitalize' as 'capitalize',
+    },
+  };
+
   return (
-    <Tabs
-      screenOptions={{
-        headerTitleStyle: { fontSize: 20 },
-        sceneStyle: { backgroundColor: COLORS.extraDark },
-        tabBarStyle: {
-          backgroundColor: COLORS.extraDark,
-          borderTopWidth: 0,
-        },
-        tabBarInactiveTintColor: COLORS.grayish,
-        tabBarActiveTintColor: COLORS.mainPurple,
-        tabBarLabelStyle: {
-          textTransform: 'capitalize',
-        },
-      }}>
+    <Tabs screenOptions={screenOptions}>
       <Tabs.Screen
         name="home"
         options={{
@@ -88,7 +90,9 @@ const TabsLayout = () => {
 
 const Layout = () => (
   <MainSettingsProvider>
-    <TabsLayout />
+    <ProfileImageSelectionProvider>
+      <TabsLayout />
+    </ProfileImageSelectionProvider>
   </MainSettingsProvider>
 );
 
