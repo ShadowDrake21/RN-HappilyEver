@@ -41,7 +41,8 @@ const RootLayout = () => {
     console.log('User changed: ', isSignedIn);
 
     if (isSignedIn && !inTabsGroup) {
-      router.replace('/home');
+      // router.replace('/home');
+      router.replace('/main-settings/select-country');
     } else if (!isSignedIn) {
       router.replace('/onboarding/onboarding-first');
     }

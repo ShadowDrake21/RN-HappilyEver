@@ -2,7 +2,7 @@ import SmallParagraphText from '@components/ui/SmallParagraphText';
 import SmallSectionTitle from '@components/ui/SmallSectionTitle';
 import Subtitle from '@components/ui/Subtitle';
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, View } from 'react-native';
 
 import { COLORS } from '~/constants/colors';
 import { profileIdealMatch, profileIdealMatchIcons } from '~/content/profile-ideal-match.content';
@@ -50,5 +50,3 @@ const UserIdealMatch = ({
 };
 
 export default UserIdealMatch;
-
-const styles = StyleSheet.create({});

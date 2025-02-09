@@ -1,7 +1,7 @@
 import ActivityBadge from '@components/shared/ActivityBadge';
 import MediumTitle from '@components/ui/MediumTitle';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
@@ -22,10 +22,9 @@ const UserBasicInfo = ({
   return (
     <View className="gap-3">
       <View style={styles.topContainer}>
-        <MediumTitle style={{ textAlign: 'left', paddingBottom: 0 }}>
+        <MediumTitle style={styles.title}>
           {profileBasicForm.fullName}, {getFullYears(profileBasicForm.birthDate)}
         </MediumTitle>
-
         <View>
           <ActivityBadge isUserActive={isUserActive} />
         </View>
@@ -33,18 +32,14 @@ const UserBasicInfo = ({
       <PaperText variant="titleLarge" style={styles.text}>
         @{profileBasicForm.username}
       </PaperText>
-
       <PaperText variant="titleMedium" style={styles.text}>
         {profileBasicForm.gender}, {profileBasicForm.occupation}
       </PaperText>
-
       <View className="flex-row items-center gap-2">
         <PaperText variant="titleSmall" style={styles.text}>
           From
         </PaperText>
-
-        <Image source={{ uri: countryFlagImg }} style={{ width: 100, height: 75 }} />
-
+        <Image source={{ uri: countryFlagImg }} className="h-[75px] w-[100px]" />
         <PaperText variant="titleSmall" style={styles.text}>
           {countryName ?? countryId}
         </PaperText>
@@ -61,5 +56,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
   },
+  title: { textAlign: 'left', paddingBottom: 0 },
   text: { color: COLORS.text, fontWeight: '600' },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Image, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
 
@@ -21,9 +21,8 @@ const UserBackgroundCarousel = ({ photos }: { photos: IUserPhoto[] }) => {
         autoPlayInterval={4000}
         data={photos || []}
         defaultScrollOffsetValue={scrollOffsetValue}
-        style={{ width: '100%', height: '100%' }}
         renderItem={({ item, index }) => (
-          <Image source={{ uri: item.url }} style={{ width: '100%', height: '100%' }} key={index} />
+          <Image source={{ uri: item.url }} className="h-full w-full" key={index} />
         )}
       />
     </View>
@@ -31,5 +30,3 @@ const UserBackgroundCarousel = ({ photos }: { photos: IUserPhoto[] }) => {
 };
 
 export default UserBackgroundCarousel;
-
-const styles = StyleSheet.create({});

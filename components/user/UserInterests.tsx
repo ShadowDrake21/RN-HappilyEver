@@ -1,13 +1,12 @@
-import MediumTitle from '@components/ui/MediumTitle';
 import SmallSectionTitle from '@components/ui/SmallSectionTitle';
 import Subtitle from '@components/ui/Subtitle';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
-import { profileInterests } from '~/content/profile-interests.content';
-import { ProfileInterestsCategory, ProfileInterestsIds } from '~/types/main-settings.types';
+import useRetrieveInterests from '~/hooks/useRetrieveInterests';
+import { ProfileInterestsIds } from '~/types/main-settings.types';
 
 const UserInterests = ({
   userName,
@@ -16,57 +15,29 @@ const UserInterests = ({
   userName: string;
   interestsIds: ProfileInterestsIds[];
 }) => {
-  const [categoryItems, setCategoryItems] = useState<ProfileInterestsCategory[]>([]);
-
-  useEffect(() => {
-    retrieveCategories();
-
-    return () => {
-      setCategoryItems([]);
-    };
-  }, []);
-
-  const retrieveCategories = () => {
-    interestsIds.forEach((interest) => {
-      const selectedCategory = profileInterests.find((item) => item.id === interest.categoryId)!;
-      const selectedInterests = selectedCategory?.interests.filter((item) =>
-        interest.interestIds.includes(item.id)
-      )!;
-
-      setCategoryItems((prev) => [
-        ...prev,
-        {
-          id: selectedCategory?.id,
-          category: selectedCategory?.category,
-          interests: selectedInterests,
-        },
-      ]);
-    });
-  };
+  const categoryItems = useRetrieveInterests(interestsIds);
 
   return (
     <FlatList
       scrollEnabled={false}
       data={categoryItems}
       keyExtractor={(item) => item.id}
-      contentContainerStyle={{ gap: 10 }}
+      contentContainerStyle={styles.gap10}
       ListHeaderComponent={
-        <SmallSectionTitle style={{ paddingBottom: 0 }}>
+        <SmallSectionTitle style={styles.pb0}>
           What {userName.split(' ')[0]} looks for in a relationship:
         </SmallSectionTitle>
       }
       renderItem={({ item }) => (
         <View>
-          <Subtitle style={{ paddingBottom: 0 }}>{item.category}</Subtitle>
+          <Subtitle style={styles.pb0}>{item.category}</Subtitle>
           {item.interests.map((item) => (
             <List.Item
               key={item.title}
               title={item.title}
               description={item.description}
               style={styles.item}
-              contentStyle={{
-                gap: 10,
-              }}
+              contentStyle={styles.gap10}
               titleStyle={styles.itemTitle}
               descriptionStyle={{ color: COLORS.grayish }}
               left={() => <Text>{item.icon}</Text>}
@@ -89,4 +60,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   itemTitle: { fontSize: 16, fontWeight: 'bold', color: COLORS.text },
+  pb0: { paddingBottom: 0 },
+  gap10: { gap: 10 },
 });

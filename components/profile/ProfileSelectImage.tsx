@@ -14,31 +14,28 @@ const ProfileSelectImage = ({ onImagePress }: { onImagePress: () => void }) => {
   const { buttonsVisibility, selectedImage, resetSelectedImage } =
     useProfileImageSelectionContext();
 
-  const saveProfileImage = () => {
-    return user?.setProfileImage({ file: selectedImage }).then(() => resetSelectedImage());
-  };
-
-  const onSave = async () => {
+  const saveProfileImage = async () => {
     setSelectionLoading(true);
-    await saveProfileImage();
+    await user?.setProfileImage({ file: selectedImage });
+    resetSelectedImage();
     setSelectionLoading(false);
   };
 
   return (
-    <View style={{ position: 'relative', flex: 1 }}>
-      <View style={{ flexDirection: 'row', gap: 15, alignSelf: 'center' }}>
+    <View className="relative flex-1">
+      <View className="flex-row gap-[15px] self-center">
         <View className="self-center">
           <Pressable onPress={onImagePress}>
             {selectedImage ? (
               <Image
                 source={{ uri: selectedImage }}
-                style={{ width: 200, height: 200, borderRadius: 100 }}
+                className="h-[200px] w-[200px] rounded-[100px]"
                 resizeMode="cover"
               />
             ) : (
               <Image
                 source={{ uri: user?.imageUrl }}
-                style={{ width: 200, height: 200, borderRadius: 100 }}
+                className="h-[200px] w-[200px] rounded-[100px]"
                 resizeMode="cover"
               />
             )}
@@ -46,26 +43,13 @@ const ProfileSelectImage = ({ onImagePress }: { onImagePress: () => void }) => {
         </View>
         {buttonsVisibility && (
           <View style={{ justifyContent: 'center' }}>
-            <IconButton icon="check" iconColor="green" size={30} onPress={onSave} />
+            <IconButton icon="check" iconColor="green" size={30} onPress={saveProfileImage} />
             <IconButton icon="close" iconColor="red" size={30} onPress={resetSelectedImage} />
           </View>
         )}
         {selectionLoading && (
-          <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <LoaderKit
-              name="BallPulseSync"
-              style={{ width: 80, height: 80 }}
-              color={COLORS.mainPurple}
-            />
+          <View className="absolute bottom-0 left-0 right-0 top-0 items-center justify-center">
+            <LoaderKit name="BallPulseSync" style={styles.loader} color={COLORS.mainPurple} />
           </View>
         )}
       </View>
@@ -75,4 +59,6 @@ const ProfileSelectImage = ({ onImagePress }: { onImagePress: () => void }) => {
 
 export default ProfileSelectImage;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  loader: { width: 80, height: 80 },
+});
