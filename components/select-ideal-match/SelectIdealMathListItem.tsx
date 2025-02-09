@@ -23,7 +23,6 @@ const SelectIdealMathListItem = ({ item }: { item: ProfileIdealMatch }) => {
         source={profileIdealMatchIcons[item.id as keyof typeof profileIdealMatchIcons]}
         className="h-[100px] w-[100px]"
       />
-
       <Subtitle style={{ paddingBottom: 0 }}>{item.title}</Subtitle>
       <SmallParagraphText style={{ textAlign: 'center' }}>{item.description}</SmallParagraphText>
     </Pressable>

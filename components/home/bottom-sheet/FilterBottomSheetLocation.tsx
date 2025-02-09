@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -6,8 +5,8 @@ import { Text as PaperText } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
 import { defaultTitleStyles } from '~/constants/styles';
+import useFetchCountries from '~/hooks/useFetchCountries';
 import { ICountry } from '~/types/country.types';
-import { fetchCountries } from '~/utils/fetch.utils';
 
 type FilterBottomSheetLocationProps = {
   selectedLocation: string;
@@ -20,9 +19,11 @@ const FilterBottomSheetLocation = ({
 }: FilterBottomSheetLocationProps) => {
   const [isFocus, setIsFocus] = useState(false);
 
-  const { data: allCountries, isLoading } = useQuery<ICountry[]>({
-    queryFn: () => fetchCountries('https://restcountries.com/v3.1/all?fields=name,idd,cca2'),
-    queryKey: ['allCountries'],
+  const { data: allCountries, isLoading } = useFetchCountries({
+    url: 'https://restcountries.com/v3.1/all',
+    config: { params: { fields: 'name,idd,cca2' } },
+
+    queryKey: ['countries'],
   });
 
   return (
