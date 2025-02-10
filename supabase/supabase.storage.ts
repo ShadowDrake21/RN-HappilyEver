@@ -55,20 +55,23 @@ export const uploadImage = async ({
 
 export const downloadImage = async ({ token, imagePath }: { token: string; imagePath: string }) => {
   const supabase = await supabaseClient(token);
-  const { data, error } = await supabase.storage.from('user-phots').download(imagePath);
+  const { data, error } = await supabase.storage.from('user-photos').download(imagePath);
 
   if (error) {
     console.error('Error downloading image:', error);
-  } else if (data) {
-    try {
-      readFileAsDataURL(data);
-    } catch (error) {
-      console.error('Error reading image:', error);
-    }
-  } else {
-    console.error('No data or error returned');
   }
-  return null;
+  if (!data) {
+    console.error('No data returned');
+    return null;
+  }
+
+  try {
+    const dataUrl = readFileAsDataURL(data);
+    return dataUrl;
+  } catch (error) {
+    console.error('Error reading image:', error);
+    return null;
+  }
 };
 
 export const updateImage = async ({

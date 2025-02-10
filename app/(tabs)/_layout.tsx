@@ -9,6 +9,7 @@ import { Pressable } from 'react-native';
 import { COLORS } from '~/constants/colors';
 import { MainSettingsProvider } from '~/context/MainSettingsContext';
 import { ProfileImageSelectionProvider } from '~/context/ProfileImageSelectionContext';
+import { SwipesProvider } from '~/context/SwipesContext';
 const TabsLayout = () => {
   const screenOptions = {
     headerTitleStyle: { fontSize: 20 },
@@ -90,9 +91,11 @@ const TabsLayout = () => {
 
 const Layout = () => (
   <MainSettingsProvider>
-    <ProfileImageSelectionProvider>
-      <TabsLayout />
-    </ProfileImageSelectionProvider>
+    <SwipesProvider>
+      <ProfileImageSelectionProvider>
+        <TabsLayout />
+      </ProfileImageSelectionProvider>
+    </SwipesProvider>
   </MainSettingsProvider>
 );
 

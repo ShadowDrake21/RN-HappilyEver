@@ -19,6 +19,11 @@ export const getProfiles = async (token: string) => {
   return await getData(token, 'profiles');
 };
 
+export const getProfilesByGender = async (token: string, gender: 'male' | 'female') => {
+  console.log('getProfilesByGender', gender);
+  return await getData(token, 'profiles', { gender });
+};
+
 export const getUserCountryId = async (token: string, user_id: string) => {
   return await getData(token, 'profiles_locations', { user_id });
 };

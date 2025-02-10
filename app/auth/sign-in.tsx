@@ -11,9 +11,6 @@ import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
 import useLogin from '~/hooks/useLogin';
-import useMainSettingsOperations from '~/hooks/useMainSettingsOperations';
-import { getProfileSettingsFilledOut } from '~/supabase/supabase-typed.requests';
-import { callToast } from '~/utils/ui.utils';
 
 const Page = () => {
   const { bottom } = useSafeAreaInsets();

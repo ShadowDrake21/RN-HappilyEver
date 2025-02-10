@@ -1,3 +1,4 @@
+import { useAuth, useUser } from '@clerk/clerk-expo';
 import ProfileAccountActions from '@components/profile/ProfileAccountActions';
 import ProfileOptionsList from '@components/profile/ProfileOptionsList';
 import ProfileSelectImage from '@components/profile/ProfileSelectImage';
@@ -11,6 +12,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useProfileImageSelectionContext } from '~/context/ProfileImageSelectionContext';
 
 const Page = () => {
+  const { signOut } = useAuth();
+
   const bottomSheetRef = useRef<BottomSheet>(null);
   const { toggleBottomSheet, setToggleBottomSheet } = useProfileImageSelectionContext();
   const onProfileImagePress = () => {
@@ -31,10 +34,7 @@ const Page = () => {
           <PremiumBanner />
           <>
             <ProfileOptionsList />
-            <ProfileAccountActions
-              onDelete={() => console.log('delete')}
-              onSignOut={() => console.log('sign out')}
-            />
+            <ProfileAccountActions onDelete={() => console.log('delete')} onSignOut={signOut} />
           </>
         </View>
       </ScrollView>
