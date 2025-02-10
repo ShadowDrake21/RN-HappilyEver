@@ -50,7 +50,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "The app accesses your gallery to select photos for your profile."
+          "photosPermission": "The app requires access to your gallery for selecting profile pictures and sharing photos within the app.",
+          "cameraPermission": "The app needs access to your camera to take photos for your profile and share them within the app."
         }
       ]
     ],

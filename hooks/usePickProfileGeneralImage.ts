@@ -5,7 +5,7 @@ import { useMainSettings } from '~/context/MainSettingsContext';
 import { ProfilePhoto } from '~/types/main-settings.types';
 import { callToast } from '~/utils/ui.utils';
 
-const usePickProfileImage = () => {
+const usePickProfileGeneralImage = () => {
   const { state, dispatch } = useMainSettings();
   const [selectedImage, setSelectedImage] = useState<ProfilePhoto | null>(null);
 
@@ -55,4 +55,4 @@ const usePickProfileImage = () => {
   };
 };
 
-export default usePickProfileImage;
+export default usePickProfileGeneralImage;

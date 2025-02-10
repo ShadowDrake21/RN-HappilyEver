@@ -3,7 +3,6 @@ import CustomLoader from '@components/ui/CustomLoader';
 import EmptyLabel from '@components/ui/EmptyLabel';
 import { useFocusEffect } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import { useQuery } from '@tanstack/react-query';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
@@ -12,8 +11,8 @@ import { Searchbar } from 'react-native-paper';
 import MainButtonLink from '~/components/ui/MainButtonLink';
 import { COLORS } from '~/constants/colors';
 import { useMainSettings } from '~/context/MainSettingsContext';
+import useFetchCountries from '~/hooks/useFetchCountries';
 import { ICountry } from '~/types/country.types';
-import { fetchCountries } from '~/utils/fetch.utils';
 
 const Page = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,8 +24,9 @@ const Page = () => {
     dispatch({ type: 'SET_COUNTRY_ID', payload: id });
   }, []);
 
-  const { data: allCountries, isLoading } = useQuery<ICountry[]>({
-    queryFn: () => fetchCountries('https://restcountries.com/v3.1/all?fields=name,flags,idd,cca2'),
+  const { data: allCountries, isLoading } = useFetchCountries({
+    url: 'https://restcountries.com/v3.1/all',
+    config: { params: { fields: 'name,flags,idd,cca2' } },
     queryKey: ['allCountries'],
   });
 

@@ -1,4 +1,4 @@
-import { FlatList, Image, Text, View } from 'react-native';
+import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
@@ -7,7 +7,7 @@ import { IUserPhoto } from '~/types/user.types';
 const UserPhotos = ({ photos, width }: { photos: IUserPhoto[]; width: number }) => {
   return (
     <View>
-      <PaperText variant="titleMedium" style={{ color: COLORS.text, fontWeight: '600' }}>
+      <PaperText variant="titleMedium" style={styles.subtitle}>
         {photos.length} photos
       </PaperText>
 
@@ -19,7 +19,8 @@ const UserPhotos = ({ photos, width }: { photos: IUserPhoto[]; width: number }) 
         renderItem={({ item }) => (
           <Image
             source={{ uri: item }}
-            style={{ height: width + 200, width: width - 80, borderRadius: 40 }}
+            className="rounded-[40px]"
+            style={{ height: width + 200, width: width - 80 }}
           />
         )}
       />
@@ -28,3 +29,7 @@ const UserPhotos = ({ photos, width }: { photos: IUserPhoto[]; width: number }) 
 };
 
 export default UserPhotos;
+
+const styles = StyleSheet.create({
+  subtitle: { color: COLORS.text, fontWeight: '600' },
+});

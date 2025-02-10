@@ -3,10 +3,8 @@ import MainButtonLink from '@components/ui/MainButtonLink';
 import ParagraphText from '@components/ui/ParagraphText';
 import React from 'react';
 import { FlatList, View } from 'react-native';
-import { Text as PaperText } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { COLORS } from '~/constants/colors';
 import useRequestGalleryPermissions from '~/hooks/useRequestGalleryPermissions';
 
 const AVAILABLE_PHOTOS = 4;

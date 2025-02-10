@@ -4,7 +4,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
-  View,
   ViewStyle,
 } from 'react-native';
 
@@ -16,7 +15,7 @@ const TouchableKeyboardAvoidingView = ({
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={{ flex: 1, ...style }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={offset}>
         {children}

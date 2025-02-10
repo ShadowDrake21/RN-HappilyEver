@@ -55,8 +55,8 @@ const RootLayout = () => {
       <Stack.Screen name="onboarding" />
       <Stack.Screen name="auth" />
       <Stack.Screen name="main-settings" />
-      <Stack.Screen name="home" />
-      <Stack.Screen name="user" />
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="user/[id]" />
     </Stack>
   );
 };

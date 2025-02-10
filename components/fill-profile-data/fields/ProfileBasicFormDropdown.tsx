@@ -1,4 +1,4 @@
-import CustomSelectDropdown from '@components/CustomSelectDropdown';
+import CustomSelectDropdown from '@components/select-dropdown/CustomSelectDropdown';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
@@ -33,3 +33,5 @@ const ProfileBasicFormDropdown = ({ control, errors }: ProfileBasicFormField) =>
 };
 
 export default ProfileBasicFormDropdown;
+
+//REFACTOR

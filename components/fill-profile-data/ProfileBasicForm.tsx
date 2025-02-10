@@ -1,5 +1,4 @@
 import MainButton from '@components/ui/MainButton';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
@@ -13,21 +12,19 @@ import ProfileBasicFormUsername from './fields/ProfileBasicFormUsername';
 
 import { unknownFlag } from '~/constants/links';
 import { useMainSettings } from '~/context/MainSettingsContext';
+import useFetchCountries from '~/hooks/useFetchCountries';
 import useProfileBasicForm from '~/hooks/useProfileBasicForm';
-import { ICountry } from '~/types/country.types';
-import { fetchCountries } from '~/utils/fetch.utils';
 
 const ProfileBasicForm = () => {
   const router = useRouter();
   const { state } = useMainSettings();
 
-  const { data: countries, isLoading } = useQuery<ICountry[]>({
-    queryFn: () =>
-      fetchCountries('https://restcountries.com/v3.1/alpha/' + state.countryId, {
-        params: { fields: 'name,flags,idd,cca2' },
-      }),
+  const { data: countries, isLoading } = useFetchCountries({
+    url: `https://restcountries.com/v3.1/alpha/${state.countryId}`,
+    config: { params: { fields: 'name,flags,idd,cca2' } },
     queryKey: ['countries'],
   });
+
   const { control, getValues, errors, setValue, submit } = useProfileBasicForm();
 
   const onFocusPhoneNumber = () => {
