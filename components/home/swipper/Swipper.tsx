@@ -44,8 +44,6 @@ const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCa
     const token = await getToken({ template: 'supabase' });
 
     if (token && userId) {
-      console.log('gender', userGender);
-
       const rawProfile = await getProfilesByGender(
         token,
         userGender === 'male' ? 'female' : 'male'

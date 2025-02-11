@@ -1,12 +1,10 @@
 import { useAuth, useUser } from '@clerk/clerk-expo';
-import { useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 
 import { useMainSettings } from '~/context/MainSettingsContext';
 import { useUserStorage } from '~/store/store';
 import {
   getProfileById,
-  getProfileSettingsFilledOut,
   getUserCountryId,
   setProfile,
   setProfileIdealMatch,
@@ -30,14 +28,12 @@ const useMainSettingsOperations = () => {
     setUserBirthday,
     setUserGender,
     setUserCountryId: setUserCountry,
-    setUserGenderLoading,
   } = useUserStorage();
 
   const { user } = useUser();
   const email = user?.emailAddresses[0].emailAddress;
 
   const fetchMainSettingsAvalability = async () => {
-    setUserGenderLoading(true);
     const token = await getToken({ template: 'supabase' });
 
     if (token && userId) {
@@ -66,7 +62,6 @@ const useMainSettingsOperations = () => {
         setUserGender(formattedUserData.gender as 'male' | 'female');
         setUserCountry(formatterUserLocation.country_id);
       }
-      setUserGenderLoading(false);
     } else {
       console.error('Missing token or userId');
     }

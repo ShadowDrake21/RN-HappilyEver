@@ -34,17 +34,13 @@ const Page = () => {
 
   useEffect(() => {
     if (session) {
-      setIsSwipesLoading(true);
       fetchMainSettingsAvalability();
-      setIsSwipesLoading(false);
     }
   }, [session]);
 
-  const renderSwipeContent = useCallback(() => {
-    console.log('renderSwipeContent');
-
-    return <></>;
-  }, []);
+  useEffect(() => {
+    console.log('isSwipesLoading HOME', isSwipesLoading);
+  }, [isSwipesLoading]);
 
   return (
     <>

@@ -8,7 +8,7 @@ type SwipesContextType = {
 const SwipesContext = createContext<SwipesContextType | undefined>(undefined);
 
 export const SwipesProvider = ({ children }: PropsWithChildren) => {
-  const [isSwipesLoading, setIsSwipesLoading] = useState(false);
+  const [isSwipesLoading, setIsSwipesLoading] = useState(true);
 
   return (
     <SwipesContext.Provider value={{ isSwipesLoading, setIsSwipesLoading }}>

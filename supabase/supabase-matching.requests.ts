@@ -24,13 +24,46 @@ export const setSwipe = async (
       });
 
       if (existingMatch.length > 0) {
-        await setData(token, 'matches', { user1_id: swiperId, user2_id: swipedId }, [
-          'user1_id',
-          'user2_id',
-        ]);
+        const matchExists = await getData(token, 'matches', {
+          user1_id: swiperId,
+          user2_id: swipedId,
+        });
+
+        if (matchExists.length === 0) {
+          await setData(token, 'matches', { user1_id: swiperId, user2_id: swipedId }, [
+            'user1_id',
+            'user2_id',
+          ]);
+
+          triggerMatchNotification(token, swiperId, swipedId);
+        }
       }
     }
   } catch (error) {
     throw error;
   }
+};
+
+const triggerMatchNotification = async (token: string, user1Id: string, user2Id: string) => {
+  await setData(
+    token,
+    'notifications',
+    {
+      recipient_id: user1Id,
+      type: 'match',
+      message: `You matched with ${user2Id}`,
+    },
+    ['recipient_id', 'message']
+  );
+
+  await setData(
+    token,
+    'notifications',
+    {
+      recipient_id: user2Id,
+      type: 'match',
+      message: `You matched with ${user1Id}`,
+    },
+    ['recipient_id', 'message']
+  );
 };

@@ -10,6 +10,8 @@ import 'reanimatedConfig';
 
 import { tokenCache } from '~/cache';
 import { MatchesModalProvider } from '~/context/MatchesModalContext';
+import useMatchListener from '~/hooks/useMatchListener';
+import { Match } from '~/types/match.types';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -63,6 +65,7 @@ const RootLayout = () => {
 
 const Layout = () => {
   const { top } = useSafeAreaInsets();
+
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
