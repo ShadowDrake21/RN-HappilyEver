@@ -30,23 +30,19 @@ const useMainSettingsOperations = () => {
     setUserBirthday,
     setUserGender,
     setUserCountryId: setUserCountry,
+    setUserGenderLoading,
   } = useUserStorage();
 
   const { user } = useUser();
   const email = user?.emailAddresses[0].emailAddress;
 
   const fetchMainSettingsAvalability = async () => {
+    setUserGenderLoading(true);
     const token = await getToken({ template: 'supabase' });
 
     if (token && userId) {
-      console.log('Fetching main settings availability');
-      // const rawResult = await getProfileSettingsFilledOut(token, userId);
       const rawUserData = await getProfileById(token, userId);
       const rawUserLocation = await getUserCountryId(token, userId);
-      console.log('rawUserData', rawUserData);
-
-      // console.log('result', result);
-      // setIsNewUser(!result);
 
       if (rawUserData.length === 0) {
         router.replace('/main-settings/select-country');
@@ -65,10 +61,12 @@ const useMainSettingsOperations = () => {
       if (!formattedUserData.isFilledOut) {
         router.replace('/main-settings/select-country');
       } else {
+        console.log('User data is filled out', formattedUserData.gender);
         setUserBirthday(formattedUserData.birthDate);
         setUserGender(formattedUserData.gender as 'male' | 'female');
         setUserCountry(formatterUserLocation.country_id);
       }
+      setUserGenderLoading(false);
     } else {
       console.error('Missing token or userId');
     }

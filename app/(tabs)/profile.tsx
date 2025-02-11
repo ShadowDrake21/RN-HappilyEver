@@ -10,9 +10,11 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useProfileImageSelectionContext } from '~/context/ProfileImageSelectionContext';
+import { useUserStorage } from '~/store/store';
 
 const Page = () => {
   const { signOut } = useAuth();
+  const { setToDefault } = useUserStorage();
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const { toggleBottomSheet, setToggleBottomSheet } = useProfileImageSelectionContext();
@@ -26,6 +28,11 @@ const Page = () => {
     }
   };
 
+  const onSignOut = async () => {
+    setToDefault();
+    await signOut();
+  };
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
@@ -34,7 +41,7 @@ const Page = () => {
           <PremiumBanner />
           <>
             <ProfileOptionsList />
-            <ProfileAccountActions onDelete={() => console.log('delete')} onSignOut={signOut} />
+            <ProfileAccountActions onDelete={() => console.log('delete')} onSignOut={onSignOut} />
           </>
         </View>
       </ScrollView>

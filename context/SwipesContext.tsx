@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 type SwipesContextType = {
   isSwipesLoading: boolean;
@@ -9,10 +9,6 @@ const SwipesContext = createContext<SwipesContextType | undefined>(undefined);
 
 export const SwipesProvider = ({ children }: PropsWithChildren) => {
   const [isSwipesLoading, setIsSwipesLoading] = useState(false);
-
-  useEffect(() => {
-    console.log('isSwipesLoading');
-  }, [isSwipesLoading]);
 
   return (
     <SwipesContext.Provider value={{ isSwipesLoading, setIsSwipesLoading }}>

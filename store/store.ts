@@ -16,6 +16,8 @@ export interface UserStoreProps {
   userGender: string | null;
   setUserGender: (userGender: string | null) => void;
   userCountryId: string | null;
+  userGenderLoading: boolean;
+  setUserGenderLoading: (userGenderLoading: boolean) => void;
   setUserCountryId: (userCountryId: string | null) => void;
   userBirthday: string | null;
   setUserBirthday: (userBirthday: string | null) => void;
@@ -33,6 +35,8 @@ export const useUserStorage = create<UserStoreProps>()(
       // setUserBasicInfo: (userBasicInfo) => set({ userBasicInfo }),
       userGender: null,
       setUserGender: (userGender) => set({ userGender }),
+      userGenderLoading: false,
+      setUserGenderLoading: (userGenderLoading) => set({ userGenderLoading }),
       userCountryId: null,
       setUserCountryId: (userCountryId) => set({ userCountryId }),
       userBirthday: null,

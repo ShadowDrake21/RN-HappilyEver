@@ -27,14 +27,16 @@ const Page = () => {
   const { session } = useSession();
 
   const { fetchMainSettingsAvalability } = useMainSettingsOperations();
-  const { isSwipesLoading } = useSwipesContext();
+  const { isSwipesLoading, setIsSwipesLoading } = useSwipesContext();
 
   const carouselRef = useRef<SwiperCardRefType>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
     if (session) {
+      setIsSwipesLoading(true);
       fetchMainSettingsAvalability();
+      setIsSwipesLoading(false);
     }
   }, [session]);
 
