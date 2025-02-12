@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   return (
-    <View>
+    <View style={{ paddingTop: 100 }}>
       <Text>{id}</Text>
     </View>
   );

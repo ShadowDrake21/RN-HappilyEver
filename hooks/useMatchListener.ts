@@ -1,4 +1,5 @@
 import { useAuth } from '@clerk/clerk-expo';
+import { SupabaseClient } from '@supabase/supabase-js';
 import { useEffect } from 'react';
 
 import { supabaseClient } from '~/supabase/supabase.client';
@@ -8,40 +9,47 @@ const useMatchListener = (showMatchScreen: (match: Match) => void) => {
   const { getToken, userId } = useAuth();
 
   useEffect(() => {
+    let subscription: any;
+    let supabase: SupabaseClient<any, 'public', any>;
+
     const initializeListener = async () => {
       try {
-        // Retrieve the token only if necessary
         const token = await getToken({ template: 'supabase' });
-        if (!token || !userId) return;
+        if (!token || !userId) {
+          console.log('No token or userId, skipping subscription.');
+          return;
+        }
 
-        const supabase = await supabaseClient(token);
+        console.log('Initializing Supabase client...');
+        supabase = await supabaseClient(token);
 
-        const subscription = supabase
+        console.log('Subscribing to Supabase Realtime...');
+        subscription = supabase
           .channel('new-match-listener')
-          .on(
-            'postgres_changes',
-            { event: 'INSERT', schema: 'public', table: 'matches' },
-            (payload) => {
-              console.log('Match data received:', payload);
-              // Uncomment and modify this part when ready to handle the match
-              // if (payload.new.user1_id === userId || payload.new.user2_id === userId) {
-              //   showMatchScreen(payload.new);
-              // }
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, (payload) => {
+            console.log('🔥 Match data received:', payload.new);
+            const matchData = payload.new as Match;
+            // Uncomment when ready
+            if (matchData.user1_id === userId || matchData.user2_id === userId) {
+              showMatchScreen(matchData);
             }
-          )
-          .subscribe();
-
-        // Cleanup subscription on unmount
-        return () => {
-          supabase.removeChannel(subscription);
-        };
+          })
+          .subscribe((status) => {
+            console.log('Subscription status:', status);
+          });
       } catch (error) {
-        console.error('Error initializing Supabase listener:', error);
+        console.error('❌ Error initializing Supabase listener:', error);
       }
     };
 
     initializeListener();
-  }, [getToken, userId]); // Only re-run when getToken or userId change
+
+    return () => {
+      if (subscription) {
+        supabase.removeChannel(subscription);
+      }
+    };
+  }, [userId, getToken]); // Include getToken to re-run if token changes
 };
 
 export default useMatchListener;
