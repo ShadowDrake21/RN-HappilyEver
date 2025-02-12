@@ -43,7 +43,10 @@ const RootLayout = () => {
     console.log('User changed: ', isSignedIn);
 
     if (isSignedIn && !inTabsGroup) {
-      router.replace('/home');
+      // router.replace('/home');
+      router.replace(
+        `/matches/30?user1_id=user_2sOdy2eBkmTxsSreCCvycC1Njxs&user2_id=user_2sq1ym63kO1tO8CsFnhwqBm2Y9P`
+      );
     } else if (!isSignedIn) {
       router.replace('/onboarding/onboarding-first');
     }
