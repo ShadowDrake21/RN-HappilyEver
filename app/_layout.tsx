@@ -4,12 +4,14 @@ import InformationModal from '@components/InformationModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
-import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import 'reanimatedConfig';
 
 import { tokenCache } from '~/cache';
 import { MatchesModalProvider } from '~/context/MatchesModalContext';
+import useMatchListener from '~/hooks/useMatchListener';
+import { Match } from '~/types/match.types';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -41,7 +43,10 @@ const RootLayout = () => {
     console.log('User changed: ', isSignedIn);
 
     if (isSignedIn && !inTabsGroup) {
-      router.replace('/home');
+      // router.replace('/home');
+      router.replace(
+        `/match/30?user1_id=user_2sOdy2eBkmTxsSreCCvycC1Njxs&user2_id=user_2sq1ym63kO1tO8CsFnhwqBm2Y9P`
+      );
     } else if (!isSignedIn) {
       router.replace('/onboarding/onboarding-first');
     }
@@ -57,12 +62,14 @@ const RootLayout = () => {
       <Stack.Screen name="main-settings" />
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="user/[id]" />
+      <Stack.Screen name="match/[id]" />
     </Stack>
   );
 };
 
 const Layout = () => {
   const { top } = useSafeAreaInsets();
+
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>

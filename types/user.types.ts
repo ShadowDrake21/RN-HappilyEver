@@ -5,6 +5,7 @@ import {
 } from './main-settings.types';
 
 export interface IUserProfile extends IMainSettingsBasicForm {
+  user_id: string;
   id: string;
   countryId: string;
   profileUrl: string;

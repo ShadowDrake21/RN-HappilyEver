@@ -1,3 +1,4 @@
+import { useAuth, useUser } from '@clerk/clerk-expo';
 import ProfileAccountActions from '@components/profile/ProfileAccountActions';
 import ProfileOptionsList from '@components/profile/ProfileOptionsList';
 import ProfileSelectImage from '@components/profile/ProfileSelectImage';
@@ -9,8 +10,12 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useProfileImageSelectionContext } from '~/context/ProfileImageSelectionContext';
+import { useUserStorage } from '~/store/store';
 
 const Page = () => {
+  const { signOut } = useAuth();
+  const { setToDefault } = useUserStorage();
+
   const bottomSheetRef = useRef<BottomSheet>(null);
   const { toggleBottomSheet, setToggleBottomSheet } = useProfileImageSelectionContext();
   const onProfileImagePress = () => {
@@ -23,6 +28,11 @@ const Page = () => {
     }
   };
 
+  const onSignOut = async () => {
+    setToDefault();
+    await signOut();
+  };
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
@@ -31,10 +41,7 @@ const Page = () => {
           <PremiumBanner />
           <>
             <ProfileOptionsList />
-            <ProfileAccountActions
-              onDelete={() => console.log('delete')}
-              onSignOut={() => console.log('sign out')}
-            />
+            <ProfileAccountActions onDelete={() => console.log('delete')} onSignOut={onSignOut} />
           </>
         </View>
       </ScrollView>

@@ -2,6 +2,7 @@ import { IUserFullProfile, IUserProfile } from '~/types/user.types';
 
 export const mock_users: IUserProfile[] = [
   {
+    user_id: 'user_34Ody2eBkmTxsSreCCvycC1Njxs',
     id: '01d58ac7-7fce-4a38-8900-481a9de0081f',
     fullName: 'Emily Johnson',
     username: 'emily_j',
@@ -13,6 +14,7 @@ export const mock_users: IUserProfile[] = [
     profileUrl: 'https://i.pinimg.com/736x/0d/48/da/0d48dab8bb202a0594a3621149457cd8.jpg',
   },
   {
+    user_id: 'user_2sfgy2eBkmTxsSreCCvycC1Njxs',
     id: '0411cb6b-8171-4132-949f-278a1b474314',
     fullName: 'Sophia Martinez',
     username: 'sophia_m',
@@ -24,6 +26,7 @@ export const mock_users: IUserProfile[] = [
     occupation: 'Marketing Specialist',
   },
   {
+    user_id: 'user_3fghy2eBkmTxsSreCCvycC1Njxs',
     id: '0be7b553-b897-4c9f-93bc-46b822f16742',
     fullName: 'Olivia Williams',
     username: 'olivia_w',
@@ -35,6 +38,7 @@ export const mock_users: IUserProfile[] = [
     profileUrl: 'https://i.pinimg.com/736x/18/d4/66/18d466fe95be59d2f6b8c7499b395f56.jpg',
   },
   {
+    user_id: 'user_4jklm2eBkmTxsSreCCvycC1Njxs',
     id: '01d58ac7-7fce-4a38-8900-481a9de0081f',
     fullName: 'Emma Brown',
     username: 'emma_b',
@@ -46,6 +50,7 @@ export const mock_users: IUserProfile[] = [
     profileUrl: 'https://i.pinimg.com/736x/26/7e/f1/267ef15d3024c65e01a5cb9d9cdc172e.jpg',
   },
   {
+    user_id: 'user_5vbnm2eBkmTxsSreCCvycC1Njxs',
     id: '0411cb6b-8171-4132-949f-278a1b474314',
     fullName: 'Isabella Davis',
     username: 'isabella_d',
@@ -57,6 +62,7 @@ export const mock_users: IUserProfile[] = [
     profileUrl: 'https://i.pinimg.com/736x/62/d0/03/62d003e115866aa311b0afbe076b62c0.jpg',
   },
   {
+    user_id: 'user_6cxza2eBkmTxsSreCCvycC1Njxs',
     id: '0be7b553-b897-4c9f-93bc-46b822f16742',
     fullName: 'Mia Anderson',
     username: 'mia_a',
@@ -68,6 +74,7 @@ export const mock_users: IUserProfile[] = [
     profileUrl: 'https://i.pinimg.com/736x/2f/d8/2c/2fd82ce9bc1158363c219da88fb2adf5.jpg',
   },
   {
+    user_id: 'user_7qwer2eBkmTxsSreCCvycC1Njxs',
     id: '01d58ac7-7fce-4a38-8900-481a9de0081f',
     fullName: 'Ava Thompson',
     username: 'ava_t',
@@ -79,6 +86,7 @@ export const mock_users: IUserProfile[] = [
     profileUrl: 'https://i.pinimg.com/736x/5a/ac/c3/5aacc396a82613c9bb422a0d683a3287.jpg',
   },
   {
+    user_id: 'user_8nmjk2eBkmTxsSreCCvycC1Njxs',
     id: '0411cb6b-8171-4132-949f-278a1b474314',
     fullName: 'Charlotte White',
     username: 'charlotte_w',
@@ -90,6 +98,7 @@ export const mock_users: IUserProfile[] = [
     profileUrl: 'https://i.pinimg.com/736x/1e/eb/63/1eeb6385d073c6d4246d361e983c5ff7.jpg',
   },
   {
+    user_id: 'user_9asdf2eBkmTxsSreCCvycC1Njxs',
     id: '0be7b553-b897-4c9f-93bc-46b822f16742',
     fullName: 'Amelia Harris',
     username: 'amelia_h',
@@ -101,6 +110,7 @@ export const mock_users: IUserProfile[] = [
     profileUrl: 'https://i.pinimg.com/736x/93/c8/39/93c8391da28158d061a340b3a3f16672.jpg',
   },
   {
+    user_id: 'user_10zxcv2eBkmTxsSreCCvycC1Njxs',
     id: '01d58ac7-7fce-4a38-8900-481a9de0081f',
     fullName: 'Lily Scott',
     username: 'lily_s',

@@ -1,6 +1,8 @@
+import { useAuth } from '@clerk/clerk-expo';
+import CustomLoader from '@components/ui/CustomLoader';
 import MediumTitle from '@components/ui/MediumTitle';
 import { useRouter } from 'expo-router';
-import React, { PropsWithRef, RefObject, useCallback, useState } from 'react';
+import React, { memo, PropsWithRef, RefObject, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Swiper, SwiperCardRefType } from 'rn-swiper-list';
 
@@ -8,11 +10,69 @@ import SwipperItem from './SwipperItem';
 
 import { mock_users } from '~/content/users.content';
 import { useMatchesModalContext } from '~/context/MatchesModalContext';
+import { useSwipesContext } from '~/context/SwipesContext';
+import { useUserStorage } from '~/store/store';
+import { setSwipe } from '~/supabase/supabase-matching.requests';
+import {
+  getProfilePhotos,
+  getProfilesByGender,
+  getUserCountryId,
+} from '~/supabase/supabase-typed.requests';
+import { downloadImage } from '~/supabase/supabase.storage';
+import { IUserProfile } from '~/types/user.types';
+import { formatProfile } from '~/utils/format.utils';
 
 const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCardRefType>> }) => {
   const router = useRouter();
-  const [data, setData] = useState([...mock_users]);
+
+  const [data, setData] = useState<IUserProfile[]>([]);
+
+  const { userId, getToken } = useAuth();
+
+  const { userGender } = useUserStorage();
+
   const { setIsVisible } = useMatchesModalContext();
+  const { isSwipesLoading, setIsSwipesLoading } = useSwipesContext();
+
+  useEffect(() => {
+    if (userGender) fetchUserOfOppositeGender();
+  }, [userGender]);
+
+  const fetchUserOfOppositeGender = async () => {
+    setIsSwipesLoading(true); // fix the problem when gender is not set
+    if (!userGender) return;
+    const token = await getToken({ template: 'supabase' });
+
+    if (token && userId) {
+      const rawProfile = await getProfilesByGender(
+        token,
+        userGender === 'male' ? 'female' : 'male'
+      );
+      const formattedProfile = formatProfile(rawProfile);
+
+      const userProfiles = await Promise.all(
+        formattedProfile.map(async (profile) => {
+          const rawLocation = await getUserCountryId(token, profile.user_id);
+          const formattedLocation = (rawLocation as unknown as { country_id: string }[])[0]
+            .country_id;
+
+          const rawImages = await getProfilePhotos(token, profile.user_id);
+          const formattedImageUrl = (rawImages as unknown as { photo_url: string }[])[0].photo_url;
+          const downloadedImageUrl = await downloadImage({ token, imagePath: formattedImageUrl });
+
+          setIsSwipesLoading(false);
+          return {
+            ...profile,
+            user_id: profile.user_id,
+            countryId: formattedLocation,
+            profileUrl: downloadedImageUrl!,
+          } as IUserProfile;
+        })
+      );
+
+      setData((prev) => [...userProfiles, ...mock_users]);
+    }
+  };
 
   const OverlayLabelRight = useCallback(() => {
     return (
@@ -68,6 +128,22 @@ const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCa
       </View>
     );
   }, []);
+
+  const onSwipe = async (swippedId: string, type: 'like' | 'not_interested') => {
+    const token = await getToken({ template: 'supabase' });
+
+    if (token && userId) {
+      try {
+        await setSwipe(token, userId, swippedId, type);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  if (isSwipesLoading || !userGender) {
+    return <CustomLoader />;
+  }
   return (
     <Swiper
       ref={carouselRef}
@@ -75,20 +151,13 @@ const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCa
       data={data}
       renderCard={(item) => <SwipperItem item={item} />}
       onIndexChange={(index) => {
-        console.log('Current Active index', index);
-        if (index === Math.round(data.length / 2)) {
+        if (index === Math.round(data.length / 2) && data.length > 0) {
           setIsVisible(true);
         }
       }}
-      onSwipeRight={(cardIndex) => {
-        console.log('cardIndex', cardIndex);
-      }}
-      onSwipedAll={() => {
-        console.log('onSwipedAll');
-      }}
-      onSwipeLeft={(cardIndex) => {
-        console.log('onSwipeLeft', cardIndex);
-      }}
+      onSwipeRight={(cardIndex) => onSwipe(data[cardIndex].user_id, 'like')}
+      onSwipeLeft={(cardIndex) => onSwipe(data[cardIndex].user_id, 'not_interested')}
+      onSwipedAll={() => {}}
       onSwipeTop={(cardIndex) => {
         router.push(`/user/${data[cardIndex].id}`);
       }}
@@ -96,20 +165,14 @@ const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCa
       OverlayLabelLeft={OverlayLabelLeft}
       OverlayLabelTop={OverlayLabelTop}
       OverlayLabelBottom={OverlayLabelBottom}
-      onSwipeActive={() => {
-        console.log('onSwipeActive');
-      }}
-      onSwipeStart={() => {
-        console.log('onSwipeStart');
-      }}
-      onSwipeEnd={() => {
-        console.log('onSwipeEnd');
-      }}
+      onSwipeActive={() => {}}
+      onSwipeStart={() => {}}
+      onSwipeEnd={() => {}}
     />
   );
 };
 
-export default Swipper;
+export default memo(Swipper);
 
 const styles = StyleSheet.create({
   cardStyle: {

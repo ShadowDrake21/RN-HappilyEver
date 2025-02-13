@@ -2,12 +2,13 @@ import { useAuth, useSession, useUser } from '@clerk/clerk-expo';
 import FilterBottomSheet from '@components/home/bottom-sheet/FilterBottomSheet';
 import Swipper from '@components/home/swipper/Swipper';
 import SwipperButton from '@components/home/swipper/SwipperButton';
+import CustomLoader from '@components/ui/CustomLoader';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useRouter } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Text as PaperText } from 'react-native-paper';
@@ -15,24 +16,31 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { type SwiperCardRefType } from 'rn-swiper-list';
 
 import { COLORS } from '~/constants/colors';
+import { useSwipesContext } from '~/context/SwipesContext';
 import useMainSettingsOperations from '~/hooks/useMainSettingsOperations';
 
 const Page = () => {
-  const { user } = useUser();
   const router = useRouter();
-  const { signOut } = useAuth();
-  const { session } = useSession();
-  const { fetchMainSettingsAvalability } = useMainSettingsOperations();
   const { top } = useSafeAreaInsets();
-  const carouselRef = useRef<SwiperCardRefType>(null);
 
+  const { user } = useUser();
+  const { session } = useSession();
+
+  const { fetchMainSettingsAvalability } = useMainSettingsOperations();
+  const { isSwipesLoading, setIsSwipesLoading } = useSwipesContext();
+
+  const carouselRef = useRef<SwiperCardRefType>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
     if (session) {
       fetchMainSettingsAvalability();
     }
-  }, []);
+  }, [session]);
+
+  useEffect(() => {
+    console.log('isSwipesLoading HOME', isSwipesLoading);
+  }, [isSwipesLoading]);
 
   return (
     <>
@@ -73,30 +81,32 @@ const Page = () => {
           <Swipper carouselRef={carouselRef} />
         </View>
 
-        <View className="bottom-9  w-full flex-row items-end justify-center gap-5">
-          <SwipperButton
-            icon={<MaterialCommunityIcons name="shuffle-variant" size={24} color="grey" />}
-            onPress={() => {
-              console.log('shuffle');
-            }}
-            type="secondary"
-          />
-          <SwipperButton
-            icon={<MaterialCommunityIcons name="cancel" size={28} color="red" />}
-            onPress={() => carouselRef.current?.swipeLeft()}
-            type="secondary"
-          />
-          <SwipperButton
-            icon={<AntDesign name="heart" size={28} color="pink" />}
-            onPress={() => carouselRef.current?.swipeRight()}
-            type="secondary"
-          />
-          <SwipperButton
-            icon={<AntDesign name="star" size={24} color="yellow" />}
-            onPress={() => console.log('like')}
-            type="secondary"
-          />
-        </View>
+        {!isSwipesLoading && (
+          <View className="bottom-9  w-full flex-row items-end justify-center gap-5">
+            <SwipperButton
+              icon={<MaterialCommunityIcons name="shuffle-variant" size={24} color="grey" />}
+              onPress={() => {
+                console.log('shuffle');
+              }}
+              type="secondary"
+            />
+            <SwipperButton
+              icon={<MaterialCommunityIcons name="cancel" size={28} color="red" />}
+              onPress={() => carouselRef.current?.swipeLeft()}
+              type="secondary"
+            />
+            <SwipperButton
+              icon={<AntDesign name="heart" size={28} color="pink" />}
+              onPress={() => carouselRef.current?.swipeRight()}
+              type="secondary"
+            />
+            <SwipperButton
+              icon={<AntDesign name="star" size={24} color="yellow" />}
+              onPress={() => console.log('like')}
+              type="secondary"
+            />
+          </View>
+        )}
         <FilterBottomSheet bottomSheetRef={bottomSheetRef} />
       </GestureHandlerRootView>
     </>
@@ -145,13 +155,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  // bottomSheet: {
-  //   position: 'absolute',
-  //   top: 0,
-  //   left: 0,
-  //   right: 0,
-  //   bottom: 0,
-  // },
   dropdown: {
     height: 50,
     borderColor: 'gray',

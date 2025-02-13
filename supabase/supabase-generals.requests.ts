@@ -19,6 +19,26 @@ export const getData = async (
   return data;
 };
 
+export const getLimitedData = async (
+  token: string,
+  table: string,
+  limit: number,
+  filters: Record<string, any> = {},
+  selection: string = '*'
+) => {
+  const supabase = await supabaseClient(token);
+  let query = supabase.from(table).select(selection).limit(limit);
+  for (const [key, value] of Object.entries(filters)) {
+    query = query.eq(key, value);
+  }
+  const { data, error } = await query;
+
+  if (error) {
+    throw new Error(`Error getting data from ${table}: ${error.message}`);
+  }
+  return data;
+};
+
 export const setData = async (
   token: string,
   table: string,

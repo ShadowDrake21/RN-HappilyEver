@@ -1,14 +1,18 @@
+import { useAuth } from '@clerk/clerk-expo';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs, useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
 import { Pressable } from 'react-native';
 
 import { COLORS } from '~/constants/colors';
 import { MainSettingsProvider } from '~/context/MainSettingsContext';
 import { ProfileImageSelectionProvider } from '~/context/ProfileImageSelectionContext';
+import { SwipesProvider } from '~/context/SwipesContext';
+import useMatchListener from '~/hooks/useMatchListener';
+import { Match } from '~/types/match.types';
 const TabsLayout = () => {
   const screenOptions = {
     headerTitleStyle: { fontSize: 20 },
@@ -88,12 +92,19 @@ const TabsLayout = () => {
   );
 };
 
-const Layout = () => (
-  <MainSettingsProvider>
-    <ProfileImageSelectionProvider>
-      <TabsLayout />
-    </ProfileImageSelectionProvider>
-  </MainSettingsProvider>
-);
+const Layout = () => {
+  const router = useRouter();
+
+  useMatchListener((match: Match) => router.push(`/matches/${match.id}`));
+  return (
+    <MainSettingsProvider>
+      <SwipesProvider>
+        <ProfileImageSelectionProvider>
+          <TabsLayout />
+        </ProfileImageSelectionProvider>
+      </SwipesProvider>
+    </MainSettingsProvider>
+  );
+};
 
 export default Layout;

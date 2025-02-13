@@ -1,4 +1,4 @@
-import { getData, setData } from './supabase-generals.requests';
+import { getData, getLimitedData, setData } from './supabase-generals.requests';
 import { supabaseClient } from './supabase.client';
 import { uploadImage } from './supabase.storage';
 
@@ -19,6 +19,11 @@ export const getProfiles = async (token: string) => {
   return await getData(token, 'profiles');
 };
 
+export const getProfilesByGender = async (token: string, gender: 'male' | 'female') => {
+  console.log('getProfilesByGender', gender);
+  return await getData(token, 'profiles', { gender });
+};
+
 export const getUserCountryId = async (token: string, user_id: string) => {
   return await getData(token, 'profiles_locations', { user_id });
 };
@@ -33,6 +38,14 @@ export const getProfileQuestions = async (token: string, user_id: string) => {
 
 export const getProfilePhotos = async (token: string, user_id: string) => {
   return await getData(token, 'profiles_photos', { user_id });
+};
+
+export const getLimitedProfilePhotos = async (
+  token: string,
+  user_id: string,
+  limit: number = 4
+) => {
+  return await getLimitedData(token, 'profiles_photos', limit, { user_id });
 };
 
 export const getProfileInterests = async (token: string, user_id: string) => {
