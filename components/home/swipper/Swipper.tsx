@@ -6,6 +6,7 @@ import React, { memo, PropsWithRef, RefObject, useCallback, useEffect, useState 
 import { StyleSheet, View } from 'react-native';
 import { Swiper, SwiperCardRefType } from 'rn-swiper-list';
 
+import SwipperActions from './SwipperActions';
 import SwipperItem from './SwipperItem';
 
 import { mock_users } from '~/content/users.content';
@@ -145,30 +146,35 @@ const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCa
     return <CustomLoader />;
   }
   return (
-    <Swiper
-      ref={carouselRef}
-      cardStyle={styles.cardStyle}
-      data={data}
-      renderCard={(item) => <SwipperItem item={item} />}
-      onIndexChange={(index) => {
-        if (index === Math.round(data.length / 2) && data.length > 0) {
-          setIsVisible(true);
-        }
-      }}
-      onSwipeRight={(cardIndex) => onSwipe(data[cardIndex].user_id, 'like')}
-      onSwipeLeft={(cardIndex) => onSwipe(data[cardIndex].user_id, 'not_interested')}
-      onSwipedAll={() => {}}
-      onSwipeTop={(cardIndex) => {
-        router.push(`/user/${data[cardIndex].id}`);
-      }}
-      OverlayLabelRight={OverlayLabelRight}
-      OverlayLabelLeft={OverlayLabelLeft}
-      OverlayLabelTop={OverlayLabelTop}
-      OverlayLabelBottom={OverlayLabelBottom}
-      onSwipeActive={() => {}}
-      onSwipeStart={() => {}}
-      onSwipeEnd={() => {}}
-    />
+    <>
+      <View style={styles.subContainer}>
+        <Swiper
+          ref={carouselRef}
+          cardStyle={styles.cardStyle}
+          data={data}
+          renderCard={(item) => <SwipperItem item={item} />}
+          onIndexChange={(index) => {
+            if (index === Math.round(data.length / 2) && data.length > 0) {
+              setIsVisible(true);
+            }
+          }}
+          onSwipeRight={(cardIndex) => onSwipe(data[cardIndex].user_id, 'like')}
+          onSwipeLeft={(cardIndex) => onSwipe(data[cardIndex].user_id, 'not_interested')}
+          onSwipedAll={() => {}}
+          onSwipeTop={(cardIndex) => {
+            router.push(`/user/${data[cardIndex].id}`);
+          }}
+          OverlayLabelRight={OverlayLabelRight}
+          OverlayLabelLeft={OverlayLabelLeft}
+          OverlayLabelTop={OverlayLabelTop}
+          OverlayLabelBottom={OverlayLabelBottom}
+          onSwipeActive={() => {}}
+          onSwipeStart={() => {}}
+          onSwipeEnd={() => {}}
+        />
+      </View>
+      {!isSwipesLoading && <SwipperActions carouselRefCurrent={carouselRef.current} />}
+    </>
   );
 };
 
@@ -181,7 +187,10 @@ const styles = StyleSheet.create({
 
     borderRadius: 25,
   },
-
+  subContainer: {
+    alignItems: 'center',
+    height: '90%',
+  },
   overlayLabelContainer: {
     width: '100%',
     height: '100%',

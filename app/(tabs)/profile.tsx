@@ -1,4 +1,4 @@
-import { useAuth, useUser } from '@clerk/clerk-expo';
+import { useAuth } from '@clerk/clerk-expo';
 import ProfileAccountActions from '@components/profile/ProfileAccountActions';
 import ProfileOptionsList from '@components/profile/ProfileOptionsList';
 import ProfileSelectImage from '@components/profile/ProfileSelectImage';

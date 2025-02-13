@@ -1,18 +1,12 @@
 import CustomLoader from '@components/ui/CustomLoader';
 import UserBackgroundCarousel from '@components/user/UserBackgroundCarousel';
 import UserBottomSheet from '@components/user/UserBottomSheet';
-import BottomSheet from '@gorhom/bottom-sheet';
-import { useQuery } from '@tanstack/react-query';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
-import { useWindowDimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { IconButton } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { mock_full_users } from '~/content/users.content';
-import { ICountry } from '~/types/country.types';
 import { IUserFullProfile } from '~/types/user.types';
-import { fetchCountries } from '~/utils/fetch.utils';
 
 // TODO: ADD PAGINATION TO CONTENT
 const Page = () => {

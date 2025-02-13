@@ -1,6 +1,5 @@
-import { Icon } from '@expo/vector-icons/build/createIconSet';
 import React, { ReactNode } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 const SwipperButton = ({
   icon,
@@ -22,5 +21,3 @@ const SwipperButton = ({
 };
 
 export default SwipperButton;
-
-const styles = StyleSheet.create({});
