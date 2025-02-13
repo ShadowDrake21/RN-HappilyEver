@@ -3,15 +3,15 @@ import CustomLoader from '@components/ui/CustomLoader';
 import EmptyLabel from '@components/ui/EmptyLabel';
 import { useFocusEffect } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 
 import MainButtonLink from '~/components/ui/MainButtonLink';
 import { COLORS } from '~/constants/colors';
 import { useMainSettings } from '~/context/MainSettingsContext';
-import useFetchCountries from '~/hooks/useFetchCountries';
+import useCountries from '~/hooks/useCountries';
+import useCountrySearch from '~/hooks/useCountrySearch';
 import { ICountry } from '~/types/country.types';
 
 const Page = () => {
@@ -23,28 +23,12 @@ const Page = () => {
   const handlePress = useCallback((id: string) => {
     dispatch({ type: 'SET_COUNTRY_ID', payload: id });
   }, []);
-
-  const { data: allCountries, isLoading } = useFetchCountries({
-    url: 'https://restcountries.com/v3.1/all',
-    config: { params: { fields: 'name,flags,idd,cca2' } },
-    queryKey: ['allCountries'],
-  });
+  const { allCountries, isLoading } = useCountries();
+  const debouncedSearch = useCountrySearch(allCountries, setCountries);
 
   useEffect(() => {
     setCountries(allCountries);
   }, [allCountries]);
-
-  const debouncedSearch = useMemo(
-    () =>
-      debounce((search: string) => {
-        setCountries(() => {
-          return allCountries?.filter((country) =>
-            country.name.common.toLowerCase().includes(search.toLowerCase())
-          );
-        });
-      }, 500),
-    [allCountries]
-  );
 
   useFocusEffect(
     useCallback(() => {

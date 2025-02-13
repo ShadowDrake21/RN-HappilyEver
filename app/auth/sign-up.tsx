@@ -1,4 +1,3 @@
-import { useUser } from '@clerk/clerk-expo';
 import ConfirmationCodeField from '@components/confirmation-code-field/ConfirmationCodeField';
 import TouchableKeyboardAvoidingView from '@components/shared/TouchableKeyboardAvoidingView';
 import CustomLoader from '@components/ui/CustomLoader';

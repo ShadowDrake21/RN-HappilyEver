@@ -3,7 +3,6 @@ import SelectedInterestsList from '@components/select-interests/SelectedInterest
 import MainButtonLink from '@components/ui/MainButtonLink';
 import ParagraphText from '@components/ui/ParagraphText';
 import { FlashList } from '@shopify/flash-list';
-import { Stack } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 import { List } from 'react-native-paper';

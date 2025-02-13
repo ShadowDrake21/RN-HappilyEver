@@ -10,6 +10,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '~/constants/colors';
 import useRetrieveMatch from '~/hooks/useRetrieveMatch';
 
+// TODO: FILTER OUT ALL PROFILES THAT USER HAS ALREADY MATCHED WITH OR LIKED
+// TODO: MESSAGES
+
 const Page = () => {
   const { top, bottom } = useSafeAreaInsets();
 
