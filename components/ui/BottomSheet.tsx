@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import Animated, {
@@ -37,10 +37,6 @@ const BottomSheet = ({
     opacity: 1 - progress.value,
     zIndex: isOpen.value ? 1 : withDelay(duration, withTiming(-1, { duration: 0 })),
   }));
-
-  useEffect(() => {
-    console.log('isOpen', isOpen.value);
-  }, [isOpen]);
 
   return (
     <>

@@ -10,18 +10,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS } from '~/constants/colors';
 import useRetrieveMatch from '~/hooks/useRetrieveMatch';
 
-// TODO: FILTER OUT ALL PROFILES THAT USER HAS ALREADY MATCHED WITH OR LIKED
 // TODO: MESSAGES
 
 const Page = () => {
   const { top, bottom } = useSafeAreaInsets();
 
-  const { user1_id, user2_id } = useLocalSearchParams<{
+  const { id } = useLocalSearchParams<{
     id: string;
-    user1_id: string;
-    user2_id: string;
   }>();
-  const { users, loading, getChatId } = useRetrieveMatch({ user1_id, user2_id });
+  const { users, loading, getChatId } = useRetrieveMatch(id);
 
   if (loading) return <CustomLoader />;
 

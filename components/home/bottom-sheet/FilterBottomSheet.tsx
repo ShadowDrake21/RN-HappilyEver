@@ -15,13 +15,14 @@ import FilterBottomSheetGender from './gender/FilterBottomSheetGender';
 
 import { COLORS } from '~/constants/colors';
 import { defaultTitleStyles } from '~/constants/styles';
+import { Gender } from '~/types/shared.types';
 
 const FilterBottomSheet = ({
   bottomSheetRef,
 }: {
   bottomSheetRef: React.RefObject<BottomSheetMethods>;
 }) => {
-  const [selectedGender, setSelectedGender] = useState<'male' | 'female'>('male');
+  const [selectedGender, setSelectedGender] = useState<Gender>('male');
   const [selectedAgeRange, setSelectedAgeRange] = useState([18, 25]);
   const [selectedLocation, setSelectedLocation] = useState('');
 

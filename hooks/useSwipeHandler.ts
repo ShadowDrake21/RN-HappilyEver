@@ -1,5 +1,4 @@
 import { useAuth } from '@clerk/clerk-expo';
-import { StyleSheet } from 'react-native';
 
 import { setSwipe } from '~/supabase/supabase-matching.requests';
 
@@ -13,7 +12,7 @@ const useSwipeHandler = () => {
       try {
         await setSwipe(token, userId, swippedId, type);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   };
@@ -22,5 +21,3 @@ const useSwipeHandler = () => {
 };
 
 export default useSwipeHandler;
-
-const styles = StyleSheet.create({});

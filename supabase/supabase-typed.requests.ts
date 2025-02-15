@@ -9,6 +9,7 @@ import {
   ProfileInterestsIds,
   ProfilePhoto,
 } from '~/types/main-settings.types';
+import { Gender } from '~/types/shared.types';
 import { formatProfileQuestions } from '~/utils/database.utils';
 
 // TODO: if there is an error while manipulating the main settings, then nothing saves
@@ -19,9 +20,25 @@ export const getProfiles = async (token: string) => {
   return await getData(token, 'profiles');
 };
 
-export const getProfilesByGender = async (token: string, gender: 'male' | 'female') => {
-  console.log('getProfilesByGender', gender);
+export const getProfilesByGender = async (token: string, gender: Gender) => {
   return await getData(token, 'profiles', { gender });
+};
+
+export const getInteractedUsers = async (token: string, user_id: string) => {
+  return await getData(token, 'swipes', { swiper_id: user_id }, 'swiped_id');
+};
+
+export const getNotInterestedUsers = async (token: string, user_id: string) => {
+  return await getData(
+    token,
+    'swipes',
+    { swiped_id: user_id, swipe_type: 'not_interested' },
+    'swiper_id'
+  );
+};
+
+export const getMatchedUsers = async (token: string, match_id: string) => {
+  return await getData(token, 'matches', { id: match_id }, 'user1_id, user2_id');
 };
 
 export const getUserCountryId = async (token: string, user_id: string) => {

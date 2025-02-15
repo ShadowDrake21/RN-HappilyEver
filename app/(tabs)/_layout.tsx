@@ -1,10 +1,9 @@
-import { useAuth } from '@clerk/clerk-expo';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs, useRouter } from 'expo-router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Pressable } from 'react-native';
 
 import { COLORS } from '~/constants/colors';
@@ -95,7 +94,9 @@ const TabsLayout = () => {
 const Layout = () => {
   const router = useRouter();
 
-  useMatchListener((match: Match) => router.push(`/matches/${match.id}`));
+  useMatchListener((match: Match) => {
+    router.push(`/match/${match.id}`);
+  });
   return (
     <MainSettingsProvider>
       <SwipesProvider>

@@ -44,7 +44,7 @@ const SwipperItem = ({ item }: { item: IUserProfile }) => {
           </PaperText>
         </View>
         <View className="flex-1 items-center ">
-          <ActivityBadge isUserActive={isUserActive} onPress={() => console.log('Pressed')} />
+          <ActivityBadge isUserActive={isUserActive} />
         </View>
       </View>
     </View>

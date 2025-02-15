@@ -20,7 +20,6 @@ export const formatCategory = (category: string) => {
 export const formatProfile = (
   rawProfile: unknown[]
 ): (IMainSettingsBasicForm & { id: string; user_id: string })[] => {
-  console.log('formatProfile', rawProfile);
   return rawProfile.map((rawProfile) => {
     const profile = rawProfile as {
       id: string;

@@ -5,13 +5,14 @@ import FilterSectionTitle from '../FilterSectionTitle';
 import GenderButton from './GenderButton';
 
 import { COLORS } from '~/constants/colors';
+import { Gender } from '~/types/shared.types';
 
 const FilterBottomSheetGender = ({
   selectedGender,
   setSelectedGender,
 }: {
-  selectedGender: 'male' | 'female';
-  setSelectedGender: React.Dispatch<React.SetStateAction<'male' | 'female'>>;
+  selectedGender: Gender;
+  setSelectedGender: React.Dispatch<React.SetStateAction<Gender>>;
 }) => {
   return (
     <View>

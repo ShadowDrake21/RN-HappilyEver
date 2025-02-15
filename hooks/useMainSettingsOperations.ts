@@ -14,6 +14,7 @@ import {
   setUserCountryId,
   updateProfileContentFilledOut,
 } from '~/supabase/supabase-typed.requests';
+import { Gender } from '~/types/shared.types';
 import { callAlert, callToast } from '~/utils/ui.utils';
 
 // TODO: Make better instant data validation
@@ -57,9 +58,8 @@ const useMainSettingsOperations = () => {
       if (!formattedUserData.isFilledOut) {
         router.replace('/main-settings/select-country');
       } else {
-        console.log('User data is filled out', formattedUserData.gender);
         setUserBirthday(formattedUserData.birthDate);
-        setUserGender(formattedUserData.gender as 'male' | 'female');
+        setUserGender(formattedUserData.gender as Gender);
         setUserCountry(formatterUserLocation.country_id);
       }
     } else {
@@ -99,7 +99,7 @@ const useMainSettingsOperations = () => {
         callToast({ text1: 'Congratulations!', text2: 'Your profile is ready!' });
         router.replace('/home');
       } catch (error) {
-        console.log('Error saving main settings', error);
+        console.error('Error saving main settings', error);
         const [title, message] = (error as { message: string }).message.split(
           ': '
         ) as unknown as string;
@@ -107,11 +107,11 @@ const useMainSettingsOperations = () => {
       }
 
       setIsNewUser(true);
-      setUserGender(state.profileBasicForm!.gender as 'male' | 'female');
+      setUserGender(state.profileBasicForm!.gender as Gender);
       setUserCountry(state.countryId);
       setUserBirthday(state.profileBasicForm!.birthDate?.toDateString()!);
     } else {
-      console.log('Missing token, userId, or email');
+      console.error('Missing token, userId, or email');
     }
   };
 

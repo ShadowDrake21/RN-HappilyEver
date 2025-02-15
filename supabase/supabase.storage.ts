@@ -38,7 +38,6 @@ export const uploadImage = async ({
   token: string;
   image: ProfilePhoto;
 }) => {
-  console.log('uploadImage called', userId, token, image.name, image.base64.slice(0, 10));
   const supabase = await supabaseClient(token);
   const { data, error } = await supabase.storage
     .from('user-photos')
@@ -93,7 +92,7 @@ export const updateImage = async ({
     });
 
   if (error) {
-    console.log('error', error);
+    console.error('error', error);
     return;
   }
 
