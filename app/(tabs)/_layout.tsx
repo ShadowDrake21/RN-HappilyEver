@@ -10,6 +10,7 @@ import { COLORS } from '~/constants/colors';
 import { MainSettingsProvider } from '~/context/MainSettingsContext';
 import { ProfileImageSelectionProvider } from '~/context/ProfileImageSelectionContext';
 import { SwipesProvider } from '~/context/SwipesContext';
+import useChatListener from '~/hooks/useChatListener';
 import useMatchListener from '~/hooks/useMatchListener';
 import { Match } from '~/types/match.types';
 const TabsLayout = () => {
