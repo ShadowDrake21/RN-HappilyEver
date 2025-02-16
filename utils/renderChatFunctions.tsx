@@ -1,8 +1,7 @@
 import CustomActions from '@components/chat/CustomActions';
-import CustomView from '@components/chat/CustomView';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Platform } from 'react-native';
-import { ActionsProps, IMessage, Send, SendProps, SystemMessage } from 'react-native-gifted-chat';
+import { IMessage, Send, SendProps, SystemMessage } from 'react-native-gifted-chat';
 
 const renderCustomActions = (props: any, onSend: (messages?: IMessage[]) => void) =>
   Platform.OS === 'web' ? null : <CustomActions {...props} onSend={onSend} />;
@@ -21,10 +20,6 @@ const renderSystemMessage = (props: any) => {
   );
 };
 
-const renderCustomView = (props: any) => {
-  return <CustomView {...props} />;
-};
-
 const renderSend = (props: SendProps<IMessage>) => {
   return (
     <Send {...props} containerStyle={{ justifyContent: 'center', paddingHorizontal: 10 }}>
@@ -33,4 +28,4 @@ const renderSend = (props: SendProps<IMessage>) => {
   );
 };
 
-export { renderCustomActions, renderCustomView, renderSend, renderSystemMessage };
+export { renderCustomActions, renderSend, renderSystemMessage };

@@ -61,7 +61,7 @@ const RootLayout = () => {
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="user/[id]" />
       <Stack.Screen name="match/[id]" />
-      <Stack.Screen name="chat/[id]" />
+      <Stack.Screen name="chat" />
     </Stack>
   );
 };

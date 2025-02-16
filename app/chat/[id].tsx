@@ -4,14 +4,9 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import useChatActions from '~/hooks/chat/useChatActions';
-import useChatState from '~/hooks/chat/useChatState';
-import {
-  renderCustomActions,
-  renderCustomView,
-  renderSend,
-  renderSystemMessage,
-} from '~/utils/renderChatFunctions';
+import { useChatContext } from '~/context/ChatContext';
+import useChatActions from '~/hooks/useChatActions';
+import { renderCustomActions, renderSend, renderSystemMessage } from '~/utils/renderChatFunctions';
 
 const user = {
   _id: 1,
@@ -25,38 +20,23 @@ const user = {
 // }
 
 const Page = () => {
-  const { state } = useChatState();
-  const {
-    onSend,
-    onLoadEarlier,
-    handleLongPress,
-    onLongPressAvatar,
-    onPressAvatar,
-    onSendFromUser,
-  } = useChatActions(user);
-
+  const { state } = useChatContext();
+  const { onSend, onLoadEarlier, onPressAvatar, onSendFromUser } = useChatActions(user);
   return (
     <SafeAreaView style={[styles.fill, styles.container]}>
       <NavBar />
       <View style={[styles.fill, styles.content]}>
         <GiftedChat
+          user={user}
           messages={state.messages}
           onSend={onSend}
           loadEarlier={state.loadEarlier}
           onLoadEarlier={onLoadEarlier}
           isLoadingEarlier={state.isLoadingEarlier}
-          user={user}
           scrollToBottom
           onPressAvatar={onPressAvatar}
-          onLongPressAvatar={onLongPressAvatar}
-          onLongPress={handleLongPress}
-          quickReplyStyle={{ borderRadius: 2 }}
-          quickReplyTextStyle={{
-            fontWeight: '200',
-          }}
           renderActions={(props) => renderCustomActions(props, onSendFromUser)}
           renderSystemMessage={renderSystemMessage}
-          renderCustomView={renderCustomView}
           renderSend={renderSend}
           keyboardShouldPersistTaps="never"
           timeTextStyle={{
