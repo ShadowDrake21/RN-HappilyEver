@@ -2,6 +2,7 @@ import { useAuth } from '@clerk/clerk-expo';
 import { useCallback, useEffect, useState } from 'react';
 
 import { DEFAULT_IMAGE } from '~/constants/variables';
+import { createChat } from '~/supabase/supabase-chatting';
 import { fetchMatchingUsers } from '~/utils/fetch.utils';
 
 type UserType = { user_id: string; image: string; isMine: boolean };
@@ -26,6 +27,7 @@ const useRetrieveMatch = (match_id: string) => {
       if (!token || !userId) return;
 
       const [firstUser, secondUser] = await fetchMatchingUsers(token, match_id, userId);
+
       setUsers({ firstUser, secondUser });
     } catch (error) {
       console.error('Error retrieving match data', error);

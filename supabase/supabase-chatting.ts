@@ -41,6 +41,16 @@ export const createChat = async (token: string, user1_id: string, user2_id: stri
   return chat;
 };
 
+// export const getChatId = async (token: string, user1_id: string, user2_id: string) => {
+//   const supabase = await supabaseClient(token);
+
+//   return await supabase
+//     .from('chats')
+//     .select('id')
+//     .eq('id', chat_id)
+//     .single();
+// };
+
 export const getAllMessages = async (token: string, chat_id: string) => {
   const supabase = await supabaseClient(token);
 

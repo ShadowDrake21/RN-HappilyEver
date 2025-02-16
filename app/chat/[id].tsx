@@ -1,5 +1,7 @@
+import { useAuth } from '@clerk/clerk-expo';
 import NavBar from '@components/chat/NavBar';
-import React from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import React, { useEffect } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,11 +22,14 @@ const user = {
 // }
 
 const Page = () => {
+  const { id: interlocutorId } = useLocalSearchParams<{ id: string }>();
+
   const { state } = useChatContext();
   const { onSend, onLoadEarlier, onPressAvatar, onSendFromUser } = useChatActions(user);
+
   return (
     <SafeAreaView style={[styles.fill, styles.container]}>
-      <NavBar />
+      <NavBar id={interlocutorId} />
       <View style={[styles.fill, styles.content]}>
         <GiftedChat
           user={user}

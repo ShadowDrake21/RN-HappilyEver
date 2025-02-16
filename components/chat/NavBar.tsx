@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Platform } from 'react-native';
 
-const NavBar = () => {
+const NavBar = ({ id }: { id: string }) => {
   if (Platform.OS === 'web') return null;
 
   return (
@@ -10,7 +10,7 @@ const NavBar = () => {
         alignItems: 'center',
         paddingTop: 10,
       }}>
-      <Text>💬 Gifted Chat{'\n'}</Text>
+      <Text>💬 {id}</Text>
     </View>
   );
 };

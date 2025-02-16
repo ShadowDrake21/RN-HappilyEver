@@ -2,6 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import { zustandStorage } from './storage';
+
 import { Match } from '~/types/match.types';
 
 export interface MatchStoreProps {
@@ -22,7 +24,7 @@ export const useMatchStore = create<MatchStoreProps>()(
     }),
     {
       name: 'user-storage',
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => zustandStorage),
     }
   )
 );

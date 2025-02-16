@@ -1,3 +1,4 @@
+import { createChat } from './supabase-chatting';
 import { getData, setData } from './supabase-generals.requests';
 
 import { SwipeType } from '~/types/shared.types';
@@ -35,6 +36,12 @@ export const setSwipe = async (
             'user2_id',
           ]);
 
+          // TODO: FINISH
+          const { data: newChat, error: createChatError } = await createChat(
+            token,
+            swiperId,
+            swipedId
+          );
           triggerMatchNotification(token, swiperId, swipedId);
         }
       }

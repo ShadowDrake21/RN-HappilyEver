@@ -12,6 +12,7 @@ import { ProfileImageSelectionProvider } from '~/context/ProfileImageSelectionCo
 import { SwipesProvider } from '~/context/SwipesContext';
 import useChatListener from '~/hooks/useChatListener';
 import useMatchListener from '~/hooks/useMatchListener';
+import { createChat } from '~/supabase/supabase-chatting';
 import { Match } from '~/types/match.types';
 const TabsLayout = () => {
   const screenOptions = {
