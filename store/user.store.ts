@@ -2,6 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import { zustandStorage } from './storage';
+
 export interface UserStoreProps {
   isNewUser: boolean | null;
   setIsNewUser: (isNewUser: boolean | null) => void;
@@ -34,7 +36,7 @@ export const useUserStorage = create<UserStoreProps>()(
     }),
     {
       name: 'user-storage',
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => zustandStorage),
     }
   )
 );

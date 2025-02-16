@@ -2,7 +2,7 @@ import { useAuth, useUser } from '@clerk/clerk-expo';
 import { useRouter } from 'expo-router';
 
 import { useMainSettings } from '~/context/MainSettingsContext';
-import { useUserStorage } from '~/store/store';
+import { useUserStorage } from '~/store/user.store';
 import {
   getProfileById,
   getUserCountryId,

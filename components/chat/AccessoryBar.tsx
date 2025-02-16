@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { getLocationAsync, pickImageAsync, takePictureAsync } from 'utils/chatting.utils';
+import { getLocationAsync, pickImageAsync, takePictureAsync } from '~/utils/chat.utils';
 
 export default class AccessoryBar extends React.Component<any> {
   render() {

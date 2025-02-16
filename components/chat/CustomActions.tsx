@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { getLocationAsync, pickImageAsync, takePictureAsync } from 'utils/chatting.utils';
+import { getLocationAsync, pickImageAsync, takePictureAsync } from '~/utils/chat.utils';
 
 interface Props {
   renderIcon?: () => React.ReactNode;

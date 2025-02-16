@@ -10,7 +10,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useProfileImageSelectionContext } from '~/context/ProfileImageSelectionContext';
-import { useUserStorage } from '~/store/store';
+import { useUserStorage } from '~/store/user.store';
 
 const Page = () => {
   const { signOut } = useAuth();

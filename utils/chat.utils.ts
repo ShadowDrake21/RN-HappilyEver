@@ -2,7 +2,17 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
+import {
+  GiftedChat,
+  IMessage,
+  MessageAudioProps,
+  Send,
+  SendProps,
+  SystemMessage,
+} from 'react-native-gifted-chat';
+
+import messagesData from '~/content/messages';
 
 export default async function getPermissionAsync(permission: Permissions.PermissionType) {
   const { status } = await Permissions.askAsync(permission);

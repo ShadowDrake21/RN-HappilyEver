@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { mock_users } from '~/content/users.content';
 import { useSwipesContext } from '~/context/SwipesContext';
-import { useUserStorage } from '~/store/store';
+import { useUserStorage } from '~/store/user.store';
 import { Gender } from '~/types/shared.types';
 import { IUserProfile } from '~/types/user.types';
 import { fetchFilteredProfiles } from '~/utils/fetch.utils';

@@ -14,7 +14,7 @@ import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
 import useRegister from '~/hooks/useRegister';
 import useVerify from '~/hooks/useVerify';
-import { useUserStorage } from '~/store/store';
+import { useUserStorage } from '~/store/user.store';
 import { callToast } from '~/utils/ui.utils';
 
 const Page = () => {
