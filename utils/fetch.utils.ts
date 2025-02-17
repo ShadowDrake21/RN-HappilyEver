@@ -42,6 +42,7 @@ export const fetchCountries = async (
 };
 
 export const fetchUserProfileImage = async (token: string, user_id: string) => {
+  console.log('fetchUserProfileImage:', user_id);
   const rawImages = await getProfilePhotos(token, user_id);
   const formattedImageUrl = (rawImages as unknown as { photo_url: string }[])[0].photo_url;
   const downloadedImageUrl = await downloadImage({ token, imagePath: formattedImageUrl });

@@ -12,7 +12,10 @@ import {
   SystemMessage,
 } from 'react-native-gifted-chat';
 
+import { fetchUserProfileImage } from './fetch.utils';
+
 import messagesData from '~/content/messages';
+import { ChatUser } from '~/types/chat.types';
 
 export default async function getPermissionAsync(permission: Permissions.PermissionType) {
   const { status } = await Permissions.askAsync(permission);
@@ -77,3 +80,31 @@ export async function takePictureAsync(onSend: (images: { image: string }[]) => 
   const images = result.assets.map(({ uri: image }) => ({ image }));
   onSend(images);
 }
+
+export const flatUsers = (users: any[]) => {
+  return users.map((user: any) => ({
+    user_id: user.user.user_id,
+    fullName: user.user.fullName,
+  }));
+};
+
+export const fetchUserProfiles = async (
+  token: string,
+  users: { user_id: string; fullName: string }[],
+  userId: string
+) => {
+  const userWithProfile = await Promise.all(
+    users.map(async (user: { user_id: string; fullName: string }) => {
+      if (user.user_id === userId) return null;
+
+      const profileUrl = await fetchUserProfileImage(token, user.user_id);
+      return {
+        user_id: user.user_id,
+        fullName: user.fullName,
+        profileUrl,
+      };
+    })
+  );
+
+  return userWithProfile.filter(Boolean) as ChatUser[];
+};
