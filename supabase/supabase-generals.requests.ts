@@ -49,8 +49,13 @@ export const setData = async (
     ? conflictColumns.join(', ')
     : conflictColumns;
   const supabase = await supabaseClient(token);
-  const { error } = await supabase.from(table).upsert(data, { onConflict: updatedConflictColumns });
+  const { data: result, error } = await supabase
+    .from(table)
+    .upsert(data, { onConflict: updatedConflictColumns })
+    .select();
   if (error) {
     throw new Error(`Error setting data to ${table}: ${error.message}`);
   }
+
+  return result;
 };

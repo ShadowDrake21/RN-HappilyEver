@@ -37,7 +37,7 @@ export const getNotInterestedUsers = async (token: string, user_id: string) => {
   );
 };
 
-export const getMatchedUsers = async (token: string, match_id: string) => {
+export const getMatchedUsers = async (token: string, match_id: number) => {
   return await getData(token, 'matches', { id: match_id }, 'user1_id, user2_id');
 };
 

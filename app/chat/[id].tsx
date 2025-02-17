@@ -1,13 +1,14 @@
-import { useAuth } from '@clerk/clerk-expo';
 import NavBar from '@components/chat/NavBar';
 import { useLocalSearchParams } from 'expo-router';
-import React, { useEffect } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useChatContext } from '~/context/ChatContext';
 import useChatActions from '~/hooks/useChatActions';
+import { useChatStore } from '~/store/chat.store';
+import { ChatStoreItem } from '~/types/store.types';
 import { renderCustomActions, renderSend, renderSystemMessage } from '~/utils/renderChatFunctions';
 
 const user = {
@@ -15,22 +16,25 @@ const user = {
   name: 'Developer',
 };
 
-// const otherUser = {
-//   _id: 2,
-//   name: 'React Native',
-//   avatar: 'https://facebook.github.io/react/img/logo_og.png',
-// }
-
 const Page = () => {
-  const { id: interlocutorId } = useLocalSearchParams<{ id: string }>();
+  const { id } = useLocalSearchParams<{ id: string }>();
 
   const { state } = useChatContext();
   const { onSend, onLoadEarlier, onPressAvatar, onSendFromUser } = useChatActions(user);
+  const { chats } = useChatStore();
+  const [currentChat, setCurrentChat] = useState<ChatStoreItem | undefined>(undefined);
+
+  useEffect(() => {
+    setCurrentChat(chats.find((chat) => chat.chatId === +id));
+  }, [id]);
 
   return (
     <SafeAreaView style={[styles.fill, styles.container]}>
-      <NavBar id={interlocutorId} />
+      <NavBar id={currentChat?.interlocutorId} />
       <View style={[styles.fill, styles.content]}>
+        {/* <Text>
+          {currentChat?.chatId} {currentChat?.interlocutorId}
+        </Text> */}
         <GiftedChat
           user={user}
           messages={state.messages}

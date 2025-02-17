@@ -90,7 +90,7 @@ export const fetchFilteredProfiles = async (token: string, user_id: string, user
   );
 };
 
-export const fetchMatchingUsers = async (token: string, match_id: string, userId: string) => {
+export const fetchMatchingUsers = async (token: string, match_id: number, userId: string) => {
   const matchedUsers = (await getMatchedUsers(token, match_id)) as unknown as {
     user1_id: string;
     user2_id: string;

@@ -31,17 +31,35 @@ export const setSwipe = async (
         });
 
         if (matchExists.length === 0) {
-          await setData(token, 'matches', { user1_id: swiperId, user2_id: swipedId }, [
-            'user1_id',
-            'user2_id',
-          ]);
+          const newMatch = await setData(
+            token,
+            'matches',
+            { user1_id: swiperId, user2_id: swipedId },
+            ['user1_id', 'user2_id']
+          );
 
           // TODO: FINISH
-          const { data: newChat, error: createChatError } = await createChat(
-            token,
-            swiperId,
-            swipedId
-          );
+          const newChat = await createChat(token, newMatch[0].id, [swiperId, swipedId]);
+
+          // await setData(
+          //   token,
+          //   'chats_users',
+          //   {
+          //     chat_id: newChat.id,
+          //     user_id: swiperId,
+          //   },
+          //   ['chat_id', 'user_id']
+          // );
+          // await setData(
+          //   token,
+          //   'chats_users',
+          //   {
+          //     chat_id: newChat.id,
+          //     user_id: swipedId,
+          //   },
+          //   ['chat_id', 'user_id']
+          // );
+
           triggerMatchNotification(token, swiperId, swipedId);
         }
       }

@@ -5,13 +5,17 @@ import { View } from 'react-native';
 
 import { COLORS } from '~/constants/colors';
 
-const MatchActions = ({ chatId }: { chatId: string }) => {
+const MatchActions = ({ chatId }: { chatId: number | undefined }) => {
   const router = useRouter();
 
   return (
     <View className="gap-5">
       <MainButton
-        onPress={() => router.replace(`/chat/${chatId}`)}
+        onPress={() =>
+          router.replace({
+            pathname: '/chat/' + chatId,
+          })
+        }
         style={{
           backgroundColor: COLORS.mainPurple,
         }}>

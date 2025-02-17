@@ -18,7 +18,7 @@ const Page = () => {
   const { id } = useLocalSearchParams<{
     id: string;
   }>();
-  const { users, loading, getChatId } = useRetrieveMatch(id);
+  const { users, loading, getChatId } = useRetrieveMatch(+id);
 
   if (loading) return <CustomLoader />;
 

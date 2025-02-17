@@ -1,12 +1,13 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { zustandStorage } from './storage';
 
+import { ChatStoreItem } from '~/types/store.types';
+
 export interface ChatStoreProps {
-  chats: { id: number; interlocutorId: string }[];
-  addChat: (newChat: { id: number; interlocutorId: string }) => void;
+  chats: ChatStoreItem[];
+  addChat: (newChat: ChatStoreItem) => void;
   removeChat: (chatId: number) => void;
   clearChats: () => void;
 }
@@ -17,7 +18,7 @@ export const useChatStore = create<ChatStoreProps>()(
       chats: [],
       addChat: (newChat) => set((state) => ({ chats: [...state.chats, newChat] })),
       removeChat: (chatId) =>
-        set((state) => ({ chats: state.chats.filter((chat) => chat.id !== chatId) })),
+        set((state) => ({ chats: state.chats.filter((chat) => chat.chatId !== chatId) })),
       clearChats: () => set({ chats: [] }),
     }),
     {
