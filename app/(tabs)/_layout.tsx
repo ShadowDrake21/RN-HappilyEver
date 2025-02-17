@@ -1,5 +1,6 @@
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs, useRouter } from 'expo-router';
@@ -14,6 +15,7 @@ import useChatListener from '~/hooks/useChatListener';
 import useMatchListener from '~/hooks/useMatchListener';
 import { createChat } from '~/supabase/supabase-chatting';
 import { Match } from '~/types/match.types';
+
 const TabsLayout = () => {
   const screenOptions = {
     headerTitleStyle: { fontSize: 20 },
@@ -22,6 +24,7 @@ const TabsLayout = () => {
       backgroundColor: COLORS.extraDark,
       borderTopWidth: 0,
     },
+    headerStyle: { backgroundColor: COLORS.extraDark },
     tabBarInactiveTintColor: COLORS.grayish,
     tabBarActiveTintColor: COLORS.mainPurple,
     tabBarLabelStyle: {
@@ -44,6 +47,19 @@ const TabsLayout = () => {
           tabBarIcon: ({ color, size }) => (
             <Feather name="message-circle" size={size} color={color} />
           ),
+          headerLeft: () => (
+            <Pressable style={{ marginLeft: 20 }} onPress={() => console.log('archive')}>
+              <Feather name="archive" size={24} color={COLORS.grayish} />
+            </Pressable>
+          ),
+          headerRight: () => (
+            <Pressable style={{ marginRight: 20 }} onPress={() => console.log('chats settings')}>
+              <Feather name="settings" size={24} color={COLORS.grayish} />
+            </Pressable>
+          ),
+          title: 'Chats',
+          headerTintColor: COLORS.text,
+          headerShadowVisible: false,
         }}
       />
       <Tabs.Screen
@@ -63,7 +79,6 @@ const TabsLayout = () => {
         name="profile"
         options={{
           title: 'Profile',
-          headerStyle: { backgroundColor: COLORS.extraDark },
           headerTintColor: COLORS.text,
           headerShadowVisible: false,
           headerLeft: () => (
@@ -99,6 +114,7 @@ const Layout = () => {
   useMatchListener((match: Match) => {
     router.push(`/match/${match.id}`);
   });
+
   return (
     <MainSettingsProvider>
       <SwipesProvider>

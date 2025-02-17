@@ -9,7 +9,7 @@ export const getAllChats = async (token: string, user_id: string) => {
 
   return await supabase
     .from('chats')
-    .select('*, users:chats_users!inner(user:profiles(user_id, email))')
+    .select('*, users:chats_users!inner(user:profiles(user_id, fullName))')
     .in(
       'id',
       chatIds!.map((chat) => chat.id)

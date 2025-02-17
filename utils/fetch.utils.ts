@@ -41,7 +41,7 @@ export const fetchCountries = async (
     });
 };
 
-export const fetchUserProfile = async (token: string, user_id: string) => {
+export const fetchUserProfileImage = async (token: string, user_id: string) => {
   const rawImages = await getProfilePhotos(token, user_id);
   const formattedImageUrl = (rawImages as unknown as { photo_url: string }[])[0].photo_url;
   const downloadedImageUrl = await downloadImage({ token, imagePath: formattedImageUrl });
@@ -77,7 +77,7 @@ export const fetchFilteredProfiles = async (token: string, user_id: string, user
 
   return await Promise.all(
     filteredProfile.map(async (profile) => {
-      const profileUrl = await fetchUserProfile(token, profile.user_id);
+      const profileUrl = await fetchUserProfileImage(token, profile.user_id);
       const countryId = await fetchUserLocation(token, profile.user_id);
 
       return {
