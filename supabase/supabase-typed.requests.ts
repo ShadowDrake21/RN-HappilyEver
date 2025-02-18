@@ -46,7 +46,7 @@ export const getUserCountryId = async (token: string, user_id: string) => {
 };
 
 export const getProfileById = async (token: string, user_id: string) => {
-  return await getData(token, 'profiles', { user_id });
+  return (await getData(token, 'profiles', { user_id }))[0];
 };
 
 export const getProfileQuestions = async (token: string, user_id: string) => {

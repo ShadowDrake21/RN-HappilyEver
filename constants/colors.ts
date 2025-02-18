@@ -16,6 +16,7 @@ export const COLORS = {
   subtext: '#B0C4DE',
   error: '#FF0000',
   mainPurple: '#9600ff',
+  messagePurple: '#632193',
   secondaryPurple: '#3e135dca',
 
   slayish: '#5c5879',

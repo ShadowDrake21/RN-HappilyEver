@@ -30,3 +30,19 @@ export interface CompoundChat {
   } | null;
   users: ChatUser[];
 }
+
+export type InterlocutorType = {
+  birthDate: string;
+  created_at: string;
+  email: string;
+  fullName: string;
+  gender: string;
+  id: string;
+  isFilledOut: boolean;
+  occupation: string;
+  phoneNumber: string;
+  updated_at: string;
+  user_id: string;
+  username: string;
+  image: string;
+};
