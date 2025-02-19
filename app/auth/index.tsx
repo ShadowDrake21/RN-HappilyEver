@@ -1,22 +1,24 @@
 import SmallDisplayTitle from '@components/ui/SmallDisplayTitle';
 import { Link, useRouter } from 'expo-router';
 import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Image, Text, TouchableOpacity, View } from 'react-native';
 import { Button } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import SocialButton from '~/components/SocialButton';
 import { COLORS } from '~/constants/colors';
 import useAuthSocials from '~/hooks/useAuthSocials';
 
 const Page = () => {
+  const { bottom } = useSafeAreaInsets();
   const router = useRouter();
   const { onSocialAuth, isLoading } = useAuthSocials();
 
   return (
-    <View style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1, paddingBottom: bottom }}>
       <Image
         source={require('assets/auth/image.png')}
-        style={{ width: '100%', height: 350 }}
+        style={{ width: '100%', height: 300 }}
         resizeMode="contain"
       />
 
@@ -50,7 +52,7 @@ const Page = () => {
           </TouchableOpacity>
         </Link>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

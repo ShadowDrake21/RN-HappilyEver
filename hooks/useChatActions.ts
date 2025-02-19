@@ -5,12 +5,26 @@ import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 import earlierMessages from '~/content/earlierMessages';
 import { useChatContext } from '~/context/ChatContext';
 import { ActionKind } from '~/enums/chat.enum';
+import { sendMessage } from '~/supabase/supabase-chatting';
+import { FormattedMessage, RawMessage } from '~/types/chat.types';
+import { formatMessages } from '~/utils/format.utils';
 
 const useChatActions = (user: any) => {
   const { state, dispatch } = useChatContext();
 
+  const onSetMessages = useCallback(
+    (messages: IMessage[]) => {
+      if (!messages) return;
+
+      console.log('onSetMessages', messages);
+      dispatch({ type: ActionKind.SET_MESSAGES, payload: messages });
+    },
+    [dispatch]
+  );
+
   const onSend = useCallback(
     (messages: any[]) => {
+      console.log('onSend', messages);
       const sentMessages = [{ ...messages[0], sent: true, received: true }];
       const newMessages = GiftedChat.append(state.messages, sentMessages, Platform.OS !== 'web');
 
@@ -52,6 +66,7 @@ const useChatActions = (user: any) => {
   );
 
   return {
+    onSetMessages,
     onSend,
     onLoadEarlier,
     onPressAvatar,

@@ -12,6 +12,12 @@ export const initialChatState = {
 
 export function chatReducer(state: IChatState, action: ChatStateAction) {
   switch (action.type) {
+    case ActionKind.SET_MESSAGES: {
+      return {
+        ...state,
+        messages: action.payload,
+      };
+    }
     case ActionKind.SEND_MESSAGE: {
       return {
         ...state,

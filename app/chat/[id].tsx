@@ -1,44 +1,42 @@
-import { useAuth } from '@clerk/clerk-expo';
-import NavBar from '@components/chat/NavBar';
+import { useAuth, useUser } from '@clerk/clerk-expo';
 import HeaderLeftButton from '@components/main-settings/HeaderActionButton';
 import CustomLoader from '@components/ui/CustomLoader';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
 import { TextInput, useTheme } from 'react-native-paper';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import EmojiPicker, { type EmojiType } from 'rn-emoji-keyboard';
 
 import { COLORS } from '~/constants/colors';
+import { DEFAULT_IMAGE } from '~/constants/variables';
 import { useChatContext } from '~/context/ChatContext';
 import useChatActions from '~/hooks/useChatActions';
+import useMessageListener from '~/hooks/useMessageListener';
 import { useChatStore } from '~/store/chat.store';
+import { sendMessage } from '~/supabase/supabase-chatting';
 import { getProfileById } from '~/supabase/supabase-typed.requests';
 import { InterlocutorType } from '~/types/chat.types';
 import { ChatStoreItem } from '~/types/store.types';
 import { fetchUserProfileImage } from '~/utils/fetch.utils';
-import { renderCustomActions, renderSend, renderSystemMessage } from '~/utils/renderChatFunctions';
-
-const user = {
-  _id: 1,
-  name: 'Developer',
-  avatar: 'https://placeimg.com/140/140/any',
-};
+import { renderCustomActions, renderSystemMessage } from '~/utils/renderChatFunctions';
 
 const Page = () => {
+  const { user } = useUser();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { bottom } = useSafeAreaInsets();
   const [chatLoading, setChatLoading] = useState(false);
   const { getToken, userId } = useAuth();
   const { state } = useChatContext();
-  const { onSend, onLoadEarlier, onPressAvatar, onSendFromUser } = useChatActions(user);
+  const { onSetMessages, onSend, onLoadEarlier, onPressAvatar, onSendFromUser } =
+    useChatActions(user);
   const { chats } = useChatStore();
   const [currentChat, setCurrentChat] = useState<ChatStoreItem | undefined>(undefined);
   const [interlocutor, setInterlocutor] = useState<InterlocutorType | undefined>(undefined);
@@ -46,20 +44,29 @@ const Page = () => {
   const theme = useTheme();
   const { colors } = theme;
 
+  const { allMessages, loading } = useMessageListener(+id);
+
   useEffect(() => {
     setChatLoading(true);
     setCurrentChat(chats.find((chat) => chat.chatId === +id));
+    onSetMessages(allMessages);
     getInterlocutor();
     fetchInterlocutorImage();
     setChatLoading(false);
-  }, [id, currentChat]);
+  }, [id, allMessages]);
 
   const fetchInterlocutorImage = async () => {
     const token = await getToken({ template: 'supabase' });
 
     if (!token || !currentChat) return;
-    const profileUrl = await fetchUserProfileImage(token, currentChat.interlocutorId);
-    setInterlocutor((prev) => (prev ? { ...prev, image: profileUrl } : undefined));
+    try {
+      const profileUrl = await fetchUserProfileImage(token, currentChat.interlocutorId);
+      console.log('profileUrl', profileUrl.slice(0, 50));
+
+      setInterlocutor((prev) => (prev ? { ...prev, image: profileUrl } : undefined));
+    } catch (error) {
+      console.error('error', error);
+    }
   };
 
   const getInterlocutor = async () => {
@@ -74,10 +81,35 @@ const Page = () => {
     setInterlocutor(interlocutor);
   };
 
-  const handlePick = (emojiObject: EmojiType) => {
-    console.log(emojiObject);
+  const handlePick = useCallback((emojiObject: EmojiType) => {
     setMessage((prev) => prev + emojiObject.emoji);
+  }, []);
+
+  const formChatUser = () => {
+    return {
+      _id: user?.id || Math.round(Math.random() * 1000000),
+      name: user?.fullName || 'Unknown user',
+      avatar: user?.imageUrl || DEFAULT_IMAGE,
+    };
   };
+
+  const handleSendingMessage = useCallback(async () => {
+    if (!message) return;
+    const token = await getToken({ template: 'supabase' });
+
+    if (!token || !currentChat || !userId) return;
+    onSend([
+      {
+        _id: Math.round(Math.random() * 1000000),
+        text: message,
+        createdAt: new Date(),
+        user: formChatUser(),
+      },
+    ]);
+    await sendMessage(token, currentChat.chatId, userId, message);
+
+    setMessage('');
+  }, [message, currentChat]);
 
   if (chatLoading) return <CustomLoader />;
 
@@ -119,21 +151,28 @@ const Page = () => {
         }}
       />
       <View style={[styles.fill, styles.container, { paddingBottom: bottom }]}>
-        {/* <View style={[styles.fill, styles.content]}> */}
-        {/* <Text>
-          {currentChat?.chatId} {currentChat?.interlocutorId}
-        </Text> */}
         <GiftedChat
-          user={user}
+          user={formChatUser()}
           messages={state.messages}
-          onSend={onSend}
           loadEarlier={state.loadEarlier}
           onLoadEarlier={onLoadEarlier}
           isLoadingEarlier={state.isLoadingEarlier}
           scrollToBottom
           onPressAvatar={onPressAvatar}
+          scrollToBottomComponent={() => (
+            <View>
+              <AntDesign name="downcircle" size={32} color={COLORS.gray} />
+            </View>
+          )}
+          scrollToBottomStyle={{ width: 32, height: 32, backgroundColor: 'transparent' }}
           renderActions={(props) => renderCustomActions(props, onSendFromUser)}
           renderSystemMessage={renderSystemMessage}
+          renderAvatar={() => (
+            <Image
+              source={{ uri: interlocutor?.image! }}
+              style={{ width: 40, height: 40, borderRadius: 20 }}
+            />
+          )}
           renderBubble={(props) => (
             <Bubble
               {...props}
@@ -144,26 +183,25 @@ const Page = () => {
                   padding: 8,
                 },
                 right: {
-                  backgroundColor: COLORS.messagePurple, // Custom background for sent messages
+                  backgroundColor: COLORS.messagePurple,
                   borderRadius: 10,
                   padding: 8,
                 },
               }}
               textStyle={{
                 left: {
-                  color: '#000', // Custom text color for received messages
+                  color: '#fff',
                 },
                 right: {
-                  color: '#fff', // Custom text color for sent messages
+                  color: '#fff',
                 },
               }}
             />
           )}
           keyboardShouldPersistTaps="never"
-          //TODO: justify content for time
           timeTextStyle={{
-            left: { color: COLORS.grayish, justifyContent: 'flex-end' },
-            right: { color: COLORS.light, justifyContent: 'flex-end' },
+            left: { color: COLORS.grayish },
+            right: { color: COLORS.light },
           }}
           listViewProps={{ showsVerticalScrollIndicator: false }}
           isTyping={state.isTyping}
@@ -179,7 +217,7 @@ const Page = () => {
                 <TextInput
                   underlineColor="transparent"
                   theme={{ ...theme, colors: { ...colors, primary: 'transparent' } }}
-                  onChangeText={(text) => setMessage(text)}
+                  onChangeText={setMessage}
                   value={message}
                   placeholder="Type your message..."
                   placeholderTextColor={COLORS.grayish}
@@ -205,7 +243,10 @@ const Page = () => {
                     backgroundColor: COLORS.mainPurple,
                   },
                 ]}
-                className="rounded-full p-4">
+                className="rounded-full p-4"
+                onPress={() => {
+                  handleSendingMessage();
+                }}>
                 <Ionicons
                   name="send"
                   size={24}

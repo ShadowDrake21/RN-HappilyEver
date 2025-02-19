@@ -1,13 +1,18 @@
-import { useAuth } from '@clerk/clerk-expo';
+import { useAuth, useUser } from '@clerk/clerk-expo';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
+import { IMessage } from 'react-native-gifted-chat';
+
+import useChatActions from './useChatActions';
 
 import { getAllMessages } from '~/supabase/supabase-chatting';
 import { supabaseClient } from '~/supabase/supabase.client';
+import { formatMessages } from '~/utils/format.utils';
 
-const useMessageListener = () => {
+const useMessageListener = (chatId: number) => {
+  const { user } = useUser();
   const { getToken, userId } = useAuth();
-  const [allMessages, setAllMessages] = useState<any[]>([]);
+  const [allMessages, setAllMessages] = useState<IMessage[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,6 +20,7 @@ const useMessageListener = () => {
     let supabase: SupabaseClient<any, 'public', any>;
 
     const initializeListener = async () => {
+      console.log('useMessageListener Initializing...', userId, chatId);
       try {
         const token = await getToken({ template: 'supabase' });
         if (!token || !userId) {
@@ -25,31 +31,31 @@ const useMessageListener = () => {
         console.log('useMessageListener Initializing Supabase client...');
         supabase = await supabaseClient(token);
 
-        const { data: initialMessages, error: fetchError } = await getAllMessages(token, userId);
+        const { data: initialMessages, error: fetchError } = await getAllMessages(token, chatId);
 
         if (fetchError) {
           throw fetchError;
         }
 
-        setAllMessages(initialMessages || []);
+        setAllMessages(formatMessages(initialMessages));
         setLoading(false);
 
         console.log('useMessageListener Subscribing to Supabase Realtime...');
 
         subscription = supabase
-          .channel('custom-all-channel')
+          .channel('custom-messages-channel')
           .on(
             'postgres_changes',
-            { event: '*', schema: 'public', table: 'chats' },
+            { event: '*', schema: 'public', table: 'messages', filter: `chat_id=eq.${chatId}` },
             async (payload) => {
               console.log('🔥 Chat data received:', payload.new);
-              const { data, error: fetchError } = await getAllMessages(token, userId);
+              const { data, error: fetchError } = await getAllMessages(token, chatId);
 
               if (fetchError) {
                 throw fetchError;
               }
 
-              setAllMessages(data || []);
+              setAllMessages(formatMessages(data || []));
             }
           )
           .subscribe((status) => {
@@ -68,7 +74,7 @@ const useMessageListener = () => {
         supabase.removeChannel(subscription);
       }
     };
-  }, [userId]);
+  }, [userId, chatId]);
 
   return { allMessages, loading };
 };

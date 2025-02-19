@@ -1,3 +1,6 @@
+import { IMessage } from 'react-native-gifted-chat';
+
+import { FormattedMessage, RawMessage } from '~/types/chat.types';
 import {
   IMainSettingsBasicForm,
   ProfileInterestsCategory,
@@ -41,6 +44,20 @@ export const formatProfile = (
       birthDate: profile.birthDate ? new Date(profile.birthDate) : undefined,
       phoneNumber: profile.phoneNumber,
       occupation: profile.occupation,
+    };
+  });
+};
+
+export const formatMessages = (rawMessages: RawMessage[]): IMessage[] => {
+  return rawMessages.map((rawMessage) => {
+    return {
+      _id: rawMessage.id,
+      text: rawMessage.content,
+      createdAt: new Date(rawMessage.created_at),
+      user: {
+        _id: rawMessage.user.user_id,
+        name: rawMessage.user.fullName,
+      },
     };
   });
 };

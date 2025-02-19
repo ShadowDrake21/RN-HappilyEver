@@ -1,3 +1,5 @@
+import { IMessage } from 'react-native-gifted-chat';
+
 import { ActionKind } from '~/enums/chat.enum';
 
 export interface ChatStateAction {
@@ -5,8 +7,19 @@ export interface ChatStateAction {
   payload?: any;
 }
 
+export type FormattedMessage = {
+  _id: number;
+  text: string;
+  createdAt: Date;
+  user?: {
+    _id: string;
+    name: string;
+  };
+  system?: boolean;
+};
+
 export interface IChatState {
-  messages: any[];
+  messages: IMessage[];
   step: number;
   loadEarlier?: boolean;
   isLoadingEarlier?: boolean;
@@ -45,4 +58,13 @@ export type InterlocutorType = {
   user_id: string;
   username: string;
   image: string;
+};
+
+export type RawMessage = {
+  author_id: string;
+  chat_id: number;
+  content: string;
+  created_at: string;
+  id: number;
+  user: { fullName: string; user_id: string };
 };
