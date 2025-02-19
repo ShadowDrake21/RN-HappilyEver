@@ -68,3 +68,5 @@ export type RawMessage = {
   id: number;
   user: { fullName: string; user_id: string };
 };
+
+export type MessageUserType = { _id: string; name: string; avatar: string };

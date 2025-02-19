@@ -14,6 +14,7 @@ const useMessageListener = (chatId: number) => {
   const { getToken, userId } = useAuth();
   const [allMessages, setAllMessages] = useState<IMessage[]>([]);
   const [loading, setLoading] = useState(true);
+  const { onSetMessages, onLoadEarlier, onPressAvatar, onSendFromUser } = useChatActions();
 
   useEffect(() => {
     let subscription: any;
@@ -37,7 +38,7 @@ const useMessageListener = (chatId: number) => {
           throw fetchError;
         }
 
-        setAllMessages(formatMessages(initialMessages));
+        onSetMessages(formatMessages(initialMessages));
         setLoading(false);
 
         console.log('useMessageListener Subscribing to Supabase Realtime...');
@@ -55,7 +56,7 @@ const useMessageListener = (chatId: number) => {
                 throw fetchError;
               }
 
-              setAllMessages(formatMessages(data || []));
+              onSetMessages(formatMessages(data || []));
             }
           )
           .subscribe((status) => {
