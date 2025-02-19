@@ -1,4 +1,4 @@
-import { useAuth, useUser } from '@clerk/clerk-expo';
+import { useUser } from '@clerk/clerk-expo';
 import ChatBubble from '@components/chat/ChatBubble';
 import ChatHeaderActions from '@components/chat/ChatHeaderActions';
 import ChatInputToolbar from '@components/chat/ChatInputToolbar';
@@ -16,12 +16,10 @@ import { COLORS } from '~/constants/colors';
 import { DEFAULT_IMAGE } from '~/constants/variables';
 import { useChatContext } from '~/context/ChatContext';
 import useChatActions from '~/hooks/useChatActions';
-import useMessageListener from '~/hooks/useMessageListener';
+import useChatInterlocutor from '~/hooks/useChatInterlocutor';
 import { useChatStore } from '~/store/chat.store';
-import { getProfileById } from '~/supabase/supabase-typed.requests';
-import { InterlocutorType, MessageUserType } from '~/types/chat.types';
 import { ChatStoreItem } from '~/types/store.types';
-import { fetchUserProfileImage } from '~/utils/fetch.utils';
+import { formChatUser } from '~/utils/format.utils';
 import { renderCustomActions, renderSystemMessage } from '~/utils/renderChatFunctions';
 
 const Page = () => {
@@ -31,72 +29,43 @@ const Page = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { bottom } = useSafeAreaInsets();
   const [chatLoading, setChatLoading] = useState(false);
-  const { getToken } = useAuth();
   const { state } = useChatContext();
-  const { onSetMessages, onLoadEarlier, onPressAvatar, onSendFromUser } = useChatActions();
+  const { onPressAvatar, onSendFromUser } = useChatActions();
   const { chats } = useChatStore();
   const [currentChat, setCurrentChat] = useState<ChatStoreItem | undefined>(undefined);
-  const [interlocutor, setInterlocutor] = useState<InterlocutorType | undefined>(undefined);
   const [message, setMessage] = useState('');
-  const [isLoadingInterlocutor, setIsLoadingInterlocutor] = useState(true);
-
-  const { allMessages, loading } = useMessageListener(+id);
+  const {
+    fetchInterlocutorImage,
+    getInterlocutor,
+    interlocutor,
+    setInterlocutor,
+    isLoadingInterlocutor,
+    setIsLoadingInterlocutor,
+  } = useChatInterlocutor();
 
   useEffect(() => {
-    const fetchData = async () => {
-      setChatLoading(true);
-      const foundChat = chats.find((chat) => chat.chatId === +id);
-      setCurrentChat(foundChat);
-
-      if (foundChat) {
-        await getInterlocutor(foundChat.interlocutorId);
-        await fetchInterlocutorImage(foundChat.interlocutorId);
-      }
-
-      setChatLoading(false);
-      setIsLoadingInterlocutor(false);
-    };
-
     fetchData();
   }, [id, chats]);
 
-  const fetchInterlocutorImage = async (interlocutorId: string) => {
-    const token = await getToken({ template: 'supabase' });
+  const fetchData = async () => {
+    setChatLoading(true);
+    const foundChat = chats.find((chat) => chat.chatId === +id);
+    setCurrentChat(foundChat);
 
-    if (!token || !currentChat) return;
-    try {
-      const profileUrl = await fetchUserProfileImage(token, interlocutorId);
-
-      setInterlocutor((prev) => (prev ? { ...prev, image: profileUrl } : undefined));
-    } catch (error) {
-      console.error('error', error);
+    if (foundChat) {
+      const fetchedInterlocutor = await getInterlocutor(foundChat.interlocutorId);
+      setInterlocutor(fetchedInterlocutor);
+      const image = await fetchInterlocutorImage(foundChat.interlocutorId);
+      setInterlocutor((prev) => (prev ? { ...prev, image: image! } : prev));
     }
-  };
 
-  const getInterlocutor = async (interlocutorId: string) => {
-    const token = await getToken({ template: 'supabase' });
-
-    if (!token || !currentChat) return;
-
-    const interlocutor = (await getProfileById(
-      token,
-      interlocutorId
-    )) as unknown as InterlocutorType;
-    setInterlocutor(interlocutor);
+    setChatLoading(false);
+    setIsLoadingInterlocutor(false);
   };
 
   const handlePick = useCallback((emojiObject: EmojiType) => {
     setMessage((prev) => prev + emojiObject.emoji);
   }, []);
-
-  const formChatUser = () => {
-    const messageUser: MessageUserType = {
-      _id: user?.id || '',
-      name: user?.fullName || 'Unknown user',
-      avatar: user?.imageUrl || DEFAULT_IMAGE,
-    };
-    return messageUser;
-  };
 
   const renderAvatar = useCallback(
     () => (
@@ -142,11 +111,8 @@ const Page = () => {
       />
       <View style={[styles.fill, styles.container, { paddingBottom: bottom }]}>
         <GiftedChat
-          user={formChatUser()}
+          user={formChatUser({ id: user?.id, fullName: user?.fullName, imageUrl: user?.imageUrl })}
           messages={state.messages}
-          loadEarlier={state.loadEarlier}
-          onLoadEarlier={onLoadEarlier}
-          isLoadingEarlier={state.isLoadingEarlier}
           scrollToBottom
           onPressAvatar={onPressAvatar}
           scrollToBottomComponent={() => (
@@ -170,7 +136,11 @@ const Page = () => {
           renderInputToolbar={(props) => (
             <ChatInputToolbar
               currentChat={currentChat}
-              messageUser={formChatUser()}
+              messageUser={formChatUser({
+                id: user?.id,
+                fullName: user?.fullName,
+                imageUrl: user?.imageUrl,
+              })}
               props={props}
               setIsOpen={setIsOpen}
             />
@@ -178,7 +148,6 @@ const Page = () => {
           infiniteScroll
         />
         <EmojiPicker onEmojiSelected={handlePick} open={isOpen} onClose={() => setIsOpen(false)} />
-        {/* </View> */}
       </View>
     </>
   );
