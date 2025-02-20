@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import SocialButton from '~/components/SocialButton';
 import { COLORS } from '~/constants/colors';
-import useAuthSocials from '~/hooks/useAuthSocials';
+import useAuthSocials from '~/hooks/auth/useAuthSocials';
 
 const Page = () => {
   const { bottom } = useSafeAreaInsets();

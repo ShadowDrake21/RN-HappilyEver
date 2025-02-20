@@ -1,39 +1,27 @@
-import { useUser } from '@clerk/clerk-expo';
-import ChatBubble from '@components/chat/ChatBubble';
 import ChatHeaderActions from '@components/chat/ChatHeaderActions';
-import ChatInputToolbar from '@components/chat/ChatInputToolbar';
+import CustomGiftedChat from '@components/chat/CustomGiftedChat';
 import HeaderLeftButton from '@components/main-settings/HeaderActionButton';
 import CustomLoader from '@components/ui/CustomLoader';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Image, Platform, StyleSheet, Text, View } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import EmojiPicker, { type EmojiType } from 'rn-emoji-keyboard';
+import EmojiPicker from 'rn-emoji-keyboard';
 
 import { COLORS } from '~/constants/colors';
-import { DEFAULT_IMAGE } from '~/constants/variables';
 import { useChatContext } from '~/context/ChatContext';
-import useChatActions from '~/hooks/useChatActions';
-import useChatInterlocutor from '~/hooks/useChatInterlocutor';
+import { ActionKind } from '~/enums/chat.enum';
+import useChatInterlocutor from '~/hooks/chat/useChatInterlocutor';
+import useMessageListener from '~/hooks/listeners/useMessageListener';
 import { useChatStore } from '~/store/chat.store';
-import { ChatStoreItem } from '~/types/store.types';
-import { formChatUser } from '~/utils/format.utils';
-import { renderCustomActions, renderSystemMessage } from '~/utils/renderChatFunctions';
 
 const Page = () => {
-  const { user } = useUser();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { bottom } = useSafeAreaInsets();
   const [chatLoading, setChatLoading] = useState(false);
-  const { state } = useChatContext();
-  const { onPressAvatar, onSendFromUser } = useChatActions();
   const { chats } = useChatStore();
-  const [currentChat, setCurrentChat] = useState<ChatStoreItem | undefined>(undefined);
-  const [message, setMessage] = useState('');
+
   const {
     fetchInterlocutorImage,
     getInterlocutor,
@@ -42,6 +30,9 @@ const Page = () => {
     isLoadingInterlocutor,
     setIsLoadingInterlocutor,
   } = useChatInterlocutor();
+  const { state, dispatch } = useChatContext();
+
+  useMessageListener(state.currentChat?.chatId || 0);
 
   useEffect(() => {
     fetchData();
@@ -50,7 +41,7 @@ const Page = () => {
   const fetchData = async () => {
     setChatLoading(true);
     const foundChat = chats.find((chat) => chat.chatId === +id);
-    setCurrentChat(foundChat);
+    dispatch({ type: ActionKind.SET_CURRENT_CHAT, payload: foundChat });
 
     if (foundChat) {
       const fetchedInterlocutor = await getInterlocutor(foundChat.interlocutorId);
@@ -62,20 +53,6 @@ const Page = () => {
     setChatLoading(false);
     setIsLoadingInterlocutor(false);
   };
-
-  const handlePick = useCallback((emojiObject: EmojiType) => {
-    setMessage((prev) => prev + emojiObject.emoji);
-  }, []);
-
-  const renderAvatar = useCallback(
-    () => (
-      <Image
-        source={{ uri: interlocutor?.image || DEFAULT_IMAGE }}
-        style={{ width: 40, height: 40, borderRadius: 20 }}
-      />
-    ),
-    [interlocutor?.image]
-  );
 
   const renderHeader = useCallback(
     (tintColor: string | undefined) => (
@@ -110,44 +87,17 @@ const Page = () => {
         }}
       />
       <View style={[styles.fill, styles.container, { paddingBottom: bottom }]}>
-        <GiftedChat
-          user={formChatUser({ id: user?.id, fullName: user?.fullName, imageUrl: user?.imageUrl })}
-          messages={state.messages}
-          scrollToBottom
-          onPressAvatar={onPressAvatar}
-          scrollToBottomComponent={() => (
-            <View>
-              <AntDesign name="downcircle" size={32} color={COLORS.gray} />
-            </View>
-          )}
-          scrollToBottomStyle={{ width: 32, height: 32, backgroundColor: 'transparent' }}
-          renderActions={(props) => renderCustomActions(props, onSendFromUser)}
-          renderSystemMessage={renderSystemMessage}
-          renderAvatar={renderAvatar}
-          renderBubble={(props) => <ChatBubble {...props} />}
-          keyboardShouldPersistTaps="never"
-          timeTextStyle={{
-            left: { color: COLORS.grayish },
-            right: { color: COLORS.light },
-          }}
-          listViewProps={{ showsVerticalScrollIndicator: false }}
-          isTyping={state.isTyping}
-          inverted={Platform.OS !== 'web'}
-          renderInputToolbar={(props) => (
-            <ChatInputToolbar
-              currentChat={currentChat}
-              messageUser={formChatUser({
-                id: user?.id,
-                fullName: user?.fullName,
-                imageUrl: user?.imageUrl,
-              })}
-              props={props}
-              setIsOpen={setIsOpen}
-            />
-          )}
-          infiniteScroll
+        <CustomGiftedChat interlocutor={interlocutor} />
+        <EmojiPicker
+          onEmojiSelected={(emoji) =>
+            dispatch({
+              type: ActionKind.SET_CURRENT_MESSAGE,
+              payload: state.currentMessage + emoji,
+            })
+          }
+          open={state.emojiOpen}
+          onClose={() => dispatch({ type: ActionKind.SET_EMOJI_OPEN, payload: false })}
         />
-        <EmojiPicker onEmojiSelected={handlePick} open={isOpen} onClose={() => setIsOpen(false)} />
       </View>
     </>
   );

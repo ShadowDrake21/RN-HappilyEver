@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
-import usePickImageFromGallery from '~/hooks/usePickProfileImageFromGallery';
-import useTakeProfileImageByCamera from '~/hooks/useTakeProfileImageByCamera';
+import usePickImageFromGallery from '~/hooks/image-picker/usePickProfileImageFromGallery';
+import useTakeProfileImageByCamera from '~/hooks/image-picker/useTakeProfileImageByCamera';
 
 type ProfileImageSelectionContextType = {
   selectedImage: string;

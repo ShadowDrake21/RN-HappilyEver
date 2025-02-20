@@ -4,7 +4,7 @@ import ParagraphText from '@components/ui/ParagraphText';
 import React from 'react';
 import { View } from 'react-native';
 
-import useSaveMainSettings from '~/hooks/useMainSettingsOperations';
+import useSaveMainSettings from '~/hooks/main-settings/useMainSettingsOperations';
 
 const Page = () => {
   const { saveMainSettings } = useSaveMainSettings();

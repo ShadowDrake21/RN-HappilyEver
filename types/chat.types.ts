@@ -1,5 +1,7 @@
 import { IMessage } from 'react-native-gifted-chat';
 
+import { ChatStoreItem } from './store.types';
+
 import { ActionKind } from '~/enums/chat.enum';
 
 export interface ChatStateAction {
@@ -24,6 +26,9 @@ export interface IChatState {
   loadEarlier?: boolean;
   isLoadingEarlier?: boolean;
   isTyping: boolean;
+  currentChat: ChatStoreItem | undefined;
+  currentMessage: string;
+  emojiOpen: boolean;
 }
 
 export type ChatUser = {

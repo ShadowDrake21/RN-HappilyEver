@@ -10,7 +10,7 @@ import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
-import useLogin from '~/hooks/useLogin';
+import useLogin from '~/hooks/auth/useLogin';
 
 const Page = () => {
   const { bottom } = useSafeAreaInsets();

@@ -2,7 +2,7 @@ import { useAuth } from '@clerk/clerk-expo';
 import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import useChatListener from './useChatListener';
+import useChatListener from '../listeners/useChatListener';
 
 import { getChatByMatchId } from '~/supabase/supabase-chatting';
 import { ChatUser, CompoundChat } from '~/types/chat.types';

@@ -2,7 +2,7 @@ import { useMainSettings } from '~/context/MainSettingsContext';
 import { ProfileInterestsIds } from '~/types/main-settings.types';
 import { addInterest, removeInterest } from '~/utils/helpers.utils';
 
-const useInterests = () => {
+const useHandleInterests = () => {
   const { state, dispatch } = useMainSettings();
 
   const handleToggleInterest = (newInterest: ProfileInterestsIds) => {
@@ -27,4 +27,4 @@ const useInterests = () => {
   return { handleToggleInterest };
 };
 
-export default useInterests;
+export default useHandleInterests;

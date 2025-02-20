@@ -1,8 +1,8 @@
 import { useUser } from '@clerk/clerk-expo';
 import { AntDesign } from '@expo/vector-icons';
-import React, { useCallback, useState } from 'react';
-import { Platform, StyleSheet, Text, View, Image } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat';
+import React, { useCallback } from 'react';
+import { Platform, StyleSheet, View, Image } from 'react-native';
+import { GiftedChat, IMessage, InputToolbarProps } from 'react-native-gifted-chat';
 
 import ChatBubble from './ChatBubble';
 import ChatInputToolbar from './ChatInputToolbar';
@@ -10,15 +10,14 @@ import ChatInputToolbar from './ChatInputToolbar';
 import { COLORS } from '~/constants/colors';
 import { DEFAULT_IMAGE } from '~/constants/variables';
 import { useChatContext } from '~/context/ChatContext';
-import useChatActions from '~/hooks/useChatActions';
+import useChatActions from '~/hooks/chat/useChatActions';
 import { InterlocutorType } from '~/types/chat.types';
-import { ChatStoreItem } from '~/types/store.types';
 import { formChatUser } from '~/utils/format.utils';
 import { renderCustomActions, renderSystemMessage } from '~/utils/renderChatFunctions';
 
 const CustomGiftedChat = ({ interlocutor }: { interlocutor: InterlocutorType | undefined }) => {
   const { user } = useUser();
-  const { state, setEmojiOpen, currentChat } = useChatContext();
+  const { state } = useChatContext();
   const { onPressAvatar, onSendFromUser } = useChatActions();
 
   const renderScrollToBottom = useCallback(
@@ -40,6 +39,21 @@ const CustomGiftedChat = ({ interlocutor }: { interlocutor: InterlocutorType | u
     [interlocutor?.image]
   );
 
+  const renderInputToolbar = useCallback(
+    (props: InputToolbarProps<IMessage>) => (
+      <ChatInputToolbar
+        currentChat={state.currentChat}
+        messageUser={formChatUser({
+          id: user?.id,
+          fullName: user?.fullName,
+          imageUrl: user?.imageUrl,
+        })}
+        props={props}
+      />
+    ),
+    [state.currentChat]
+  );
+
   return (
     <GiftedChat
       user={formChatUser({ id: user?.id, fullName: user?.fullName, imageUrl: user?.imageUrl })}
@@ -47,7 +61,7 @@ const CustomGiftedChat = ({ interlocutor }: { interlocutor: InterlocutorType | u
       scrollToBottom
       onPressAvatar={onPressAvatar}
       scrollToBottomComponent={renderScrollToBottom}
-      scrollToBottomStyle={{ width: 32, height: 32, backgroundColor: 'transparent' }}
+      scrollToBottomStyle={styles.scrollToBottom}
       renderActions={(props) => renderCustomActions(props, onSendFromUser)}
       renderSystemMessage={renderSystemMessage}
       renderAvatar={renderAvatar}
@@ -60,18 +74,7 @@ const CustomGiftedChat = ({ interlocutor }: { interlocutor: InterlocutorType | u
       listViewProps={{ showsVerticalScrollIndicator: false }}
       isTyping={state.isTyping}
       inverted={Platform.OS !== 'web'}
-      renderInputToolbar={(props) => (
-        <ChatInputToolbar
-          currentChat={currentChat}
-          messageUser={formChatUser({
-            id: user?.id,
-            fullName: user?.fullName,
-            imageUrl: user?.imageUrl,
-          })}
-          props={props}
-          setIsOpen={setEmojiOpen}
-        />
-      )}
+      renderInputToolbar={renderInputToolbar}
       infiniteScroll
     />
   );
@@ -79,4 +82,6 @@ const CustomGiftedChat = ({ interlocutor }: { interlocutor: InterlocutorType | u
 
 export default CustomGiftedChat;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  scrollToBottom: { width: 32, height: 32, backgroundColor: 'transparent' },
+});

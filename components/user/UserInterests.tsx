@@ -5,7 +5,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { List } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
-import useRetrieveInterests from '~/hooks/useRetrieveInterests';
+import useHandleCategories from '~/hooks/handlers/useHandleCategories';
 import { ProfileInterestsIds } from '~/types/main-settings.types';
 
 const UserInterests = ({
@@ -15,7 +15,7 @@ const UserInterests = ({
   userName: string;
   interestsIds: ProfileInterestsIds[];
 }) => {
-  const categoryItems = useRetrieveInterests(interestsIds);
+  const categoryItems = useHandleCategories(interestsIds);
 
   return (
     <FlatList

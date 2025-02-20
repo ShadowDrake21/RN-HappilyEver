@@ -4,7 +4,7 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
-import useFetchCountries from '~/hooks/useFetchCountries';
+import useFetchCountries from '~/hooks/fetching/useFetchCountries';
 import { IUserProfile } from '~/types/user.types';
 import { getFullYears } from '~/utils/helpers.utils';
 

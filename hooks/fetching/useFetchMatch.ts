@@ -8,7 +8,7 @@ import { fetchMatchingUsers } from '~/utils/fetch.utils';
 
 type UserType = { user_id: string; image: string; isMine: boolean };
 
-const useRetrieveMatch = (match_id: number) => {
+const useFetchMatch = (match_id: number) => {
   const { getToken, userId } = useAuth();
 
   const [loading, setLoading] = useState(false);
@@ -19,10 +19,10 @@ const useRetrieveMatch = (match_id: number) => {
   const { addChat, chats } = useChatStore();
 
   useEffect(() => {
-    retrieveMatchData();
+    fetchMatchData();
   }, [match_id]);
 
-  const retrieveMatchData = useCallback(async () => {
+  const fetchMatchData = useCallback(async () => {
     setLoading(true);
     try {
       const token = await getToken({ template: 'supabase' });
@@ -54,7 +54,7 @@ const useRetrieveMatch = (match_id: number) => {
     return chats.find((chat) => chat.matchId === match_id)?.chatId;
   };
 
-  return { loading, users, retrieveMatchData, getChatId };
+  return { loading, users, fetchMatchData, getChatId };
 };
 
-export default useRetrieveMatch;
+export default useFetchMatch;

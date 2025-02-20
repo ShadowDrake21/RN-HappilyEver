@@ -3,18 +3,18 @@ import { useEffect, useState } from 'react';
 import { profileInterests } from '~/content/profile-interests.content';
 import { ProfileInterestsCategory, ProfileInterestsIds } from '~/types/main-settings.types';
 
-const useRetrieveInterests = (interestsIds: ProfileInterestsIds[]) => {
+const useHandleCategories = (interestsIds: ProfileInterestsIds[]) => {
   const [categoryItems, setCategoryItems] = useState<ProfileInterestsCategory[]>([]);
 
   useEffect(() => {
-    retrieveCategories();
+    handleCategories();
 
     return () => {
       setCategoryItems([]);
     };
   }, [interestsIds]);
 
-  const retrieveCategories = () => {
+  const handleCategories = () => {
     interestsIds.forEach((interest) => {
       const selectedCategory = profileInterests.find((item) => item.id === interest.categoryId)!;
       const selectedInterests = selectedCategory?.interests.filter((item) =>
@@ -35,4 +35,4 @@ const useRetrieveInterests = (interestsIds: ProfileInterestsIds[]) => {
   return categoryItems;
 };
 
-export default useRetrieveInterests;
+export default useHandleCategories;

@@ -8,7 +8,7 @@ import { StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { type SwiperCardRefType } from 'rn-swiper-list';
 
-import useMainSettingsOperations from '~/hooks/useMainSettingsOperations';
+import useMainSettingsOperations from '~/hooks/main-settings/useMainSettingsOperations';
 
 const Page = () => {
   const { session } = useSession();

@@ -8,10 +8,31 @@ export const initialChatState = {
   loadEarlier: true,
   isLoadingEarlier: false,
   isTyping: false,
+  currentChat: undefined,
+  currentMessage: '',
+  emojiOpen: false,
 };
 
 export function chatReducer(state: IChatState, action: ChatStateAction) {
   switch (action.type) {
+    case ActionKind.SET_CURRENT_CHAT: {
+      return {
+        ...state,
+        currentChat: action.payload,
+      };
+    }
+    case ActionKind.SET_CURRENT_MESSAGE: {
+      return {
+        ...state,
+        currentMessage: action.payload,
+      };
+    }
+    case ActionKind.SET_EMOJI_OPEN: {
+      return {
+        ...state,
+        emojiOpen: action.payload,
+      };
+    }
     case ActionKind.SET_MESSAGES: {
       return {
         ...state,

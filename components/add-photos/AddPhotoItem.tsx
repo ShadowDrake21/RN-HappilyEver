@@ -2,7 +2,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { COLORS } from '~/constants/colors';
-import usePickProfileImage from '~/hooks/usePickProfileGeneralImage';
+import usePickProfileImage from '~/hooks/image-picker/usePickProfileGeneralImage';
 
 const AddPhotoItem = () => {
   const { pickImage, selectedImage } = usePickProfileImage();

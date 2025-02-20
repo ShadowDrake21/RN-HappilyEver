@@ -3,7 +3,7 @@ import CustomLoader from '@components/ui/CustomLoader';
 import React from 'react';
 import { FlatList, View } from 'react-native';
 
-import useFetchChats from '~/hooks/useFetchChats';
+import useFetchChats from '~/hooks/fetching/useFetchChats';
 // TODO: Caching!!!
 
 const Page = () => {
