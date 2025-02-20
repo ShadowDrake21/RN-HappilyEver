@@ -1,9 +1,8 @@
-import messagesData from '~/content/messages';
 import { ActionKind } from '~/enums/chat.enum';
 import { ChatStateAction, IChatState } from '~/types/chat.types';
 
 export const initialChatState = {
-  messages: messagesData,
+  messages: [],
   step: 0,
   loadEarlier: true,
   isLoadingEarlier: false,

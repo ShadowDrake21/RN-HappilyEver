@@ -16,7 +16,7 @@ import {
 import { useMatchesModalContext } from '~/context/MatchesModalContext';
 import { useSwipesContext } from '~/context/SwipesContext';
 import useFetchOppositeGenderUsers from '~/hooks/fetching/useFetchOppositeGenderUsers';
-import useHandleSwipe from '~/hooks/useHandleSwipe';
+import useHandleSwipe from '~/hooks/handlers/useHandleSwipe';
 import { useUserStorage } from '~/store/user.store';
 
 const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCardRefType>> }) => {

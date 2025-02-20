@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 import { Alert, Platform } from 'react-native';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 
-import earlierMessages from '~/content/earlierMessages';
 import { useChatContext } from '~/context/ChatContext';
 import { ActionKind } from '~/enums/chat.enum';
 
@@ -30,18 +29,18 @@ const useChatActions = () => {
     [dispatch, state.messages]
   );
 
-  const onLoadEarlier = useCallback(() => {
-    dispatch({ type: ActionKind.LOAD_EARLIER_START });
-    setTimeout(() => {
-      const newMessages = GiftedChat.prepend(
-        state.messages,
-        earlierMessages() as IMessage[],
-        Platform.OS !== 'web'
-      );
+  // const onLoadEarlier = useCallback(() => {
+  //   dispatch({ type: ActionKind.LOAD_EARLIER_START });
+  //   setTimeout(() => {
+  //     const newMessages = GiftedChat.prepend(
+  //       state.messages,
+  //       earlierMessages() as IMessage[],
+  //       Platform.OS !== 'web'
+  //     );
 
-      dispatch({ type: ActionKind.LOAD_EARLIER_MESSAGES, payload: newMessages });
-    }, 1500);
-  }, [dispatch, state.messages]);
+  //     dispatch({ type: ActionKind.LOAD_EARLIER_MESSAGES, payload: newMessages });
+  //   }, 1500);
+  // }, [dispatch, state.messages]);
 
   const onPressAvatar = useCallback(() => {
     Alert.alert('On avatar press');
@@ -65,7 +64,7 @@ const useChatActions = () => {
   return {
     onSetMessages,
     onSend,
-    onLoadEarlier,
+    // onLoadEarlier,
     onPressAvatar,
     onSendFromUser,
   };
