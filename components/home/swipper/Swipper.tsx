@@ -15,8 +15,8 @@ import {
 
 import { useMatchesModalContext } from '~/context/MatchesModalContext';
 import { useSwipesContext } from '~/context/SwipesContext';
-import useFetchOppositeGenderUsers from '~/hooks/useFetchOppositeGenderUsers';
-import useSwipeHandler from '~/hooks/useSwipeHandler';
+import useFetchOppositeGenderUsers from '~/hooks/fetching/useFetchOppositeGenderUsers';
+import useHandleSwipe from '~/hooks/handlers/useHandleSwipe';
 import { useUserStorage } from '~/store/user.store';
 
 const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCardRefType>> }) => {
@@ -28,7 +28,7 @@ const Swipper = ({ carouselRef }: { carouselRef: PropsWithRef<RefObject<SwiperCa
   const { isSwipesLoading } = useSwipesContext();
 
   const { data: users } = useFetchOppositeGenderUsers();
-  const { onSwipe } = useSwipeHandler();
+  const { onSwipe } = useHandleSwipe();
 
   if (isSwipesLoading || !userGender) {
     return <CustomLoader />;

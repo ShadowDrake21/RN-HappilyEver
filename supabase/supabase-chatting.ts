@@ -9,7 +9,7 @@ export const getAllChats = async (token: string, user_id: string) => {
 
   return await supabase
     .from('chats')
-    .select('*, users:chats_users!inner(user:profiles(user_id, email))')
+    .select('*, users:chats_users!inner(user:profiles(user_id, fullName))')
     .in(
       'id',
       chatIds!.map((chat) => chat.id)
@@ -45,14 +45,14 @@ export const createChat = async (token: string, match_id: bigint, user_ids: stri
   return chat;
 };
 
-export const getAllMessages = async (token: string, chat_id: string) => {
+export const getAllMessages = async (token: string, chat_id: number) => {
   const supabase = await supabaseClient(token);
 
   return await supabase
     .from('messages')
-    .select('*, user:profiles(user_id, email)')
+    .select('*, user:profiles(user_id, fullName)')
     .eq('chat_id', chat_id)
-    .order('created_at', { ascending: true });
+    .order('created_at', { ascending: false });
 };
 
 export const getChatByMatchId = async (token: string, match_id: number) => {
@@ -71,7 +71,7 @@ export const getChatByMatchId = async (token: string, match_id: number) => {
 
 export const sendMessage = async (
   token: string,
-  chat_id: string,
+  chat_id: number,
   user_id: string,
   message: string
 ) => {

@@ -1,13 +1,23 @@
+import { useUser } from '@clerk/clerk-expo';
 import { useCallback } from 'react';
 import { Alert, Platform } from 'react-native';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 
-import earlierMessages from '~/content/earlierMessages';
 import { useChatContext } from '~/context/ChatContext';
 import { ActionKind } from '~/enums/chat.enum';
 
-const useChatActions = (user: any) => {
+const useChatActions = () => {
+  const { user } = useUser();
   const { state, dispatch } = useChatContext();
+
+  const onSetMessages = useCallback(
+    (messages: IMessage[]) => {
+      if (!messages) return;
+
+      dispatch({ type: ActionKind.SET_MESSAGES, payload: messages });
+    },
+    [dispatch]
+  );
 
   const onSend = useCallback(
     (messages: any[]) => {
@@ -19,18 +29,18 @@ const useChatActions = (user: any) => {
     [dispatch, state.messages]
   );
 
-  const onLoadEarlier = useCallback(() => {
-    dispatch({ type: ActionKind.LOAD_EARLIER_START });
-    setTimeout(() => {
-      const newMessages = GiftedChat.prepend(
-        state.messages,
-        earlierMessages() as IMessage[],
-        Platform.OS !== 'web'
-      );
+  // const onLoadEarlier = useCallback(() => {
+  //   dispatch({ type: ActionKind.LOAD_EARLIER_START });
+  //   setTimeout(() => {
+  //     const newMessages = GiftedChat.prepend(
+  //       state.messages,
+  //       earlierMessages() as IMessage[],
+  //       Platform.OS !== 'web'
+  //     );
 
-      dispatch({ type: ActionKind.LOAD_EARLIER_MESSAGES, payload: newMessages });
-    }, 1500);
-  }, [dispatch, state.messages]);
+  //     dispatch({ type: ActionKind.LOAD_EARLIER_MESSAGES, payload: newMessages });
+  //   }, 1500);
+  // }, [dispatch, state.messages]);
 
   const onPressAvatar = useCallback(() => {
     Alert.alert('On avatar press');
@@ -52,8 +62,9 @@ const useChatActions = (user: any) => {
   );
 
   return {
+    onSetMessages,
     onSend,
-    onLoadEarlier,
+    // onLoadEarlier,
     onPressAvatar,
     onSendFromUser,
   };

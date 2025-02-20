@@ -8,7 +8,7 @@ import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { COLORS } from '~/constants/colors';
-import useRetrieveMatch from '~/hooks/useRetrieveMatch';
+import useFetchMatch from '~/hooks/fetching/useFetchMatch';
 
 // TODO: MESSAGES
 
@@ -18,7 +18,7 @@ const Page = () => {
   const { id } = useLocalSearchParams<{
     id: string;
   }>();
-  const { users, loading, getChatId } = useRetrieveMatch(+id);
+  const { users, loading, getChatId } = useFetchMatch(+id);
 
   if (loading) return <CustomLoader />;
 

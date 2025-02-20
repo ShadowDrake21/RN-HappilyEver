@@ -12,7 +12,7 @@ import UserQuestions from './UserQuestions';
 
 import { COLORS } from '~/constants/colors';
 import { unknownFlag } from '~/constants/links';
-import useFetchCountries from '~/hooks/useFetchCountries';
+import useFetchCountries from '~/hooks/fetching/useFetchCountries';
 import { IUserFullProfile } from '~/types/user.types';
 
 const UserBottomSheet = ({ user }: { user: IUserFullProfile | undefined }) => {

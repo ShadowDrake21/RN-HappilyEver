@@ -1,22 +1,25 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import MessageChatItem from '@components/messages/MessageChatItem';
+import CustomLoader from '@components/ui/CustomLoader';
+import React from 'react';
+import { FlatList, View } from 'react-native';
 
-import useChatListener from '~/hooks/useChatListener';
+import useFetchChats from '~/hooks/fetching/useFetchChats';
+// TODO: Caching!!!
 
 const Page = () => {
-  const { allChats, loading } = useChatListener();
+  const { compoundChats, loading } = useFetchChats();
 
-  useEffect(() => {
-    console.log('allChats', allChats);
-  }, [allChats, loading]);
-
+  if (loading) return <CustomLoader />;
   return (
-    <View>
-      <Text>Page</Text>
+    <View className="flex-1 px-5 pt-5">
+      <FlatList
+        data={compoundChats}
+        keyExtractor={(item) => item.chat_id.toString()}
+        renderItem={({ item: chat }) => <MessageChatItem chat={chat} key={chat.chat_id} />}
+        contentContainerStyle={{ gap: 10 }}
+      />
     </View>
   );
 };
 
 export default Page;
-
-const styles = StyleSheet.create({});

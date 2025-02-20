@@ -5,7 +5,7 @@ import { Text as PaperText } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
 import { defaultTitleStyles } from '~/constants/styles';
-import useFetchCountries from '~/hooks/useFetchCountries';
+import useFetchCountries from '~/hooks/fetching/useFetchCountries';
 import { ICountry } from '~/types/country.types';
 
 type FilterBottomSheetLocationProps = {

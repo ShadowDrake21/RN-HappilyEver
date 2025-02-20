@@ -74,6 +74,7 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "~0.19.10",
     "react-phone-number-input": "^3.4.11",
+    "rn-emoji-keyboard": "^1.7.0",
     "rn-swiper-list": "^2.2.0",
     "uuid": "^11.0.5",
     "zustand": "^4.5.1"

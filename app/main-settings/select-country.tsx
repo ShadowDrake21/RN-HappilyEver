@@ -10,8 +10,8 @@ import { Searchbar } from 'react-native-paper';
 import MainButtonLink from '~/components/ui/MainButtonLink';
 import { COLORS } from '~/constants/colors';
 import { useMainSettings } from '~/context/MainSettingsContext';
-import useCountries from '~/hooks/useCountries';
-import useCountrySearch from '~/hooks/useCountrySearch';
+import useHandleCountries from '~/hooks/handlers/useHandleCountries';
+import useHandleCountrySearch from '~/hooks/handlers/useHandleCountrySearch';
 import { ICountry } from '~/types/country.types';
 
 const Page = () => {
@@ -23,8 +23,8 @@ const Page = () => {
   const handlePress = useCallback((id: string) => {
     dispatch({ type: 'SET_COUNTRY_ID', payload: id });
   }, []);
-  const { allCountries, isLoading } = useCountries();
-  const debouncedSearch = useCountrySearch(allCountries, setCountries);
+  const { allCountries, isLoading } = useHandleCountries();
+  const debouncedSearch = useHandleCountrySearch(allCountries, setCountries);
 
   useEffect(() => {
     setCountries(allCountries);

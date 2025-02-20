@@ -12,8 +12,8 @@ import ProfileBasicFormUsername from './fields/ProfileBasicFormUsername';
 
 import { unknownFlag } from '~/constants/links';
 import { useMainSettings } from '~/context/MainSettingsContext';
-import useFetchCountries from '~/hooks/useFetchCountries';
-import useProfileBasicForm from '~/hooks/useProfileBasicForm';
+import useFetchCountries from '~/hooks/fetching/useFetchCountries';
+import useProfileBasicForm from '~/hooks/forms/useProfileBasicForm';
 
 const ProfileBasicForm = () => {
   const router = useRouter();

@@ -6,14 +6,14 @@ import { IUserQuestion } from '~/types/user.types';
 
 type GroupedQuestionsType = { [key: string]: IUserQuestion[] };
 
-const useRetrieveQuestions = (rawQuestions: IUserQuestion[] | undefined) => {
+const useHandleQuestions = (rawQuestions: IUserQuestion[] | undefined) => {
   const [groupedQuestions, setGroupedQuestions] = useState<GroupedQuestionsType>({});
 
   useEffect(() => {
-    setGroupedQuestions(retrieveQuestions());
+    setGroupedQuestions(handleQuestions());
   }, [rawQuestions]);
 
-  const retrieveQuestions = () => {
+  const handleQuestions = () => {
     if (!rawQuestions) return {};
 
     const grouped: GroupedQuestionsType = {};
@@ -38,4 +38,4 @@ const useRetrieveQuestions = (rawQuestions: IUserQuestion[] | undefined) => {
   return groupedQuestions;
 };
 
-export default useRetrieveQuestions;
+export default useHandleQuestions;

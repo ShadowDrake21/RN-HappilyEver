@@ -5,7 +5,7 @@ import React from 'react';
 import { FlatList, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import useRequestGalleryPermissions from '~/hooks/useRequestGalleryPermissions';
+import useRequestGalleryPermissions from '~/hooks/image-picker/useRequestGalleryPermissions';
 
 const AVAILABLE_PHOTOS = 4;
 

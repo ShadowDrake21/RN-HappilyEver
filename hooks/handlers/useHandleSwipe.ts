@@ -2,7 +2,7 @@ import { useAuth } from '@clerk/clerk-expo';
 
 import { setSwipe } from '~/supabase/supabase-matching.requests';
 
-const useSwipeHandler = () => {
+const useHandleSwipe = () => {
   const { userId, getToken } = useAuth();
 
   const onSwipe = async (swippedId: string, type: 'like' | 'not_interested') => {
@@ -20,4 +20,4 @@ const useSwipeHandler = () => {
   return { onSwipe };
 };
 
-export default useSwipeHandler;
+export default useHandleSwipe;

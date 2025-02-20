@@ -12,8 +12,8 @@ import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
 import { COLORS } from '~/constants/colors';
-import useRegister from '~/hooks/useRegister';
-import useVerify from '~/hooks/useVerify';
+import useRegister from '~/hooks/auth/useRegister';
+import useVerify from '~/hooks/auth/useVerify';
 import { useUserStorage } from '~/store/user.store';
 import { callToast } from '~/utils/ui.utils';
 

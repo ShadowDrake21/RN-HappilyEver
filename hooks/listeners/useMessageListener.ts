@@ -2,13 +2,17 @@ import { useAuth } from '@clerk/clerk-expo';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 
+import useChatActions from '../chat/useChatActions';
+
 import { getAllMessages } from '~/supabase/supabase-chatting';
 import { supabaseClient } from '~/supabase/supabase.client';
+import { formatMessages } from '~/utils/format.utils';
 
-const useMessageListener = () => {
+const useMessageListener = (chatId: number) => {
   const { getToken, userId } = useAuth();
-  const [allMessages, setAllMessages] = useState<any[]>([]);
+
   const [loading, setLoading] = useState(true);
+  const { onSetMessages } = useChatActions();
 
   useEffect(() => {
     let subscription: any;
@@ -21,35 +25,30 @@ const useMessageListener = () => {
           console.log('No token or userId, skipping subscription.');
           return;
         }
-
-        console.log('useMessageListener Initializing Supabase client...');
         supabase = await supabaseClient(token);
 
-        const { data: initialMessages, error: fetchError } = await getAllMessages(token, userId);
+        const { data: initialMessages, error: fetchError } = await getAllMessages(token, chatId);
 
         if (fetchError) {
           throw fetchError;
         }
 
-        setAllMessages(initialMessages || []);
+        onSetMessages(formatMessages(initialMessages));
         setLoading(false);
 
-        console.log('useMessageListener Subscribing to Supabase Realtime...');
-
         subscription = supabase
-          .channel('custom-all-channel')
+          .channel('custom-messages-channel')
           .on(
             'postgres_changes',
-            { event: '*', schema: 'public', table: 'chats' },
+            { event: '*', schema: 'public', table: 'messages', filter: `chat_id=eq.${chatId}` },
             async (payload) => {
-              console.log('🔥 Chat data received:', payload.new);
-              const { data, error: fetchError } = await getAllMessages(token, userId);
+              const { data, error: fetchError } = await getAllMessages(token, chatId);
 
               if (fetchError) {
                 throw fetchError;
               }
 
-              setAllMessages(data || []);
+              onSetMessages(formatMessages(data || []));
             }
           )
           .subscribe((status) => {
@@ -68,9 +67,9 @@ const useMessageListener = () => {
         supabase.removeChannel(subscription);
       }
     };
-  }, [userId]);
+  }, [userId, chatId]);
 
-  return { allMessages, loading };
+  return { loading };
 };
 
 export default useMessageListener;

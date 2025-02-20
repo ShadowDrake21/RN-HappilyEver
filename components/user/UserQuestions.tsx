@@ -5,12 +5,12 @@ import { Text as PaperText } from 'react-native-paper';
 import UserQuestionsItem from './user-questions/UserQuestionsItem';
 
 import { COLORS } from '~/constants/colors';
-import useRetrieveQuestions from '~/hooks/useRetrieveQuestions';
+import useHandleQuestions from '~/hooks/handlers/useHandleQuestions';
 import { IUserQuestion } from '~/types/user.types';
 import { formatCategory } from '~/utils/format.utils';
 
 const UserQuestions = ({ rawQuestions }: { rawQuestions: IUserQuestion[] | undefined }) => {
-  const groupedQuestions = useRetrieveQuestions(rawQuestions);
+  const groupedQuestions = useHandleQuestions(rawQuestions);
 
   return (
     <FlatList

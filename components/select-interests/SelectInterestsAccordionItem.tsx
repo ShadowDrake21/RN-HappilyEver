@@ -3,7 +3,7 @@ import { StyleSheet, Text } from 'react-native';
 import { List } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
-import useInterests from '~/hooks/useInterests';
+import useHandleInterests from '~/hooks/handlers/useHandleInterests';
 import { ProfileInterestItem } from '~/types/main-settings.types';
 
 type SelectInterestsAccordionItemProps = {
@@ -15,7 +15,7 @@ const SelectInterestsAccordionItem = ({
   interest: { id: interestId, title, description, icon },
   categoryId,
 }: SelectInterestsAccordionItemProps) => {
-  const { handleToggleInterest } = useInterests();
+  const { handleToggleInterest } = useHandleInterests();
 
   return (
     <List.Item

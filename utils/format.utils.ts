@@ -1,3 +1,8 @@
+import { UserResponse } from '@supabase/supabase-js';
+import { IMessage } from 'react-native-gifted-chat';
+
+import { DEFAULT_IMAGE } from '~/constants/variables';
+import { FormattedMessage, MessageUserType, RawMessage } from '~/types/chat.types';
 import {
   IMainSettingsBasicForm,
   ProfileInterestsCategory,
@@ -43,4 +48,31 @@ export const formatProfile = (
       occupation: profile.occupation,
     };
   });
+};
+
+export const formatMessages = (rawMessages: RawMessage[]): IMessage[] => {
+  return rawMessages.map((rawMessage) => {
+    return {
+      _id: rawMessage.id,
+      text: rawMessage.content,
+      createdAt: new Date(rawMessage.created_at),
+      user: {
+        _id: rawMessage.user.user_id,
+        name: rawMessage.user.fullName,
+      },
+    };
+  });
+};
+
+export const formChatUser = (user: {
+  id?: string;
+  fullName?: string | null;
+  imageUrl?: string;
+}) => {
+  const messageUser: MessageUserType = {
+    _id: user?.id || '',
+    name: user?.fullName || 'Unknown user',
+    avatar: user?.imageUrl || DEFAULT_IMAGE,
+  };
+  return messageUser;
 };

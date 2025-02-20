@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 
 import { ICountry } from '~/types/country.types';
 
-const useCountrySearch = (
+const useHandleCountrySearch = (
   allCountries: ICountry[] | undefined,
   setCountries: (countries: ICountry[] | undefined) => void
 ) => {
@@ -22,4 +22,4 @@ const useCountrySearch = (
   return debouncedSearch;
 };
 
-export default useCountrySearch;
+export default useHandleCountrySearch;

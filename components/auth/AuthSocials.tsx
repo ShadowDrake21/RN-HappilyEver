@@ -5,7 +5,7 @@ import { Text as PaperText } from 'react-native-paper';
 import SocialButton from '../SocialButton';
 
 import { COLORS } from '~/constants/colors';
-import useAuthSocials from '~/hooks/useAuthSocials';
+import useAuthSocials from '~/hooks/auth/useAuthSocials';
 
 const AuthSocials = ({ action = 'Sign in' }: { action?: 'Sign in' | 'Sign up' }) => {
   const { onSocialAuth, isLoading } = useAuthSocials();

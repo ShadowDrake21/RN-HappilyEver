@@ -10,7 +10,7 @@ import 'reanimatedConfig';
 
 import { tokenCache } from '~/cache';
 import { MatchesModalProvider } from '~/context/MatchesModalContext';
-import useMatchListener from '~/hooks/useMatchListener';
+import useMatchListener from '~/hooks/listeners/useMatchListener';
 import { Match } from '~/types/match.types';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;

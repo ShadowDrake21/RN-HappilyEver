@@ -10,7 +10,7 @@ import {
   loveRelationshipsContent,
   personalConnectionContent,
 } from '~/content/profile-extended-form.content';
-import useProfileExtendedForm from '~/hooks/useProfileExtendedForm';
+import useProfileExtendedForm from '~/hooks/forms/useProfileExtendedForm';
 
 const ProfileExtendedForm = () => {
   const { control, errors, submit } = useProfileExtendedForm();

@@ -42,7 +42,7 @@ const useChatListener = () => {
             'postgres_changes',
             { event: '*', schema: 'public', table: 'chats' },
             async (payload) => {
-              console.log('🔥 Chat data received:', payload.new);
+              // console.log('🔥 Chat data received:', payload.new);
               const { data, error: fetchError } = await getAllChats(token, userId);
 
               if (fetchError) {
