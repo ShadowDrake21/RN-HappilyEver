@@ -78,19 +78,7 @@ const TabsLayout = () => {
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
-          headerTintColor: COLORS.text,
-          headerShadowVisible: false,
-          headerLeft: () => (
-            <Pressable style={{ marginLeft: 10 }} onPress={() => console.log('support')}>
-              <FontAwesome5 name="headset" size={24} color={COLORS.grayish} />
-            </Pressable>
-          ),
-          headerRight: () => (
-            <Pressable style={{ marginRight: 10 }} onPress={() => console.log('edit')}>
-              <Feather name="edit" size={24} color={COLORS.grayish} />
-            </Pressable>
-          ),
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account-circle-outline" size={size} color={color} />
           ),

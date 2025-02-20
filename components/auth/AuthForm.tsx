@@ -39,7 +39,7 @@ const AuthForm = ({ control, errors }: AuthFormProps) => {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <CustomInput
-                errors={errors.email}
+                errors={!!errors.email}
                 placeholder="Email"
                 onBlur={onBlur}
                 onChangeText={onChange}
@@ -63,7 +63,7 @@ const AuthForm = ({ control, errors }: AuthFormProps) => {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <CustomInput
-                errors={errors.password}
+                errors={!!errors.password}
                 placeholder="Password"
                 onBlur={onBlur}
                 onChangeText={onChange}

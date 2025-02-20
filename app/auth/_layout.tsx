@@ -69,7 +69,7 @@ const Layout = () => {
               icon="arrow-left"
               iconColor={tintColor}
               size={20}
-              onPress={() => router.navigate('./sign-in')}
+              onPress={() => router.navigate('/auth/sign-in')}
             />
           ),
         }}

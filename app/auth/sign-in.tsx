@@ -1,8 +1,9 @@
+import TouchableKeyboardAvoidingView from '@components/shared/TouchableKeyboardAvoidingView';
 import CustomLoader from '@components/ui/CustomLoader';
 import MediumTitle from '@components/ui/MediumTitle';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Image, Text, View } from 'react-native';
+import { Image, KeyboardAvoidingView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AuthForm from '~/components/auth/AuthForm';
@@ -13,7 +14,7 @@ import { COLORS } from '~/constants/colors';
 import useLogin from '~/hooks/auth/useLogin';
 
 const Page = () => {
-  const { bottom } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
   const {
     control,
     handleSubmit,
@@ -40,23 +41,25 @@ const Page = () => {
 
   return (
     <View className="flex-1 justify-between" style={{ paddingBottom: bottom }}>
-      <View>
-        <Image
-          source={require('assets/logo.png')}
-          className="h-[200px] w-[200px] self-center"
-          resizeMode="contain"
-        />
-        <MediumTitle>Login to Your Account</MediumTitle>
-        <AuthForm control={control} errors={errors} />
-        <MainButton onPress={handleSubmit(onSignIn)} style={{ marginBottom: 20 }}>
-          Submit
-        </MainButton>
-        <TextLink
-          classes="flex-row items-center justify-center gap-2 self-center"
-          href="./reset-password">
-          Don't remember your password?
-        </TextLink>
-      </View>
+      <TouchableKeyboardAvoidingView offset={top + 120}>
+        <View className="flex-1 justify-center">
+          <Image
+            source={require('assets/logo.png')}
+            className="h-[200px] w-[200px] self-center"
+            resizeMode="contain"
+          />
+          <MediumTitle>Login to Your Account</MediumTitle>
+          <AuthForm control={control} errors={errors} />
+          <MainButton onPress={handleSubmit(onSignIn)} style={{ marginBottom: 20 }}>
+            Submit
+          </MainButton>
+          <TextLink
+            classes="flex-row items-center justify-center gap-2 self-center"
+            href="/auth/(reset-password)">
+            Don't remember your password?
+          </TextLink>
+        </View>
+      </TouchableKeyboardAvoidingView>
       <View>
         <SignInSocials />
         <View className="flex-row items-center justify-center gap-2 self-center py-5 ">

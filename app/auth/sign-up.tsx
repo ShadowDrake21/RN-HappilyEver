@@ -4,7 +4,7 @@ import CustomLoader from '@components/ui/CustomLoader';
 import MediumTitle from '@components/ui/MediumTitle';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AuthForm from '~/components/auth/AuthForm';
@@ -31,6 +31,7 @@ const Page = () => {
     },
   });
 
+  const { width } = useWindowDimensions();
   const { setIsNewUser } = useUserStorage();
   const { bottom, top } = useSafeAreaInsets();
   const [pendingVerification, setPendingVerification] = useState(false);
@@ -70,7 +71,8 @@ const Page = () => {
             source={require('assets/auth/verification-code.jpg')}
             style={{
               aspectRatio: 1,
-              height: 400,
+              width,
+              height: width - 40,
               alignSelf: 'center',
               borderRadius: 200,
               marginBottom: 20,

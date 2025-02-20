@@ -44,8 +44,10 @@ const RootLayout = () => {
 
     if (isSignedIn && !inTabsGroup) {
       router.replace('/home');
-      // router.replace('/chat/1');
+      // router.replace('/auth/(reset-password)/verificate-code');
     } else if (!isSignedIn) {
+      // router.replace('/auth/(reset-password)/verificate-code');
+
       router.replace('/onboarding/onboarding-first');
     }
   }, [isSignedIn]);

@@ -46,14 +46,14 @@ const useMainSettingsOperations = () => {
         return;
       }
 
-      const formattedUserData = (
-        rawUserData as unknown as {
-          birthDate: string;
-          gender: string;
-          isFilledOut: boolean;
-        }[]
-      )[0];
+      const formattedUserData = rawUserData as unknown as {
+        birthDate: string;
+        gender: string;
+        isFilledOut: boolean;
+      };
       const formatterUserLocation = (rawUserLocation as unknown as { country_id: string }[])[0];
+
+      console.log('isFilledOut', formattedUserData.isFilledOut);
 
       if (!formattedUserData.isFilledOut) {
         router.replace('/main-settings/select-country');

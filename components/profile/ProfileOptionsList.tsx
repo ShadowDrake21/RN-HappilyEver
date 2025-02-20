@@ -5,6 +5,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { List, Switch } from 'react-native-paper';
@@ -15,78 +16,92 @@ const options = [
   {
     title: 'Settings',
     icon: <Ionicons name="settings-outline" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Settings'),
+
+    link: 'settings',
   },
   {
     title: 'Dark Mode',
     icon: <MaterialCommunityIcons name="theme-light-dark" size={24} color={COLORS.grayish} />,
     isSwitch: true,
+    link: 'dark-mode',
   },
   {
     title: 'Language',
     icon: <FontAwesome name="language" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Language'),
+
+    link: 'language',
   },
   {
     title: 'Subscription / Membership',
     icon: <MaterialIcons name="card-membership" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Subscription / Membership'),
+
+    link: 'subscription',
   },
   {
     title: 'Block & Report',
     icon: <Entypo name="block" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Block & Report'),
+
+    link: 'block-report',
   },
   {
     title: 'Incognito Mode',
     icon: <MaterialCommunityIcons name="incognito" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Incognito Mode'),
+
+    link: 'incognito',
   },
   {
     title: 'Verification',
     icon: <Feather name="user-check" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Verification'),
+
+    link: 'verification',
   },
   {
     title: 'Change Password',
     icon: <MaterialIcons name="password" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Change Password'),
+
+    link: 'change-password',
   },
   {
     title: 'Linked Accounts',
     icon: <Ionicons name="logo-instagram" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Linked Accounts'),
+
+    link: 'linked-accounts',
   },
   {
     title: 'Invite Friends',
     icon: <FontAwesome5 name="user-friends" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Invite Friends'),
+
+    link: 'invite-friends',
   },
   {
     title: 'Dating Tips & Blog',
     icon: <MaterialIcons name="tips-and-updates" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Dating Tips & Blog'),
+
+    link: 'dating-tips-blog',
   },
   {
     title: 'Help Center',
     icon: <MaterialIcons name="support-agent" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Help Center'),
+
+    link: 'help-center',
   },
   {
     title: 'Terms & Conditions',
     icon: <FontAwesome name="legal" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Terms & Conditions'),
+
+    link: 'terms-conditions',
   },
   {
     title: 'Privacy Policy',
     icon: <MaterialIcons name="privacy-tip" size={24} color={COLORS.grayish} />,
-    onPress: () => console.log('Pressed Privacy Policy'),
+
+    link: 'privacy-policy',
   },
 ];
 
 const ProfileOptionsList = () => {
+  const router = useRouter();
   const [isDarkMode, setIsDarkMode] = useState(false);
-
   const onToggleSwitch = () => setIsDarkMode((prev) => !prev);
 
   return (
@@ -104,7 +119,7 @@ const ProfileOptionsList = () => {
               <Entypo name="chevron-right" size={24} color={COLORS.grayish} />
             )
           }
-          onPress={option.onPress}
+          onPress={() => router.push(`/profile/${option.link}`)}
         />
       ))}
     </List.Section>

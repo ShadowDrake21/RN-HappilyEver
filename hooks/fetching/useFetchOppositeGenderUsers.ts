@@ -17,6 +17,7 @@ const useFetchOppositeGenderUsers = () => {
   const fetchUsers = useCallback(async () => {
     setIsSwipesLoading(true);
     try {
+      console.log('fetching users');
       if (!userGender) return;
       const token = await getToken({ template: 'supabase' });
 
@@ -33,6 +34,7 @@ const useFetchOppositeGenderUsers = () => {
   }, [userId, userGender, setIsSwipesLoading]);
 
   useEffect(() => {
+    console.log('useEffect, userGender:', userGender);
     if (userGender) fetchUsers();
   }, [userGender, fetchUsers]);
 

@@ -62,7 +62,6 @@ export default ConfirmationCodeField;
 const styles = StyleSheet.create({
   codeFieldRoot: {
     height: CONFIRMATION_CODE_FIELD_STYLES.cellSize,
-
     paddingHorizontal: 20,
     justifyContent: 'center',
   },
