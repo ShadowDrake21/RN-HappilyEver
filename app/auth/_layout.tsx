@@ -1,6 +1,6 @@
 import { useAuth } from '@clerk/clerk-expo';
-import { Redirect, Stack, useRouter } from 'expo-router';
-import React from 'react';
+import { Href, Redirect, Stack, useRouter } from 'expo-router';
+import React, { useCallback } from 'react';
 import { IconButton } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
@@ -8,6 +8,18 @@ import { COLORS } from '~/constants/colors';
 const Layout = () => {
   const router = useRouter();
   const { isSignedIn } = useAuth();
+
+  const buttonBack = useCallback(
+    (path: Href) => (
+      <IconButton
+        icon="arrow-left"
+        iconColor={COLORS.text}
+        size={20}
+        onPress={() => router.navigate(path)}
+      />
+    ),
+    []
+  );
 
   if (isSignedIn) {
     return <Redirect href="/home" />;
@@ -25,53 +37,25 @@ const Layout = () => {
       <Stack.Screen
         name="index"
         options={{
-          headerLeft: ({ tintColor }) => (
-            <IconButton
-              icon="arrow-left"
-              iconColor={tintColor}
-              size={20}
-              onPress={() => router.navigate('/onboarding/onboarding-first')}
-            />
-          ),
+          headerLeft: () => buttonBack('/onboarding/onboarding-first'),
         }}
       />
       <Stack.Screen
         name="sign-up"
         options={{
-          headerLeft: ({ tintColor }) => (
-            <IconButton
-              icon="arrow-left"
-              iconColor={tintColor}
-              size={20}
-              onPress={() => router.navigate('/auth')}
-            />
-          ),
+          headerLeft: () => buttonBack('/auth'),
         }}
       />
       <Stack.Screen
         name="sign-in"
         options={{
-          headerLeft: ({ tintColor }) => (
-            <IconButton
-              icon="arrow-left"
-              iconColor={tintColor}
-              size={20}
-              onPress={() => router.navigate('/auth')}
-            />
-          ),
+          headerLeft: () => buttonBack('/auth'),
         }}
       />
       <Stack.Screen
         name="(reset-password)"
         options={{
-          headerLeft: ({ tintColor }) => (
-            <IconButton
-              icon="arrow-left"
-              iconColor={tintColor}
-              size={20}
-              onPress={() => router.navigate('/auth/sign-in')}
-            />
-          ),
+          headerLeft: () => buttonBack('/auth/sign-in'),
         }}
       />
     </Stack>

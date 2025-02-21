@@ -1,6 +1,4 @@
 import Feather from '@expo/vector-icons/Feather';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs, useRouter } from 'expo-router';
@@ -11,9 +9,7 @@ import { COLORS } from '~/constants/colors';
 import { MainSettingsProvider } from '~/context/MainSettingsContext';
 import { ProfileImageSelectionProvider } from '~/context/ProfileImageSelectionContext';
 import { SwipesProvider } from '~/context/SwipesContext';
-import useChatListener from '~/hooks/listeners/useChatListener';
 import useMatchListener from '~/hooks/listeners/useMatchListener';
-import { createChat } from '~/supabase/supabase-chatting';
 import { Match } from '~/types/match.types';
 
 const TabsLayout = () => {

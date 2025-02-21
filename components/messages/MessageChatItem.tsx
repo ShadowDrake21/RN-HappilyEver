@@ -18,7 +18,6 @@ const MessageChatItem = ({ chat }: { chat: CompoundChat }) => {
   useEffect(() => {
     setLoading(true);
     if (state.messages.length > 0) {
-      console.log('MessageChatItem state.messages:', state.messages);
       setLoading(false);
     }
   }, [state.messages]);
