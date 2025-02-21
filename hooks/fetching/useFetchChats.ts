@@ -1,30 +1,44 @@
 import { useAuth } from '@clerk/clerk-expo';
-import { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
 
 import useChatListener from '../listeners/useChatListener';
+import useMessageListener from '../listeners/useMessageListener';
 
-import { getChatByMatchId } from '~/supabase/supabase-chatting';
+import { useChatContext } from '~/context/ChatContext';
+import { getChatByMatchId, getLastMessage } from '~/supabase/supabase-chatting';
 import { ChatUser, CompoundChat } from '~/types/chat.types';
 import { flatUsers } from '~/utils/chat.utils';
 import { fetchUserProfileImage } from '~/utils/fetch.utils';
 
 const useFetchChats = () => {
   const { getToken, userId } = useAuth();
-  const { allChats, loading } = useChatListener();
+  const { allChats, loading: chatLoading } = useChatListener();
   const [compoundChats, setCompoundChats] = useState<CompoundChat[]>([]);
+  const [photoLoading, setPhotoLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const { state } = useChatContext();
 
   useEffect(() => {
-    if (!loading && allChats.length > 0) {
+    console.log('useFetchChats state.messages:', state.messages);
+  }, [state.messages]);
+
+  useEffect(() => {
+    if (!chatLoading && allChats.length > 0) {
       componentChatsData();
     }
-  }, [allChats, loading, userId]);
+  }, [allChats, chatLoading, userId]);
 
-  const componentChatsData = async () => {
+  const componentChatsData = useCallback(async () => {
     const updatedChats: CompoundChat[] = [];
 
+    setPhotoLoading(true);
     const token = await getToken({ template: 'supabase' });
-    if (!token) return;
+    if (!token) {
+      setPhotoLoading(false);
+      setError('Failed to get token');
+      return;
+    }
 
     try {
       await Promise.all(
@@ -46,12 +60,12 @@ const useFetchChats = () => {
           );
 
           const chatId = (await getChatByMatchId(token, chat.match_id)).id;
-          const lasInteraction = null;
+          const lastInteraction = await getLastMessage(token, chatId);
 
           const compoundChat: CompoundChat = {
             ...chat,
             chat_id: chatId,
-            last_interaction: lasInteraction,
+            last_interaction: lastInteraction,
             users: userWithProfile.filter(Boolean) as ChatUser[],
           };
 
@@ -60,12 +74,17 @@ const useFetchChats = () => {
       );
 
       setCompoundChats(updatedChats);
+
+      setPhotoLoading(false);
     } catch (error) {
       console.error('Error fetching chat data:', error);
+      setError('Failed to fetch chat data');
+      setPhotoLoading(false);
     }
-  };
+  }, [allChats]);
 
-  return { compoundChats, loading };
+  const loading = chatLoading || photoLoading;
+  return { compoundChats, loading, error };
 };
 
 export default useFetchChats;

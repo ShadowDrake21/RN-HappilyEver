@@ -16,9 +16,11 @@ const useChatListener = () => {
 
     const initializeListener = async () => {
       try {
+        setLoading(true);
         const token = await getToken({ template: 'supabase' });
         if (!token || !userId) {
           console.log('No token or userId, skipping subscription.');
+          setLoading(false);
           return;
         }
 

@@ -1,3 +1,4 @@
+import { useAuth } from '@clerk/clerk-expo';
 import ChatHeaderActions from '@components/chat/ChatHeaderActions';
 import CustomGiftedChat from '@components/chat/CustomGiftedChat';
 import HeaderLeftButton from '@components/main-settings/HeaderActionButton';

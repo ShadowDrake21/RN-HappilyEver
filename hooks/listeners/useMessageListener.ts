@@ -48,7 +48,8 @@ const useMessageListener = (chatId: number) => {
                 throw fetchError;
               }
 
-              onSetMessages(formatMessages(data || []));
+              const formattedMessages = formatMessages(data) || [];
+              onSetMessages(formattedMessages);
             }
           )
           .subscribe((status) => {

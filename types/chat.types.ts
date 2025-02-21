@@ -36,16 +36,19 @@ export type ChatUser = {
   fullName: string;
   profileUrl: string;
 };
+
+export type CompoundChatLastInteraction = {
+  user_id: string;
+  message: string;
+  created_at: string;
+} | null;
+
 export interface CompoundChat {
   id: number;
   created_at: string;
   match_id: number;
   chat_id: number;
-  last_interaction: {
-    user_id: string;
-    message: string;
-    created_at: string;
-  } | null;
+  last_interaction: CompoundChatLastInteraction | null;
   users: ChatUser[];
 }
 

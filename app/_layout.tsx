@@ -9,6 +9,7 @@ import Toast from 'react-native-toast-message';
 import 'reanimatedConfig';
 
 import { tokenCache } from '~/cache';
+import { ChatProvider } from '~/context/ChatContext';
 import { MatchesModalProvider } from '~/context/MatchesModalContext';
 import useMatchListener from '~/hooks/listeners/useMatchListener';
 import { Match } from '~/types/match.types';
@@ -74,13 +75,15 @@ const Layout = () => {
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
-        <QueryClientProvider client={queryClient}>
-          <MatchesModalProvider>
-            <RootLayout />
-            <Toast position="top" topOffset={top} />
-            <InformationModal />
-          </MatchesModalProvider>
-        </QueryClientProvider>
+        <ChatProvider>
+          <QueryClientProvider client={queryClient}>
+            <MatchesModalProvider>
+              <RootLayout />
+              <Toast position="top" topOffset={top} />
+              <InformationModal />
+            </MatchesModalProvider>
+          </QueryClientProvider>
+        </ChatProvider>
       </ClerkLoaded>
     </ClerkProvider>
   );

@@ -12,9 +12,9 @@ const ChatLayout = () => {
 };
 
 const Layout = () => (
-  <ChatProvider>
-    <ChatLayout />
-  </ChatProvider>
+  // <ChatProvider>
+  <ChatLayout />
+  // </ChatProvider>
 );
 
 export default Layout;

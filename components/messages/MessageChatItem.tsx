@@ -1,13 +1,29 @@
+import CustomLoader from '@components/ui/CustomLoader';
 import { formatRelative } from 'date-fns';
 import { Link } from 'expo-router';
-import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
+import { useChatContext } from '~/context/ChatContext';
+import useMessageListener from '~/hooks/listeners/useMessageListener';
 import { CompoundChat } from '~/types/chat.types';
 
 const MessageChatItem = ({ chat }: { chat: CompoundChat }) => {
+  const { state } = useChatContext();
+  const [loading, setLoading] = useState(false);
+  useMessageListener(chat.chat_id);
+
+  useEffect(() => {
+    setLoading(true);
+    if (state.messages.length > 0) {
+      console.log('MessageChatItem state.messages:', state.messages);
+      setLoading(false);
+    }
+  }, [state.messages]);
+
+  if (loading) return <CustomLoader />;
   return (
     <Link
       href={`/chat/${chat.chat_id}`}
@@ -22,20 +38,34 @@ const MessageChatItem = ({ chat }: { chat: CompoundChat }) => {
 
         <View className="gap-3">
           {chat.users.map((user) => (
-            <PaperText variant="labelLarge" style={{ color: COLORS.text }} key={user.user_id}>
-              {user.fullName}
-            </PaperText>
+            <>
+              <PaperText variant="labelLarge" style={{ color: COLORS.text }} key={user.user_id}>
+                {user.fullName}
+              </PaperText>
+              <PaperText
+                variant="labelMedium"
+                numberOfLines={1}
+                lineBreakMode="middle"
+                style={{ color: COLORS.grayish, fontWeight: '700' }}>
+                <PaperText
+                  variant="labelMedium"
+                  numberOfLines={1}
+                  lineBreakMode="middle"
+                  style={{ color: COLORS.grayish, fontWeight: 800 }}>
+                  {state.messages.length > 0 && state.messages[0].user
+                    ? state.messages[0].user._id === user.user_id
+                      ? user.fullName.split(' ')[0]
+                      : 'You'
+                    : 'System'}
+                  :
+                </PaperText>{' '}
+                {state.messages[0]?.text || 'Be the first to send a message'}
+              </PaperText>
+              <PaperText variant="labelSmall" style={{ color: COLORS.grayish, fontWeight: '300' }}>
+                {formatRelative(state.messages[0]?.createdAt || new Date(), new Date())}
+              </PaperText>
+            </>
           ))}
-          <PaperText
-            variant="labelMedium"
-            numberOfLines={1}
-            lineBreakMode="middle"
-            style={{ color: COLORS.grayish, fontWeight: '700' }}>
-            {chat.last_interaction?.message || 'Be the first to send a message'}
-          </PaperText>
-          <PaperText variant="labelSmall" style={{ color: COLORS.grayish, fontWeight: '300' }}>
-            {formatRelative('2025-02-17T20:28:52.820Z', new Date())}
-          </PaperText>
         </View>
       </TouchableOpacity>
     </Link>
@@ -43,5 +73,3 @@ const MessageChatItem = ({ chat }: { chat: CompoundChat }) => {
 };
 
 export default MessageChatItem;
-
-const styles = StyleSheet.create({});
