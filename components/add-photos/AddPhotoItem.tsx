@@ -1,7 +1,7 @@
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 
-import { COLORS } from '~/constants/colors';
+import AddPhotoItemPlaceholder from './AddPhotoItemPlaceholder';
+
 import usePickProfileImage from '~/hooks/image-picker/usePickProfileGeneralImage';
 
 const AddPhotoItem = () => {
@@ -17,21 +17,7 @@ const AddPhotoItem = () => {
           className="h-full w-full rounded-3xl"
         />
       ) : (
-        <View
-          className="rounded-[50px] p-[15px]"
-          style={{
-            backgroundColor: COLORS.mainPurple,
-          }}>
-          <AntDesign
-            name="plus"
-            size={20}
-            color="white"
-            style={{
-              display: 'flex',
-              overflow: 'hidden',
-            }}
-          />
-        </View>
+        <AddPhotoItemPlaceholder />
       )}
     </TouchableOpacity>
   );

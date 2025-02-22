@@ -1,22 +1,12 @@
 import SendCode from '@components/auth/reset-password/SendCode';
 import React from 'react';
-import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
 import useSendCode from '~/hooks/auth/reset-password/useSendCode';
+import useSendCodeForm from '~/hooks/auth/reset-password/useSendCodeForm';
 
 const Page = () => {
-  const {
-    control,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      email: '',
-    },
-  });
-
+  const { control, errors, getValues, handleSubmit } = useSendCodeForm();
   const { sendCode } = useSendCode();
 
   const onSend = async () => {

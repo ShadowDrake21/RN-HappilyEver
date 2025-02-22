@@ -1,7 +1,6 @@
 import { Stack } from 'expo-router';
 
 import { COLORS } from '~/constants/colors';
-import { ChatProvider } from '~/context/ChatContext';
 
 const ChatLayout = () => {
   return (
@@ -11,10 +10,6 @@ const ChatLayout = () => {
   );
 };
 
-const Layout = () => (
-  // <ChatProvider>
-  <ChatLayout />
-  // </ChatProvider>
-);
+const Layout = () => <ChatLayout />;
 
 export default Layout;
