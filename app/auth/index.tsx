@@ -1,11 +1,15 @@
+import MainContent from '@components/auth/index/MainContent';
+import MainSocialButtons from '@components/auth/index/MainSocialButtons';
+import AuthBottomLink from '@components/auth/shared/AuthBottomLink';
+import AuthContent from '@components/auth/shared/AuthContent';
+import CustomLoader from '@components/ui/CustomLoader';
 import SmallDisplayTitle from '@components/ui/SmallDisplayTitle';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { ScrollView, Image, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Image, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import SocialButton from '~/components/SocialButton';
 import { COLORS } from '~/constants/colors';
 import useAuthSocials from '~/hooks/auth/useAuthSocials';
 
@@ -14,25 +18,12 @@ const Page = () => {
   const router = useRouter();
   const { onSocialAuth, isLoading } = useAuthSocials();
 
+  if (isLoading) return <CustomLoader />;
+
   return (
     <ScrollView style={{ flex: 1, paddingBottom: bottom }}>
-      <Image
-        source={require('assets/auth/image.png')}
-        style={{ width: '100%', height: 300 }}
-        resizeMode="contain"
-      />
-
-      <SmallDisplayTitle addStyle={{ paddingVertical: 20 }}> Let's you in</SmallDisplayTitle>
-
-      <View className="gap-2">
-        <SocialButton
-          icon="facebook-square"
-          onPress={() => onSocialAuth('facebook')}
-          socialName="Facebook"
-        />
-        <SocialButton icon="google" onPress={() => onSocialAuth('google')} socialName="Google" />
-        <SocialButton icon="apple1" onPress={() => onSocialAuth('apple')} socialName="Apple" />
-      </View>
+      <MainContent />
+      <MainSocialButtons onSocialAuth={onSocialAuth} />
       <Text className="self-center py-7 font-poppins-medium text-white">or</Text>
       <Button
         mode="contained"
@@ -42,16 +33,10 @@ const Page = () => {
         onPress={() => router.navigate('/auth/sign-in')}>
         Sign in using password
       </Button>
-      <View className="flex-row items-center justify-center gap-2 self-center py-5 ">
-        <Text style={{ color: COLORS.text }}>Don't have a profile?</Text>
-        <Link href="/auth/sign-up" asChild>
-          <TouchableOpacity>
-            <Text style={{ color: COLORS.accent2 }} className="font-poppins-medium">
-              Sign up
-            </Text>
-          </TouchableOpacity>
-        </Link>
-      </View>
+      <AuthBottomLink
+        link={{ href: '/auth/sign-up', text: 'Sign up' }}
+        text="Don't have a profile?"
+      />
     </ScrollView>
   );
 };

@@ -1,5 +1,6 @@
+import CustomLoader from '@components/ui/CustomLoader';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
 import SocialButton from '../../SocialButton';
@@ -9,6 +10,9 @@ import useAuthSocials from '~/hooks/auth/useAuthSocials';
 
 const AuthSocials = ({ action = 'Sign in' }: { action?: 'Sign in' | 'Sign up' }) => {
   const { onSocialAuth, isLoading } = useAuthSocials();
+
+  if (isLoading) return <CustomLoader />;
+
   return (
     <>
       <PaperText variant="titleMedium" style={styles.title}>

@@ -5,6 +5,7 @@ import useRegister from '../useRegister';
 import useVerify from '../useVerify';
 
 import { useUserStorage } from '~/store/user.store';
+import { AuthFormType } from '~/types/auth.types';
 import { callToast } from '~/utils/ui.utils';
 
 const useSignUp = () => {
@@ -20,7 +21,7 @@ const useSignUp = () => {
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm({
+  } = useForm<AuthFormType>({
     defaultValues: {
       email: '',
       password: '',
