@@ -1,54 +1,35 @@
+import AuthBottomLink from '@components/auth/shared/AuthBottomLink';
+import AuthContent from '@components/auth/shared/AuthContent';
+import AuthForm from '@components/auth/shared/AuthForm';
+import SignInSocials from '@components/auth/shared/AuthSocials';
 import TouchableKeyboardAvoidingView from '@components/shared/TouchableKeyboardAvoidingView';
 import CustomLoader from '@components/ui/CustomLoader';
-import MediumTitle from '@components/ui/MediumTitle';
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import { Image, KeyboardAvoidingView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import AuthForm from '~/components/auth/AuthForm';
-import SignInSocials from '~/components/auth/AuthSocials';
 import MainButton from '~/components/ui/MainButton';
 import TextLink from '~/components/ui/TextLink';
-import { COLORS } from '~/constants/colors';
-import useLogin from '~/hooks/auth/useLogin';
+import useSignInForm from '~/hooks/auth/sign-in/useSignInForm';
 
 const Page = () => {
   const { top, bottom } = useSafeAreaInsets();
-  const {
-    control,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      email: '',
-      password: '',
-      rememberMe: false,
-    },
-  });
-
-  const { isLoading, signInWithEmail } = useLogin();
-
-  const onSignIn = async () => {
-    const { email, password } = getValues();
-    await signInWithEmail(email, password);
-  };
+  const { control, errors, handleSubmit, isLoading, onSignIn } = useSignInForm();
 
   if (isLoading) {
     return <CustomLoader />;
   }
 
   return (
-    <View className="flex-1 justify-between" style={{ paddingBottom: bottom }}>
+    <ScrollView
+      contentContainerStyle={{
+        paddingBottom: bottom,
+        flex: 1,
+      }}
+      showsVerticalScrollIndicator={false}>
       <TouchableKeyboardAvoidingView offset={top + 120}>
         <View className="flex-1 justify-center">
-          <Image
-            source={require('assets/logo.png')}
-            className="h-[200px] w-[200px] self-center"
-            resizeMode="contain"
-          />
-          <MediumTitle>Login to Your Account</MediumTitle>
+          <AuthContent title="Login to Your Account" />
           <AuthForm control={control} errors={errors} />
           <MainButton onPress={handleSubmit(onSignIn)} style={{ marginBottom: 20 }}>
             Submit
@@ -62,12 +43,12 @@ const Page = () => {
       </TouchableKeyboardAvoidingView>
       <View>
         <SignInSocials />
-        <View className="flex-row items-center justify-center gap-2 self-center py-5 ">
-          <Text style={{ color: COLORS.text }}>Don't have a profile?</Text>
-          <TextLink href="./sign-up">Sign up</TextLink>
-        </View>
+        <AuthBottomLink
+          text="Don't have an account?"
+          link={{ href: '/auth/sign-up', text: 'Sign Up' }}
+        />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

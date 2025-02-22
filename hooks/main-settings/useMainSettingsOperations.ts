@@ -38,10 +38,13 @@ const useMainSettingsOperations = () => {
     const token = await getToken({ template: 'supabase' });
 
     if (token && userId) {
+      console.log('fetchMainSettingsAvalability', token, userId);
       const rawUserData = await getProfileById(token, userId);
       const rawUserLocation = await getUserCountryId(token, userId);
 
-      if (rawUserData.length === 0) {
+      console.log('rawUserData', rawUserData);
+
+      if (!rawUserData) {
         router.replace('/main-settings/select-country');
         return;
       }

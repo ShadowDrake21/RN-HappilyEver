@@ -35,15 +35,6 @@ const MainSettingsLayout = () => {
         name="select-country"
         options={{
           title: 'Select Your Country',
-          headerLeft: ({ tintColor }) => (
-            <HeaderLeftButton
-              tintColor={tintColor}
-              onPress={() => {
-                dispatch({ type: 'SET_COUNTRY_ID', payload: '' });
-                router.back();
-              }}
-            />
-          ),
         }}
       />
       <Stack.Screen

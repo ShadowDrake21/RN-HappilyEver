@@ -20,6 +20,8 @@ const Page = () => {
 
   useEffect(() => {
     if (session) {
+      console.log('session home', session);
+
       fetchMainSettingsAvalability();
     }
   }, [session]);

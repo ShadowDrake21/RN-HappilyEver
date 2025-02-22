@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
-import SocialButton from '../SocialButton';
+import SocialButton from '../../SocialButton';
 
 import { COLORS } from '~/constants/colors';
 import useAuthSocials from '~/hooks/auth/useAuthSocials';

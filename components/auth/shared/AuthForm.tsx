@@ -3,8 +3,8 @@ import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { View } from 'react-native';
 import { Checkbox, TextInput } from 'react-native-paper';
 
-import CustomInput from '../ui/CustomInput';
-import ErrorMessage from '../ui/ErrorMessage';
+import CustomInput from '../../ui/CustomInput';
+import ErrorMessage from '../../ui/ErrorMessage';
 
 import { COLORS } from '~/constants/colors';
 
