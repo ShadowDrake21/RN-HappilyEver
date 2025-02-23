@@ -8,6 +8,7 @@ import ProfileExtendedForm from './ProfileExtendedForm';
 const ProfileExtended = () => {
   const { top, bottom } = useSafeAreaInsets();
 
+  // error handling
   return (
     <TouchableKeyboardAvoidingView offset={top + 40}>
       <ScrollView

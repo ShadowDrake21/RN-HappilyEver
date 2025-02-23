@@ -11,34 +11,39 @@ import ProfileBasicFormPhone from './fields/ProfileBasicFormPhone';
 import ProfileBasicFormUsername from './fields/ProfileBasicFormUsername';
 
 import { unknownFlag } from '~/constants/links';
-import { useMainSettings } from '~/context/MainSettingsContext';
-import useFetchCountries from '~/hooks/fetching/useFetchCountries';
 import useProfileBasicForm from '~/hooks/forms/useProfileBasicForm';
+import useProfileCountryDetailsFetching from '~/hooks/main-settings/useProfileCountryDetailsFetching';
+import { isFormDisabled } from '~/utils/forms.utils';
 
 const ProfileBasicForm = () => {
   const router = useRouter();
-  const { state } = useMainSettings();
-
-  const { data: countries, isLoading } = useFetchCountries({
-    url: `https://restcountries.com/v3.1/alpha/${state.countryId}`,
-    config: { params: { fields: 'name,flags,idd,cca2' } },
-    queryKey: ['countries'],
-  });
+  const { countries, isLoading } = useProfileCountryDetailsFetching();
 
   const { control, getValues, errors, setValue, submit } = useProfileBasicForm();
-
   const onFocusPhoneNumber = () => {
     if (getValues('phoneNumber').length === 0) {
       setValue('phoneNumber', countries![0].phoneCode);
     }
   };
-
   const phoneFlag = countries ? countries[0].flags.png : unknownFlag;
 
   const onFormSubmit = () => {
     submit();
+
+    if (isDisabled) return;
     router.push('/main-settings/fill-extended-data');
   };
+
+  const formValues = {
+    fullName: getValues('fullName'),
+    username: getValues('username'),
+    gender: getValues('gender'),
+    birthDate: getValues('birthDate'),
+    phoneNumber: getValues('phoneNumber'),
+    occupation: getValues('occupation'),
+  };
+
+  const isDisabled = isFormDisabled(formValues);
 
   return (
     <View className="flex-1 gap-[15] pt-5">

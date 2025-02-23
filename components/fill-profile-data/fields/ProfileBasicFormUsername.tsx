@@ -1,11 +1,11 @@
 import CustomInput from '@components/ui/CustomInput';
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, RegisterOptions } from 'react-hook-form';
 
 import ProfileBasicFormError from '../ProfileBasicFormError';
 
 import { ProfileBasicFormField } from '~/types/main-settings.types';
-import { getFormRule } from '~/utils/forms.utils';
+import { profileUsernameRules } from '~/utils/form-rules.utils';
 
 const ProfileBasicFormUsername = ({
   control,
@@ -16,14 +16,7 @@ const ProfileBasicFormUsername = ({
     <>
       <Controller
         control={control}
-        rules={{
-          required: getFormRule('required'),
-          minLength: { value: 3, message: getFormRule('minLength', 3) },
-          maxLength: {
-            value: 25,
-            message: getFormRule('maxLength', 25),
-          },
-        }}
+        rules={profileUsernameRules}
         render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
           <CustomInput
             errors={!!error}

@@ -5,24 +5,14 @@ import { Controller } from 'react-hook-form';
 import ProfileBasicFormError from '../ProfileBasicFormError';
 
 import { ProfileBasicFormField } from '~/types/main-settings.types';
-import { getFormRule } from '~/utils/forms.utils';
+import { profileOccupationRules } from '~/utils/form-rules.utils';
 
 const ProfileBasicFormOccupation = ({ control, errors }: ProfileBasicFormField) => {
   return (
     <>
       <Controller
         control={control}
-        rules={{
-          required: getFormRule('required'),
-          minLength: {
-            value: 6,
-            message: getFormRule('minLength', 6),
-          },
-          maxLength: {
-            value: 30,
-            message: getFormRule('maxLength', 30),
-          },
-        }}
+        rules={profileOccupationRules}
         render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
           <CustomInput
             errors={!!error}

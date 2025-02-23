@@ -6,7 +6,7 @@ import { Image, View } from 'react-native';
 import ProfileBasicFormError from '../ProfileBasicFormError';
 
 import { ProfileBasicFormField } from '~/types/main-settings.types';
-import { getFormRule } from '~/utils/forms.utils';
+import { profilePhoneRules } from '~/utils/form-rules.utils';
 
 type ProfileBasicFormPhoneProps = ProfileBasicFormField & {
   onFocus: () => void;
@@ -18,21 +18,7 @@ const ProfileBasicFormPhone = ({ control, errors, onFocus, flag }: ProfileBasicF
     <>
       <Controller
         control={control}
-        rules={{
-          required: getFormRule('required'),
-          pattern: {
-            value: /^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/,
-            message: getFormRule('pattern'),
-          },
-          minLength: {
-            value: 10,
-            message: getFormRule('minLength', 10),
-          },
-          maxLength: {
-            value: 15,
-            message: getFormRule('maxLength', 15),
-          },
-        }}
+        rules={profilePhoneRules}
         render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
           <View className="mx-6 flex-row items-center gap-5">
             {flag && <Image source={{ uri: flag }} className="h-16 w-20" resizeMode="contain" />}

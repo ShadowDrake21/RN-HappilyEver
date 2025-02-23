@@ -45,7 +45,7 @@ const RootLayout = () => {
 
     if (isSignedIn && !inTabsGroup) {
       router.replace('/home');
-      router.replace('/main-settings/select-country');
+      // router.replace('/main-settings/fill-profile-data');
     } else if (!isSignedIn) {
       // router.replace('/auth/(reset-password)/verificate-code');
 
