@@ -16,15 +16,24 @@ const UserQuestions = ({ rawQuestions }: { rawQuestions: IUserQuestion[] | undef
     <FlatList
       scrollEnabled={false}
       data={Object.keys(groupedQuestions)}
-      contentContainerStyle={{ gap: 10 }}
-      renderItem={({ item: category }) => (
-        <View>
-          <PaperText style={styles.categoryTitle}>{formatCategory(category)}:</PaperText>
-          {groupedQuestions[category].map((question, index) => (
-            <UserQuestionsItem item={question} index={index} key={`${category}-${index}`} />
-          ))}
-        </View>
-      )}
+      style={{ flex: 1 }}
+      contentContainerStyle={{ gap: 10, flex: 1 }}
+      renderItem={({ item: category }) => {
+        console.log('UserQuestions', category);
+
+        return (
+          <View>
+            <PaperText style={styles.categoryTitle}>{formatCategory(category)}:</PaperText>
+            {groupedQuestions[category].map((question, index) => {
+              console.log('userQuestions', question);
+
+              return (
+                <UserQuestionsItem item={question} index={index} key={`${category}-${index}`} />
+              );
+            })}
+          </View>
+        );
+      }}
       keyExtractor={(item) => item}
     />
   );
