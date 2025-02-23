@@ -9,6 +9,7 @@ const useProfileExtendedForm = () => {
     control,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm<IMainSettingsExtendedForm>({
     defaultValues: {
       lifeGoals: {
@@ -36,7 +37,7 @@ const useProfileExtendedForm = () => {
     dispatch({ type: 'SET_PROFILE_EXTENDED_FORM', payload: data });
   };
 
-  return { control, submit: handleSubmit(onSubmit), errors };
+  return { control, submit: handleSubmit(onSubmit), errors, getValues };
 };
 
 export default useProfileExtendedForm;

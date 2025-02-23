@@ -2,7 +2,7 @@ import { RegisterOptions } from 'react-hook-form';
 
 import { getFormRule } from './forms.utils';
 
-import { IMainSettingsBasicForm } from '~/types/main-settings.types';
+import { IMainSettingsBasicForm, IMainSettingsExtendedForm } from '~/types/main-settings.types';
 
 export const profileUsernameRules:
   | Omit<
@@ -64,5 +64,21 @@ export const profilePhoneRules:
   maxLength: {
     value: 15,
     message: getFormRule('maxLength', 15),
+  },
+};
+
+export const profileExtendedFormRules:
+  | Omit<
+      RegisterOptions<IMainSettingsExtendedForm, keyof IMainSettingsExtendedForm>,
+      'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'
+    >
+  | undefined = {
+  minLength: {
+    value: 15,
+    message: getFormRule('minLength', 15),
+  },
+  maxLength: {
+    value: 256,
+    message: getFormRule('maxLength', 256),
   },
 };

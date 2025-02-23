@@ -1,5 +1,3 @@
-import MainButton from '@components/ui/MainButton';
-import { useRouter } from 'expo-router';
 import React from 'react';
 
 import ProfileExtendedFormGroup from './ProfileExtendedFormGroup';
@@ -13,13 +11,7 @@ import {
 import useProfileExtendedForm from '~/hooks/forms/useProfileExtendedForm';
 
 const ProfileExtendedForm = () => {
-  const { control, errors, submit } = useProfileExtendedForm();
-  const router = useRouter();
-
-  const onSubmit = () => {
-    submit();
-    router.push('/main-settings/add-photos');
-  };
+  const { control, errors } = useProfileExtendedForm();
 
   return (
     <>
@@ -47,7 +39,6 @@ const ProfileExtendedForm = () => {
         fields={personalConnectionContent}
         mainTitle="Personal Connection"
       />
-      <MainButton onPress={onSubmit}>Continue</MainButton>
     </>
   );
 };
