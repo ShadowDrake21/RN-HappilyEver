@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
-import UserQuestionsItem from './user-questions/UserQuestionsItem';
+import UserQuestionsItem from './UserQuestionsItem';
 
 import { COLORS } from '~/constants/colors';
 import useHandleQuestions from '~/hooks/handlers/useHandleQuestions';
@@ -18,22 +18,16 @@ const UserQuestions = ({ rawQuestions }: { rawQuestions: IUserQuestion[] | undef
       data={Object.keys(groupedQuestions)}
       style={{ flex: 1 }}
       contentContainerStyle={{ gap: 10, flex: 1 }}
-      renderItem={({ item: category }) => {
-        console.log('UserQuestions', category);
+      renderItem={({ item: category }) => (
+        <View>
+          <PaperText style={styles.categoryTitle}>{formatCategory(category)}:</PaperText>
+          {groupedQuestions[category].map((question, index) => {
+            console.log('userQuestions', question);
 
-        return (
-          <View>
-            <PaperText style={styles.categoryTitle}>{formatCategory(category)}:</PaperText>
-            {groupedQuestions[category].map((question, index) => {
-              console.log('userQuestions', question);
-
-              return (
-                <UserQuestionsItem item={question} index={index} key={`${category}-${index}`} />
-              );
-            })}
-          </View>
-        );
-      }}
+            return <UserQuestionsItem item={question} index={index} key={`${category}-${index}`} />;
+          })}
+        </View>
+      )}
       keyExtractor={(item) => item}
     />
   );

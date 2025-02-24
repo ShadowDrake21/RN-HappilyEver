@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
 
 import { profileQuestionsContent } from '~/content/other.content';
 import { IUserQuestion } from '~/types/user.types';

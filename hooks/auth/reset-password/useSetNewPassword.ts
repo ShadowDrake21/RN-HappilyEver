@@ -3,11 +3,16 @@ import { useRouter } from 'expo-router';
 
 import { callToast } from '~/utils/ui.utils';
 
+type SetNewPasswordParams = {
+  code: string;
+  password: string;
+};
+
 const useSetNewPassword = () => {
   const router = useRouter();
   const { signIn, setActive } = useSignIn();
 
-  const setNewPassword = async (code: string, password: string) => {
+  const setNewPassword = async ({ code, password }: SetNewPasswordParams) => {
     try {
       const result = await signIn?.attemptFirstFactor({
         strategy: 'reset_password_email_code',

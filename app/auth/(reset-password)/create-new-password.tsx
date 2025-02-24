@@ -24,7 +24,7 @@ const Page = () => {
   const { isSignedIn } = useAuth();
   const { setNewPassword } = useSetNewPassword();
 
-  const onSave = () => setNewPassword(code, getValues('password'));
+  const onSave = () => setNewPassword({ code, password: getValues('password') });
 
   if (isSignedIn) {
     router.push('/');

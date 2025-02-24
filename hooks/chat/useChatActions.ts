@@ -29,19 +29,6 @@ const useChatActions = () => {
     [dispatch, state.messages]
   );
 
-  // const onLoadEarlier = useCallback(() => {
-  //   dispatch({ type: ActionKind.LOAD_EARLIER_START });
-  //   setTimeout(() => {
-  //     const newMessages = GiftedChat.prepend(
-  //       state.messages,
-  //       earlierMessages() as IMessage[],
-  //       Platform.OS !== 'web'
-  //     );
-
-  //     dispatch({ type: ActionKind.LOAD_EARLIER_MESSAGES, payload: newMessages });
-  //   }, 1500);
-  // }, [dispatch, state.messages]);
-
   const onPressAvatar = useCallback(() => {
     Alert.alert('On avatar press');
   }, []);
@@ -64,7 +51,6 @@ const useChatActions = () => {
   return {
     onSetMessages,
     onSend,
-    // onLoadEarlier,
     onPressAvatar,
     onSendFromUser,
   };

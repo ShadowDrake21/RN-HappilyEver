@@ -1,6 +1,6 @@
 import { useAuth } from '@clerk/clerk-expo';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
 
 import { getProfileById } from '~/supabase/supabase-typed.requests';
 import { InterlocutorType } from '~/types/chat.types';

@@ -1,4 +1,4 @@
-import SocialButton from '@components/SocialButton';
+import SocialButton from '@components/shared/SocialButton';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 

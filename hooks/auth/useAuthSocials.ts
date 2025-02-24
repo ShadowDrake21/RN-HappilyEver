@@ -2,7 +2,7 @@ import { useOAuth } from '@clerk/clerk-expo';
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 
-import { callAlert, callToast } from '~/utils/ui.utils';
+import { callToast } from '~/utils/ui.utils';
 
 const useAuthSocials = () => {
   const router = useRouter();
@@ -38,6 +38,8 @@ const useAuthSocials = () => {
           callToast();
         }
       } catch (err: any) {
+        console.error(err);
+
         callToast();
       }
     },

@@ -1,4 +1,4 @@
-import SelectCalendar from '@components/SelectCalendar';
+import SelectCalendar from '@components/shared/SelectCalendar';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 

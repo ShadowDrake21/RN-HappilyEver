@@ -1,12 +1,12 @@
 import SmallParagraphText from '@components/ui/SmallParagraphText';
 import SmallSectionTitle from '@components/ui/SmallSectionTitle';
 import Subtitle from '@components/ui/Subtitle';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Image, View } from 'react-native';
 
 import { COLORS } from '~/constants/colors';
-import { profileIdealMatch, profileIdealMatchIcons } from '~/content/profile-ideal-match.content';
-import { ProfileIdealMatch } from '~/types/main-settings.types';
+import { profileIdealMatchIcons } from '~/content/profile-ideal-match.content';
+import useUserIdealMatch from '~/hooks/user/useUserIdealMatch';
 import { IdealMatch } from '~/types/shared.types';
 
 const UserIdealMatch = ({
@@ -16,15 +16,7 @@ const UserIdealMatch = ({
   userName: string;
   idealMatchId: IdealMatch;
 }) => {
-  const [idealMatch, setIdealMatch] = useState<ProfileIdealMatch | undefined>(undefined);
-
-  useEffect(() => {
-    setIdealMatch(retrieveIdealMatch());
-  }, [idealMatchId]);
-
-  const retrieveIdealMatch = () => {
-    return profileIdealMatch.find((item) => item.id === idealMatchId);
-  };
+  const { idealMatch } = useUserIdealMatch(idealMatchId);
 
   return (
     idealMatch && (

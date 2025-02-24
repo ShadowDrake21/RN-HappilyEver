@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useReducer } from 'react';
+import { createContext, PropsWithChildren, useContext, useMemo, useReducer } from 'react';
 
 import { chatReducer, initialChatState } from '~/reducers/chat.reducer';
 import { ChatStateAction, IChatState } from '~/types/chat.types';
@@ -13,15 +13,9 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 export const ChatProvider = ({ children }: PropsWithChildren) => {
   const [state, dispatch] = useReducer(chatReducer, initialChatState);
 
-  return (
-    <ChatContext.Provider
-      value={{
-        state,
-        dispatch,
-      }}>
-      {children}
-    </ChatContext.Provider>
-  );
+  const value = useMemo(() => ({ state, dispatch }), [state]);
+
+  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 };
 
 export const useChatContext = () => {

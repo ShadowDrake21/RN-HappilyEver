@@ -2,7 +2,6 @@ import { useAuth } from '@clerk/clerk-expo';
 import { useCallback, useEffect, useState } from 'react';
 
 import useChatListener from '../listeners/useChatListener';
-import useMessageListener from '../listeners/useMessageListener';
 
 import { useChatContext } from '~/context/ChatContext';
 import { getChatByMatchId, getLastMessage } from '~/supabase/supabase-chatting';

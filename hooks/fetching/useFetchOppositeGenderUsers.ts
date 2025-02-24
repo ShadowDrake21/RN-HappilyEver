@@ -17,7 +17,6 @@ const useFetchOppositeGenderUsers = () => {
   const fetchUsers = useCallback(async () => {
     setIsSwipesLoading(true);
     try {
-      console.log('fetching users');
       if (!userGender) return;
       const token = await getToken({ template: 'supabase' });
 

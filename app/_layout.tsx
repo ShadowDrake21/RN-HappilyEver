@@ -1,6 +1,6 @@
 import '../global.css';
 import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
-import InformationModal from '@components/InformationModal';
+import InformationModal from '@components/shared/InformationModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';

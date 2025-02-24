@@ -3,7 +3,7 @@ import React from 'react';
 import { Image, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
 
-import SmallDisplayTitle from './ui/SmallDisplayTitle';
+import SmallDisplayTitle from '../ui/SmallDisplayTitle';
 
 import { COLORS } from '~/constants/colors';
 import { IOnboardingContent } from '~/types/onboarding.types';

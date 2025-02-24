@@ -5,7 +5,7 @@ import CalendarPicker from 'react-native-calendar-picker';
 import { Icon } from 'react-native-paper';
 import { useSharedValue } from 'react-native-reanimated';
 
-import BottomSheet from './ui/BottomSheet';
+import BottomSheet from '../ui/BottomSheet';
 
 import { COLORS } from '~/constants/colors';
 

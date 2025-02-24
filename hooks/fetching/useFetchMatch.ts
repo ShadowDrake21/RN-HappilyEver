@@ -7,12 +7,13 @@ import { getChatByMatchId } from '~/supabase/supabase-chatting';
 import { fetchMatchingUsers } from '~/utils/fetch.utils';
 
 type UserType = { user_id: string; image: string; isMine: boolean };
+type UsersType = { firstUser: UserType; secondUser: UserType };
 
 const useFetchMatch = (match_id: number) => {
   const { getToken, userId } = useAuth();
 
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState<{ firstUser: UserType; secondUser: UserType }>({
+  const [users, setUsers] = useState<UsersType>({
     firstUser: { user_id: '', image: DEFAULT_IMAGE, isMine: false },
     secondUser: { user_id: '', image: DEFAULT_IMAGE, isMine: false },
   });

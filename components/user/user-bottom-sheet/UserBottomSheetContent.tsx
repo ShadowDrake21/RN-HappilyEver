@@ -3,9 +3,9 @@ import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import UserBasicInfo from '../UserBasicInfo';
 import UserIdealMatch from '../UserIdealMatch';
-import UserInterests from '../UserInterests';
-import UserPhotos from '../UserPhotos';
-import UserQuestions from '../UserQuestions';
+import UserInterests from '../user-interests/UserInterests';
+import UserPhotos from '../user-photos/UserPhotos';
+import UserQuestions from '../user-questions/UserQuestions';
 
 import { unknownFlag } from '~/constants/links';
 import useFetchCountries from '~/hooks/fetching/useFetchCountries';

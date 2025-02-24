@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Image, useWindowDimensions, View } from 'react-native';
 import { Text as PaperText } from 'react-native-paper';
 
 import { COLORS } from '~/constants/colors';
@@ -26,5 +26,3 @@ const ComingSoon = () => {
 };
 
 export default ComingSoon;
-
-const styles = StyleSheet.create({});
