@@ -49,7 +49,7 @@ export interface CompoundChat {
   match_id: number;
   chat_id: number;
   last_interaction: CompoundChatLastInteraction | null;
-  users: ChatUser[];
+  user: ChatUser;
 }
 
 export type InterlocutorType = {

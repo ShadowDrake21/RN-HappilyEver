@@ -1,10 +1,6 @@
-import { useUser } from '@clerk/clerk-expo';
-import Feather from '@expo/vector-icons/Feather';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { useRouter } from 'expo-router';
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { Text as PaperText } from 'react-native-paper';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import HeaderActions from './HeaderActions';

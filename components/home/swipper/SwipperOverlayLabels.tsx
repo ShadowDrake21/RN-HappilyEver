@@ -1,5 +1,4 @@
 import MediumTitle from '@components/ui/MediumTitle';
-import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 export const OverlayLabelRight = () => (

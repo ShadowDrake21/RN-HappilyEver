@@ -11,22 +11,17 @@ const useProfileImageSelection = () => {
   const { pickFromGalleryAsync } = usePickImageFromGallery();
   const { takeByCameraAsync } = useTakeProfileImageByCamera();
 
-  const onActionWithImage = async (action: 'gallery' | 'camera') => {
-    let image = '';
-    switch (action) {
-      case 'gallery':
-        image = await pickFromGalleryAsync();
-        break;
-      case 'camera':
-        image = await takeByCameraAsync();
-        break;
-      default:
-        console.error('Invalid action');
-        break;
+  const handleImageSelection = async (action: 'gallery' | 'camera') => {
+    try {
+      const image = action === 'gallery' ? await pickFromGalleryAsync() : await takeByCameraAsync();
+      setSelectedImage(image);
+      setButtonsVisibility(true);
+    } catch (error) {
+      console.error(error);
+      setToggleBottomSheet(false);
     }
 
-    setSelectedImage(image);
-    setButtonsVisibility(true);
+    setToggleBottomSheet(false);
   };
 
   const resetSelectedImage = () => {
@@ -42,7 +37,7 @@ const useProfileImageSelection = () => {
     toggleBottomSheet,
     setToggleBottomSheet,
     resetSelectedImage,
-    onActionWithImage,
+    handleImageSelection,
   };
 };
 

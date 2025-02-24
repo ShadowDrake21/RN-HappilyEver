@@ -11,11 +11,7 @@ const MatchActions = ({ chatId }: { chatId: number | undefined }) => {
   return (
     <View className="gap-5">
       <MainButton
-        onPress={() =>
-          router.replace({
-            pathname: '/chat/' + chatId,
-          })
-        }
+        onPress={() => router.replace(`/chat/${chatId}`)}
         style={{
           backgroundColor: COLORS.mainPurple,
         }}>

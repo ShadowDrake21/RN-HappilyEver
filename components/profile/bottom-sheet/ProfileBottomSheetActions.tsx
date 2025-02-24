@@ -14,15 +14,15 @@ const ProfileBottomSheetActions = ({
   bottomSheetRef: React.RefObject<BottomSheetMethods>;
   onClosePress: () => void;
 }) => {
-  const { onActionWithImage } = useProfileImageSelectionContext();
+  const { handleImageSelection } = useProfileImageSelectionContext();
 
   const onCameraPress = () => {
-    onActionWithImage('camera');
+    handleImageSelection('camera');
     bottomSheetRef.current?.close();
   };
 
   const onGalleryPress = () => {
-    onActionWithImage('gallery');
+    handleImageSelection('gallery');
     bottomSheetRef.current?.close();
   };
 

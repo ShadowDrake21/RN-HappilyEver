@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 import useChatListener from '../listeners/useChatListener';
 
-import { useChatContext } from '~/context/ChatContext';
 import { getChatByMatchId, getLastMessage } from '~/supabase/supabase-chatting';
 import { ChatUser, CompoundChat } from '~/types/chat.types';
 import { flatUsers } from '~/utils/chat.utils';
@@ -15,12 +14,6 @@ const useFetchChats = () => {
   const [compoundChats, setCompoundChats] = useState<CompoundChat[]>([]);
   const [photoLoading, setPhotoLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const { state } = useChatContext();
-
-  useEffect(() => {
-    console.log('useFetchChats state.messages:', state.messages);
-  }, [state.messages]);
 
   useEffect(() => {
     if (!chatLoading && allChats.length > 0) {
@@ -44,11 +37,8 @@ const useFetchChats = () => {
         allChats.map(async (chat) => {
           const flattenedUsers = flatUsers(chat.users);
 
-          // TODO: refactor
-          const userWithProfile = await Promise.all(
+          const usersWithProfile = await Promise.all(
             flattenedUsers.map(async (user: { user_id: string; fullName: string }) => {
-              if (user.user_id === userId) return null;
-
               const profileUrl = await fetchUserProfileImage(token, user.user_id);
               return {
                 user_id: user.user_id,
@@ -65,7 +55,7 @@ const useFetchChats = () => {
             ...chat,
             chat_id: chatId,
             last_interaction: lastInteraction,
-            users: userWithProfile.filter(Boolean) as ChatUser[],
+            user: usersWithProfile.filter((user) => user.user_id !== userId)[0] as ChatUser,
           };
 
           updatedChats.push(compoundChat);

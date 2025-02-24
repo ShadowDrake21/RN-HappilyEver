@@ -1,9 +1,9 @@
 import { useAuth } from '@clerk/clerk-expo';
 import ProfileAccountActions from '@components/profile/ProfileAccountActions';
 import ProfileOptionsList from '@components/profile/ProfileOptionsList';
-import ProfileSelectImage from '@components/profile/ProfileSelectImage';
 import PremiumBanner from '@components/profile/banner/PremiumBanner';
 import ProfileBottomSheet from '@components/profile/bottom-sheet/ProfileBottomSheet';
+import ProfileSelectImage from '@components/profile/select-image/ProfileSelectImage';
 import BottomSheet from '@gorhom/bottom-sheet';
 import React, { useRef } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';

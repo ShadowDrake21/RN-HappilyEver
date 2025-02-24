@@ -2,7 +2,7 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import React from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 
-import FilterSectionTitle from './FilterSectionTitle';
+import FilterSectionTitle from '../FilterSectionTitle';
 import CustomLabel from './SliderLabel';
 
 import { COLORS } from '~/constants/colors';
