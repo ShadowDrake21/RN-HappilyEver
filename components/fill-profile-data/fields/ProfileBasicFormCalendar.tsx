@@ -1,6 +1,7 @@
 import SelectCalendar from '@components/shared/SelectCalendar';
 import React from 'react';
 import { Controller } from 'react-hook-form';
+import CalendarPicker from 'react-native-calendar-picker';
 
 import ProfileBasicFormError from '../ProfileBasicFormError';
 
@@ -16,7 +17,7 @@ const ProfileBasicFormCalendar = ({ control, errors }: ProfileBasicFormField) =>
           required: getFormRule('required'),
         }}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <SelectCalendar value={value} onChange={onChange} error={!!error} />
+          <CalendarPicker onDateChange={onChange} />
         )}
         name="birthDate"
       />

@@ -1,13 +1,14 @@
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { format } from 'date-fns';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { Icon } from 'react-native-paper';
 import { useSharedValue } from 'react-native-reanimated';
-
-import BottomSheet from '../ui/BottomSheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { COLORS } from '~/constants/colors';
+import { useMainSettingsCalendarContext } from '~/context/MainSettingsCalendarContext';
 
 type SelectCalendarProps = {
   value: Date | undefined;
@@ -16,15 +17,18 @@ type SelectCalendarProps = {
 };
 
 const SelectCalendar = ({ value, onChange, error }: SelectCalendarProps) => {
-  const isOpen = useSharedValue(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const { bottom } = useSafeAreaInsets();
 
   const toggleSheet = () => {
-    isOpen.value = !isOpen.value;
+    setIsOpen(!isOpen);
   };
 
   const collapseSheet = () => {
-    isOpen.value = false;
+    setIsOpen(false);
   };
+
   return (
     <>
       <TouchableOpacity
@@ -35,8 +39,20 @@ const SelectCalendar = ({ value, onChange, error }: SelectCalendarProps) => {
         </Text>
         <Icon source="calendar" color={COLORS.grayish} size={20} />
       </TouchableOpacity>
-      <BottomSheet isOpen={isOpen} onPress={collapseSheet}>
-        <CalendarPicker onDateChange={onChange} />
+      <BottomSheet
+        ref={bottomSheetRef}
+        onClose={collapseSheet}
+        snapPoints={['40%']}
+        enablePanDownToClose
+        backgroundStyle={styles.photoSelectorBackground}
+        containerStyle={styles.photoSelectorContainer}
+        handleIndicatorStyle={styles.photoSelectorHandle}
+        index={-1}>
+        <BottomSheetScrollView
+          contentContainerStyle={{ paddingBottom: bottom, gap: 15 }}
+          style={{ padding: 20 }}>
+          <CalendarPicker onDateChange={onChange} />
+        </BottomSheetScrollView>
       </BottomSheet>
     </>
   );
@@ -65,4 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
+  photoSelectorBackground: { backgroundColor: COLORS.dark, borderRadius: 25 },
+  photoSelectorContainer: { flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20 },
+  photoSelectorHandle: { backgroundColor: COLORS.extremelyDark },
 });

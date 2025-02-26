@@ -114,5 +114,5 @@ export const getLastMessageText = (message: IMessage) => {
 };
 
 export const getLastMessageTime = (message: IMessage) => {
-  return formatRelative(message.createdAt || new Date(), new Date());
+  return formatRelative(message?.createdAt || new Date(), new Date());
 };

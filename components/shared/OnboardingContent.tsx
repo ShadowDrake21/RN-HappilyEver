@@ -10,7 +10,7 @@ import { IOnboardingContent } from '~/types/onboarding.types';
 
 const OnboardingContent = ({ pageItem }: { pageItem: IOnboardingContent }) => {
   return (
-    <View className="flex-1 justify-between">
+    <View className="flex-1 justify-between" key={pageItem.text}>
       <Image source={pageItem.image} className="h-[400] w-full" resizeMode="contain" />
       <SmallDisplayTitle>{pageItem.text}</SmallDisplayTitle>
       <View>

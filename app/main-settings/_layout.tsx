@@ -22,7 +22,6 @@ const MainSettingsLayout = () => {
     headerStyle: {
       backgroundColor: COLORS.dark,
     },
-
     headerTitleStyle: {
       fontSize: 20,
     },
@@ -40,16 +39,7 @@ const MainSettingsLayout = () => {
       <Stack.Screen
         name="fill-profile-data"
         options={{
-          title: 'Fill Your Profile',
-          headerLeft: ({ tintColor }) => (
-            <HeaderLeftButton
-              tintColor={tintColor}
-              onPress={() => {
-                dispatch({ type: 'SET_PROFILE_BASIC_FORM', payload: undefined });
-                router.back();
-              }}
-            />
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen

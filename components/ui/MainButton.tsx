@@ -21,7 +21,7 @@ const MainButton = ({
       mode="contained"
       onPress={onPress}
       buttonColor={COLORS.accent3}
-      style={[{ borderRadius: 25 }, style]}
+      style={[{ borderRadius: 25, zIndex: 100 }, style]}
       contentStyle={{ paddingVertical: 5 }}
       disabled={disabled}>
       {children}
