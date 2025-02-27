@@ -75,11 +75,11 @@ const useMainSettingsOperations = () => {
 
     if (token && userId && email) {
       try {
-        await setUserCountryId(token, userId, state.countryId);
         await setProfile(token, userId, {
           ...state.profileBasicForm!,
           email,
         });
+        await setUserCountryId(token, userId, state.countryId);
 
         if (state.profileExtendedForm) {
           await setProfileQuestions(token, userId, state.profileExtendedForm);

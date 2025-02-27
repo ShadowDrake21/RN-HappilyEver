@@ -23,7 +23,7 @@ export const onboardingItems: IOnboardingContent[] = [
     image: image3,
     text: 'Turn conversations into lasting love. Your future begins now.',
     isSkipAvailable: false,
-    nextText: 'Begin your journey to meaningful relationships',
+    nextText: 'Begin your journey to relationships',
     nextRoute: '/auth',
   },
 ];

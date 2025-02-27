@@ -2,45 +2,44 @@ import HeaderLeftButton from '@components/main-settings/HeaderActionButton';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { Text, View } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { COLORS } from '~/constants/colors';
 import { useMainSettings } from '~/context/MainSettingsContext';
 
-const CustomBasicHeader = () => {
+type CustomBasicHeaderProps = {
+  title: string;
+  onPressLeft: () => void;
+  onPressRight: () => void;
+};
+
+const CustomBasicHeader = ({ title, onPressLeft, onPressRight }: CustomBasicHeaderProps) => {
   const { dispatch } = useMainSettings();
   const router = useRouter();
   const { top } = useSafeAreaInsets();
 
   return (
-    <View
-      style={{
-        width: '100%',
-        paddingTop: top,
-        paddingBottom: 15,
-        flexDirection: 'row',
-        alignItems: 'center',
-        position: 'relative',
-      }}>
+    <View className="w-full flex-row items-center pb-[15px]" style={{ paddingTop: top }}>
       <View className="absolute bottom-0 left-0 z-10">
-        <HeaderLeftButton
-          tintColor={COLORS.text}
-          onPress={() => {
-            dispatch({ type: 'SET_PROFILE_BASIC_FORM', payload: undefined });
-            router.back();
-          }}
-        />
+        <HeaderLeftButton tintColor={COLORS.text} onPress={onPressLeft} />
       </View>
       <Text
+        className="w-full text-center text-[20px] font-semibold"
         style={{
-          width: '100%',
-          fontSize: 20,
-          fontWeight: 600,
           color: COLORS.text,
-          textAlign: 'center',
         }}>
-        Fill Your Profile
+        {title}
       </Text>
+      <View className="absolute bottom-0 right-0 z-10">
+        <IconButton
+          icon="check-circle"
+          style={{ zIndex: 10 }}
+          size={30}
+          iconColor={COLORS.accent3}
+          onPress={onPressRight}
+        />
+      </View>
     </View>
   );
 };

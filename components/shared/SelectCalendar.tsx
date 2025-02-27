@@ -1,14 +1,12 @@
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { format } from 'date-fns';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { Icon } from 'react-native-paper';
-import { useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { COLORS } from '~/constants/colors';
-import { useMainSettingsCalendarContext } from '~/context/MainSettingsCalendarContext';
 
 type SelectCalendarProps = {
   value: Date | undefined;
@@ -44,9 +42,9 @@ const SelectCalendar = ({ value, onChange, error }: SelectCalendarProps) => {
         onClose={collapseSheet}
         snapPoints={['40%']}
         enablePanDownToClose
-        backgroundStyle={styles.photoSelectorBackground}
-        containerStyle={styles.photoSelectorContainer}
-        handleIndicatorStyle={styles.photoSelectorHandle}
+        backgroundStyle={styles.bottomSheetBackground}
+        containerStyle={styles.bottomSheetContainer}
+        handleIndicatorStyle={styles.bottomSheetHandle}
         index={-1}>
         <BottomSheetScrollView
           contentContainerStyle={{ paddingBottom: bottom, gap: 15 }}
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
-  photoSelectorBackground: { backgroundColor: COLORS.dark, borderRadius: 25 },
-  photoSelectorContainer: { flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20 },
-  photoSelectorHandle: { backgroundColor: COLORS.extremelyDark },
+  bottomSheetBackground: { backgroundColor: COLORS.dark, borderRadius: 25 },
+  bottomSheetContainer: { flex: 1, borderTopLeftRadius: 20, borderTopRightRadius: 20 },
+  bottomSheetHandle: { backgroundColor: COLORS.extremelyDark },
 });

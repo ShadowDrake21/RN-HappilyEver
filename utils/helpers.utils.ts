@@ -1,3 +1,4 @@
+import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 import { FieldErrors } from 'react-hook-form';
 
 import { IMainSettingsExtendedForm, ProfileInterestsIds } from '~/types/main-settings.types';
