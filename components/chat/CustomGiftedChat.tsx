@@ -5,7 +5,7 @@ import { Platform, StyleSheet, View, Image } from 'react-native';
 import { GiftedChat, IMessage, InputToolbarProps } from 'react-native-gifted-chat';
 
 import ChatBubble from './ChatBubble';
-import ChatInputToolbar from './ChatInputToolbar';
+import ChatInputToolbar from './chat-input-toolbar/ChatInputToolbar';
 
 import { COLORS } from '~/constants/colors';
 import { DEFAULT_IMAGE } from '~/constants/variables';

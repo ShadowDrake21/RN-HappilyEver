@@ -1,5 +1,7 @@
 import { supabaseClient } from './supabase.client';
 
+import { CompoundChatLastInteraction } from '~/types/chat.types';
+
 export const getAllChats = async (token: string, user_id: string) => {
   const supabase = await supabaseClient(token);
   const { data: chatIds } = await supabase
@@ -84,4 +86,24 @@ export const sendMessage = async (
       content: message,
     },
   ]);
+};
+
+export const getLastMessage = async (token: string, chat_id: number) => {
+  const supabase = await supabaseClient(token);
+
+  const { data: lastMessage } = await supabase
+    .from('messages')
+    .select('*')
+    .eq('chat_id', chat_id)
+    .order('created_at', { ascending: false })
+    .limit(1);
+
+  if (!lastMessage) return null;
+  const formattedMessage: CompoundChatLastInteraction = {
+    user_id: lastMessage[0].author_id,
+    message: lastMessage[0].content,
+    created_at: lastMessage[0].created_at,
+  };
+
+  return formattedMessage;
 };

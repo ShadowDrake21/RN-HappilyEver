@@ -33,6 +33,7 @@ const useFetchOppositeGenderUsers = () => {
   }, [userId, userGender, setIsSwipesLoading]);
 
   useEffect(() => {
+    console.log('useEffect, userGender:', userGender);
     if (userGender) fetchUsers();
   }, [userGender, fetchUsers]);
 

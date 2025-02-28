@@ -2,8 +2,9 @@ import { Animated, LayoutChangeEvent, Platform, StyleSheet } from 'react-native'
 import { Cursor } from 'react-native-confirmation-code-field';
 
 import { CONFIRMATION_CODE_FIELD_STYLES } from '~/constants/colors';
+import useConfirmationCodeCellAnimation from '~/hooks/confirmation-code/useConfirmationCodeCellAnimation';
 import { animateCell } from '~/utils/confirmation-code-field.utils';
-const { Value, Text: AnimatedText } = Animated;
+const { Text: AnimatedText } = Animated;
 
 type ConfirmationCodeFieldCellProps = {
   index: number;
@@ -22,33 +23,13 @@ const ConfirmationCodeFieldCell = ({
   animationsScale,
   getCellOnLayoutHandler,
 }: ConfirmationCodeFieldCellProps) => {
-  const { cellSize, activeCellBgColor, defaultCellBgColor, cellBorderRadius, notEmptyCellBgColor } =
-    CONFIRMATION_CODE_FIELD_STYLES;
-
   const hasValue = Boolean(symbol);
-  const animatedCellStyle = {
-    backgroundColor: hasValue
-      ? animationsScale[index].interpolate({
-          inputRange: [0, 1],
-          outputRange: [notEmptyCellBgColor, activeCellBgColor],
-        })
-      : animationsColor[index].interpolate({
-          inputRange: [0, 1],
-          outputRange: [defaultCellBgColor, activeCellBgColor],
-        }),
-    borderRadius: animationsScale[index].interpolate({
-      inputRange: [0, 1],
-      outputRange: [cellSize, cellBorderRadius],
-    }),
-    transform: [
-      {
-        scale: animationsScale[index].interpolate({
-          inputRange: [0, 1],
-          outputRange: [0.2, 1],
-        }),
-      },
-    ],
-  };
+  const { animatedCellStyle } = useConfirmationCodeCellAnimation({
+    symbol,
+    animationsScale,
+    index,
+    animationsColor,
+  });
 
   setTimeout(() => {
     animateCell({ hasValue, index, isFocused, animationsColor, animationsScale });

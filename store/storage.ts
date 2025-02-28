@@ -1,9 +1,18 @@
+import Constants from 'expo-constants';
 import { MMKV } from 'react-native-mmkv';
 import { StateStorage } from 'zustand/middleware';
 
+const encryptionKey =
+  Constants.expoConfig?.extra?.MMKV_ENCRYPTION_KEY ||
+  '7u/P5+hFVKBbVCjrwTR1o58jYrr0hFPC39icWNbEn2InwwuuEShjZJS+QzzePALy';
+
+if (!encryptionKey) {
+  throw new Error('Missing MMKV_ENCRYPTION_KEY in Expo extra config');
+}
+
 export const storage = new MMKV({
   id: 'storage',
-  encryptionKey: '7u/P5+hFVKBbVCjrwTR1o58jYrr0hFPC39icWNbEn2InwwuuEShjZJS+QzzePALy',
+  encryptionKey,
 });
 
 export const zustandStorage: StateStorage = {

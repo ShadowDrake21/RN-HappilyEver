@@ -2,7 +2,7 @@ import { useSignIn } from '@clerk/clerk-expo';
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 
-import { callAlert, callToast } from '~/utils/ui.utils';
+import { callToast } from '~/utils/ui.utils';
 
 const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);

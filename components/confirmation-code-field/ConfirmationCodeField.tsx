@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import {
   CodeField,
   useBlurOnFulfill,
@@ -9,8 +9,7 @@ import {
 import ConfirmationCodeFieldCell from './ConfirmationCodeFieldCell';
 
 import { CONFIRMATION_CODE_FIELD_STYLES } from '~/constants/colors';
-
-const { Value } = Animated;
+import useConfirmationCodeAnimations from '~/hooks/confirmation-code/useConfirmationCodeAnimations';
 
 type ConfirmationCodeFieldProps = {
   value: string;
@@ -24,15 +23,7 @@ const ConfirmationCodeField = ({ value, setValue, cellCount }: ConfirmationCodeF
     value,
     setValue,
   });
-
-  const animationsColor = useMemo(
-    () => [...new Array(cellCount)].map(() => new Value(0)),
-    [cellCount]
-  );
-  const animationsScale = useMemo(
-    () => [...new Array(cellCount)].map(() => new Value(1)),
-    [cellCount]
-  );
+  const { animationsColor, animationsScale } = useConfirmationCodeAnimations(cellCount);
 
   return (
     <CodeField
@@ -62,7 +53,6 @@ export default ConfirmationCodeField;
 const styles = StyleSheet.create({
   codeFieldRoot: {
     height: CONFIRMATION_CODE_FIELD_STYLES.cellSize,
-
     paddingHorizontal: 20,
     justifyContent: 'center',
   },

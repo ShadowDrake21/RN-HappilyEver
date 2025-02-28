@@ -1,12 +1,14 @@
+import { formatRelative } from 'date-fns';
 import * as ImagePicker from 'expo-image-picker';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { Alert } from 'react-native';
+import { IMessage } from 'react-native-gifted-chat';
 
 import { fetchUserProfileImage } from './fetch.utils';
 
-import { ChatUser } from '~/types/chat.types';
+import { ChatUser, CompoundChat } from '~/types/chat.types';
 
 export default async function getPermissionAsync(permission: Permissions.PermissionType) {
   const { status } = await Permissions.askAsync(permission);
@@ -98,4 +100,19 @@ export const fetchUserProfiles = async (
   );
 
   return userWithProfile.filter(Boolean) as ChatUser[];
+};
+
+export const getLastSenderName = (messages: IMessage[], chat: CompoundChat) => {
+  if (messages.length === 0) return 'System';
+  const lastMessage = messages[0];
+  if (!lastMessage.user) return 'System';
+  return lastMessage.user._id === chat.user.user_id ? chat.user.fullName.split(' ')[0] : 'You';
+};
+
+export const getLastMessageText = (message: IMessage) => {
+  return message?.text || 'Be the first to send a message';
+};
+
+export const getLastMessageTime = (message: IMessage) => {
+  return formatRelative(message?.createdAt || new Date(), new Date());
 };

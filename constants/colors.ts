@@ -23,7 +23,7 @@ export const COLORS = {
 };
 
 export const CONFIRMATION_CODE_FIELD_STYLES = {
-  cellSize: 50,
+  cellSize: 40,
   cellBorderRadius: 8,
   defaultCellBgColor: COLORS.accent2,
   notEmptyCellBgColor: COLORS.mainPurple,

@@ -1,31 +1,17 @@
 import CustomLoader from '@components/ui/CustomLoader';
 import UserBackgroundCarousel from '@components/user/UserBackgroundCarousel';
-import UserBottomSheet from '@components/user/UserBottomSheet';
+import UserBottomSheet from '@components/user/user-bottom-sheet/UserBottomSheet';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { IconButton } from 'react-native-paper';
 
-import { mock_full_users } from '~/content/users.content';
-import { IUserFullProfile } from '~/types/user.types';
+import useFetchUser from '~/hooks/user/useFetchUser';
 
 // TODO: ADD PAGINATION TO CONTENT
 const Page = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [user, setUser] = useState<IUserFullProfile | undefined>(undefined);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (!id) return;
-    setLoading(true);
-
-    const fetchedUser = mock_full_users.find((user) => user.id === id);
-    setUser(fetchedUser);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, [id]);
+  const { user, loading } = useFetchUser(id);
 
   if (loading) return <CustomLoader />;
 

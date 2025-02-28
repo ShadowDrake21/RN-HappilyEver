@@ -68,7 +68,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#bb9df9"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.drake21.happilyeverafter"
@@ -78,7 +80,19 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.drake21.happilyeverafter"
-    }
+      "package": "com.drake21.happilyeverafter",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "09e83cbe-36f6-4c98-9b6e-8a5ccc1427b0"
+      }
+    },
+    "owner": "drake21"
   }
 }

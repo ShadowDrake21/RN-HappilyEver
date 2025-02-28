@@ -1,13 +1,19 @@
-import SelectCalendar from '@components/SelectCalendar';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import React from 'react';
 import { Controller } from 'react-hook-form';
+import CalendarPicker from 'react-native-calendar-picker';
 
 import ProfileBasicFormError from '../ProfileBasicFormError';
 
 import { ProfileBasicFormField } from '~/types/main-settings.types';
 import { getFormRule } from '~/utils/forms.utils';
 
-const ProfileBasicFormCalendar = ({ control, errors }: ProfileBasicFormField) => {
+type ProfileBasicFormCalendarProps = ProfileBasicFormField;
+
+const ProfileBasicFormCalendar = (props: ProfileBasicFormCalendarProps) => {
+  const { control, errors } = props;
+
   return (
     <>
       <Controller
@@ -16,7 +22,7 @@ const ProfileBasicFormCalendar = ({ control, errors }: ProfileBasicFormField) =>
           required: getFormRule('required'),
         }}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <SelectCalendar value={value} onChange={onChange} error={!!error} />
+          <CalendarPicker onDateChange={onChange} />
         )}
         name="birthDate"
       />

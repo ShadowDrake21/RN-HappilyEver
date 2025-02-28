@@ -20,6 +20,8 @@ const Page = () => {
 
   useEffect(() => {
     if (session) {
+      console.log('session home', session);
+
       fetchMainSettingsAvalability();
     }
   }, [session]);
@@ -28,7 +30,7 @@ const Page = () => {
     <>
       <GestureHandlerRootView style={styles.container}>
         <Header bottomSheetCurrent={bottomSheetRef.current} />
-        <View style={styles.carouselContainer}>
+        <View className="flex-1 px-5">
           <Swipper carouselRef={carouselRef} />
         </View>
         <FilterBottomSheet bottomSheetRef={bottomSheetRef} />
@@ -41,10 +43,6 @@ export default Page;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  carouselContainer: {
-    paddingHorizontal: 20,
     flex: 1,
   },
 });

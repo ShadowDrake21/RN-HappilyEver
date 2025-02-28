@@ -13,3 +13,7 @@ export const getFormRule = (
   }
   return '';
 };
+
+export const isFormDisabled = (values: Record<string, any>): boolean => {
+  return Object.values(values).some((value) => value === '' || value === undefined);
+};

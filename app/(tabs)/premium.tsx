@@ -1,4 +1,4 @@
-import ComingSoon from '@components/ComingSoon';
+import ComingSoon from '@components/shared/ComingSoon';
 import { Stack } from 'expo-router';
 import React from 'react';
 

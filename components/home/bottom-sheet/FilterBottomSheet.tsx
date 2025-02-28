@@ -1,47 +1,27 @@
-import SecondaryButton from '@components/ui/SecondaryButton';
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import React, { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text as PaperText } from 'react-native-paper';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 
-import FilterBottomSheetAge from './FilterBottomSheetAge';
-import FilterBottomSheetLocation from './FilterBottomSheetLocation';
-import FilterBottomSheetGender from './gender/FilterBottomSheetGender';
+import FilterBottomSheetActions from './FilterBottomSheetActions';
+import FilterBottomSheetContainer from './FilterBottomSheetContainer';
 
 import { COLORS } from '~/constants/colors';
-import { defaultTitleStyles } from '~/constants/styles';
-import { Gender } from '~/types/shared.types';
+import { renderBackdrop } from '~/utils/render.utils';
 
 const FilterBottomSheet = ({
   bottomSheetRef,
 }: {
   bottomSheetRef: React.RefObject<BottomSheetMethods>;
 }) => {
-  const [selectedGender, setSelectedGender] = useState<Gender>('male');
-  const [selectedAgeRange, setSelectedAgeRange] = useState([18, 25]);
-  const [selectedLocation, setSelectedLocation] = useState('');
-
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        onPress={() => bottomSheetRef.current?.close()}
-      />
-    ),
-    []
-  );
+  const collapseSheet = () => {
+    bottomSheetRef.current?.close();
+  };
 
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      backdropComponent={renderBackdrop}
+      backdropComponent={(props) => renderBackdrop(props, collapseSheet)}
       enablePanDownToClose
       onClose={() => bottomSheetRef.current?.close()}
       snapPoints={['65%']}
@@ -49,39 +29,8 @@ const FilterBottomSheet = ({
       containerStyle={styles.container}
       index={-1}>
       <BottomSheetView style={styles.contentContainer}>
-        <View>
-          <PaperText
-            variant="headlineMedium"
-            style={[defaultTitleStyles, { paddingBottom: 20, textAlign: 'center' }]}>
-            Filter
-          </PaperText>
-          <View className="gap-5 pb-10">
-            <FilterBottomSheetGender
-              selectedGender={selectedGender}
-              setSelectedGender={setSelectedGender}
-            />
-            <FilterBottomSheetAge
-              selectedAgeRange={selectedAgeRange}
-              setSelectedAgeRange={setSelectedAgeRange}
-            />
-            <FilterBottomSheetLocation
-              selectedLocation={selectedLocation}
-              setSelectedLocation={setSelectedLocation}
-            />
-          </View>
-        </View>
-        <View className="flex-row justify-center gap-5">
-          <SecondaryButton
-            style={{ backgroundColor: COLORS.dark }}
-            onPress={() => bottomSheetRef.current?.close()}>
-            Cancel
-          </SecondaryButton>
-          <SecondaryButton
-            style={{ backgroundColor: COLORS.mainPurple }}
-            onPress={() => bottomSheetRef.current?.close()}>
-            Apply
-          </SecondaryButton>
-        </View>
+        <FilterBottomSheetContainer />
+        <FilterBottomSheetActions bottomSheetRef={bottomSheetRef} />
       </BottomSheetView>
     </BottomSheet>
   );

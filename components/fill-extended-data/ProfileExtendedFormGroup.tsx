@@ -6,7 +6,7 @@ import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { View } from 'react-native';
 
 import { IMainSettingsExtendedForm, ProfileExtendedField } from '~/types/main-settings.types';
-import { getFormRule } from '~/utils/forms.utils';
+import { profileExtendedFormRules } from '~/utils/form-rules.utils';
 import { getErrorMessage } from '~/utils/helpers.utils';
 
 type ProfileExtendedFieldGroupProps = {
@@ -29,16 +29,7 @@ const ProfileExtendedFormGroup = ({
         <View key={field.name}>
           <Controller
             control={control}
-            rules={{
-              minLength: {
-                value: 15,
-                message: getFormRule('minLength', 15),
-              },
-              maxLength: {
-                value: 256,
-                message: getFormRule('maxLength', 256),
-              },
-            }}
+            rules={profileExtendedFormRules}
             render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
               <CustomTextArea
                 errors={error}

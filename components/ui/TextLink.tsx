@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { Href, Link } from 'expo-router';
 import React, { PropsWithChildren } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
@@ -8,7 +8,7 @@ const TextLink = ({
   href,
   classes,
   children,
-}: { href: string; classes?: string } & { children: PropsWithChildren<string> }) => {
+}: { href: Href; classes?: string } & { children: PropsWithChildren<string> }) => {
   return (
     <Link href={href as any} asChild>
       <TouchableOpacity className={classes}>

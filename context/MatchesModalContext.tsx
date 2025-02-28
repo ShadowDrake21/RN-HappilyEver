@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react';
 
 type MatchesModalContextType = {
   isVisible: boolean;
@@ -10,11 +10,9 @@ const MatchesModalContext = createContext<MatchesModalContextType | undefined>(u
 export const MatchesModalProvider = ({ children }: PropsWithChildren) => {
   const [isVisible, setIsVisible] = useState(false);
 
-  return (
-    <MatchesModalContext.Provider value={{ isVisible, setIsVisible }}>
-      {children}
-    </MatchesModalContext.Provider>
-  );
+  const value = useMemo(() => ({ isVisible, setIsVisible }), [isVisible]);
+
+  return <MatchesModalContext.Provider value={value}>{children}</MatchesModalContext.Provider>;
 };
 
 export const useMatchesModalContext = () => {

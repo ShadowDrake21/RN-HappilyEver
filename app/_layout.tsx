@@ -1,6 +1,6 @@
 import '../global.css';
 import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
-import InformationModal from '@components/InformationModal';
+import InformationModal from '@components/shared/InformationModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
@@ -9,6 +9,7 @@ import Toast from 'react-native-toast-message';
 import 'reanimatedConfig';
 
 import { tokenCache } from '~/cache';
+import { ChatProvider } from '~/context/ChatContext';
 import { MatchesModalProvider } from '~/context/MatchesModalContext';
 import useMatchListener from '~/hooks/listeners/useMatchListener';
 import { Match } from '~/types/match.types';
@@ -44,8 +45,10 @@ const RootLayout = () => {
 
     if (isSignedIn && !inTabsGroup) {
       router.replace('/home');
-      // router.replace('/chat/1');
+      // router.replace('/main-settings/fill-profile-data');
     } else if (!isSignedIn) {
+      // router.replace('/auth/(reset-password)/verificate-code');
+
       router.replace('/onboarding/onboarding-first');
     }
   }, [isSignedIn]);
@@ -72,13 +75,15 @@ const Layout = () => {
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
-        <QueryClientProvider client={queryClient}>
-          <MatchesModalProvider>
-            <RootLayout />
-            <Toast position="top" topOffset={top} />
-            <InformationModal />
-          </MatchesModalProvider>
-        </QueryClientProvider>
+        <ChatProvider>
+          <QueryClientProvider client={queryClient}>
+            <MatchesModalProvider>
+              <RootLayout />
+              <Toast position="top" topOffset={top} />
+              <InformationModal />
+            </MatchesModalProvider>
+          </QueryClientProvider>
+        </ChatProvider>
       </ClerkLoaded>
     </ClerkProvider>
   );

@@ -1,11 +1,14 @@
+import ComingSoon from '@components/shared/ComingSoon';
+import { Stack } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 const Page = () => {
   return (
-    <View>
-      <Text>Search</Text>
-    </View>
+    <>
+      <Stack.Screen options={{ headerShown: false }} />
+      <ComingSoon />
+    </>
   );
 };
 

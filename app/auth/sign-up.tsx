@@ -1,111 +1,49 @@
-import ConfirmationCodeField from '@components/confirmation-code-field/ConfirmationCodeField';
-import TouchableKeyboardAvoidingView from '@components/shared/TouchableKeyboardAvoidingView';
+import PendingVerification from '@components/auth/sign-up/PendingVerification';
+import SignUpBottom from '@components/auth/sign-up/SignUpBottom';
+import SignUpForm from '@components/auth/sign-up/SignUpForm';
 import CustomLoader from '@components/ui/CustomLoader';
-import MediumTitle from '@components/ui/MediumTitle';
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Image, Text, View } from 'react-native';
+import React from 'react';
+import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import AuthForm from '~/components/auth/AuthForm';
-import SignInSocials from '~/components/auth/AuthSocials';
-import MainButton from '~/components/ui/MainButton';
-import TextLink from '~/components/ui/TextLink';
-import { COLORS } from '~/constants/colors';
-import useRegister from '~/hooks/auth/useRegister';
-import useVerify from '~/hooks/auth/useVerify';
-import { useUserStorage } from '~/store/user.store';
-import { callToast } from '~/utils/ui.utils';
+import useSignUp from '~/hooks/auth/sign-up/useSignUp';
 
 const Page = () => {
+  const { bottom } = useSafeAreaInsets();
+
   const {
+    code,
+    setCode,
+    signUpLoading,
+    verificationLoading,
+    pendingVerification,
+    onSignUp,
+    onVerification,
+    errors,
     control,
     handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      email: '',
-      password: '',
-      rememberMe: false,
-    },
-  });
-
-  const { setIsNewUser } = useUserStorage();
-  const { bottom, top } = useSafeAreaInsets();
-  const [pendingVerification, setPendingVerification] = useState(false);
-  const [code, setCode] = useState('');
-
-  const { isLoading: signUpLoading, signUpWithEmail } = useRegister();
-  const { isLoading: verificationLoading, verifyUser } = useVerify();
-
-  const onSignUp = async () => {
-    const { email, password } = getValues();
-    const success = await signUpWithEmail(email, password);
-    setPendingVerification(success || false);
-  };
-
-  const onVerification = async () => {
-    const success = await verifyUser(code);
-    if (success) {
-      callToast({
-        type: 'success',
-        text1: 'Congratulations! 🎉',
-        text2: 'Account verified successfully',
-      });
-      setIsNewUser(true);
-    }
-  };
+  } = useSignUp();
 
   if (signUpLoading || verificationLoading) {
     return <CustomLoader />;
   }
 
   if (pendingVerification) {
-    return (
-      <TouchableKeyboardAvoidingView offset={top + 100}>
-        <View className="flex-1 justify-center gap-5" style={{ paddingBottom: bottom }}>
-          <MediumTitle style={{ paddingBottom: 0 }}>Enter verification code</MediumTitle>
-          <Image
-            source={require('assets/auth/verification-code.jpg')}
-            style={{
-              aspectRatio: 1,
-              height: 400,
-              alignSelf: 'center',
-              borderRadius: 200,
-              marginBottom: 20,
-            }}
-            resizeMode="cover"
-          />
-          <ConfirmationCodeField cellCount={6} setValue={setCode} value={code} />
-          <MainButton onPress={onVerification}>Verify</MainButton>
-        </View>
-      </TouchableKeyboardAvoidingView>
-    );
+    return <PendingVerification code={code} setCode={setCode} onVerification={onVerification} />;
   }
 
   return (
-    <View className="flex-1 justify-between" style={{ paddingBottom: bottom }}>
-      <View>
-        <Image
-          source={require('assets/logo.png')}
-          className="h-[200px] w-[200px] self-center"
-          resizeMode="contain"
-        />
-        <MediumTitle>Create Your Account</MediumTitle>
-        <AuthForm control={control} errors={errors} />
-        <MainButton onPress={handleSubmit(onSignUp)} style={{ marginBottom: 20 }}>
-          Submit
-        </MainButton>
+    <ScrollView
+      contentContainerStyle={{
+        paddingBottom: bottom,
+        flex: 1,
+      }}
+      showsVerticalScrollIndicator={false}>
+      <View className="flex-1 justify-between" style={{ paddingBottom: bottom }}>
+        <SignUpForm control={control} errors={errors} onPress={handleSubmit(onSignUp)} />
+        <SignUpBottom />
       </View>
-      <View>
-        <SignInSocials action="Sign up" />
-        <View className="flex-row items-center justify-center gap-2 self-center py-5 ">
-          <Text style={{ color: COLORS.text }}>Have already an account?</Text>
-          <TextLink href="./sign-in">Sign in</TextLink>
-        </View>
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 

@@ -38,22 +38,25 @@ const useMainSettingsOperations = () => {
     const token = await getToken({ template: 'supabase' });
 
     if (token && userId) {
+      console.log('fetchMainSettingsAvalability', token, userId);
       const rawUserData = await getProfileById(token, userId);
       const rawUserLocation = await getUserCountryId(token, userId);
 
-      if (rawUserData.length === 0) {
+      console.log('rawUserData', rawUserData);
+
+      if (!rawUserData) {
         router.replace('/main-settings/select-country');
         return;
       }
 
-      const formattedUserData = (
-        rawUserData as unknown as {
-          birthDate: string;
-          gender: string;
-          isFilledOut: boolean;
-        }[]
-      )[0];
+      const formattedUserData = rawUserData as unknown as {
+        birthDate: string;
+        gender: string;
+        isFilledOut: boolean;
+      };
       const formatterUserLocation = (rawUserLocation as unknown as { country_id: string }[])[0];
+
+      console.log('isFilledOut', formattedUserData.isFilledOut);
 
       if (!formattedUserData.isFilledOut) {
         router.replace('/main-settings/select-country');
@@ -72,11 +75,11 @@ const useMainSettingsOperations = () => {
 
     if (token && userId && email) {
       try {
-        await setUserCountryId(token, userId, state.countryId);
         await setProfile(token, userId, {
           ...state.profileBasicForm!,
           email,
         });
+        await setUserCountryId(token, userId, state.countryId);
 
         if (state.profileExtendedForm) {
           await setProfileQuestions(token, userId, state.profileExtendedForm);

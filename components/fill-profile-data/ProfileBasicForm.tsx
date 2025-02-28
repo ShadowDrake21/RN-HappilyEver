@@ -1,63 +1,71 @@
-import MainButton from '@components/ui/MainButton';
+import CustomBasicHeader from '@components/shared/CustomBasicHeader';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import ProfileBasicFormCalendar from './fields/ProfileBasicFormCalendar';
+import ProfileBasicFormCalendarContainer from './containers/ProfileBasicFormCalendarContainer';
 import ProfileBasicFormDropdown from './fields/ProfileBasicFormDropdown';
 import ProfileBasicFormFullName from './fields/ProfileBasicFormFullName';
 import ProfileBasicFormOccupation from './fields/ProfileBasicFormOccupation';
 import ProfileBasicFormPhone from './fields/ProfileBasicFormPhone';
 import ProfileBasicFormUsername from './fields/ProfileBasicFormUsername';
+import ProfileBasicFormCalendarButton from './ui/ProfileBasicFormCalendarButton';
 
-import { unknownFlag } from '~/constants/links';
 import { useMainSettings } from '~/context/MainSettingsContext';
-import useFetchCountries from '~/hooks/fetching/useFetchCountries';
-import useProfileBasicForm from '~/hooks/forms/useProfileBasicForm';
+import useProfileFormState from '~/hooks/main-settings/useProfileFormState';
 
 const ProfileBasicForm = () => {
+  const {
+    control,
+    bottomSheetRef,
+    collapseSheet,
+    errors,
+    getValues,
+    toggleSheet,
+    phoneFlag,
+    onFocusPhoneNumber,
+    onFormSubmit,
+  } = useProfileFormState();
+  const { dispatch } = useMainSettings();
   const router = useRouter();
-  const { state } = useMainSettings();
-
-  const { data: countries, isLoading } = useFetchCountries({
-    url: `https://restcountries.com/v3.1/alpha/${state.countryId}`,
-    config: { params: { fields: 'name,flags,idd,cca2' } },
-    queryKey: ['countries'],
-  });
-
-  const { control, getValues, errors, setValue, submit } = useProfileBasicForm();
-
-  const onFocusPhoneNumber = () => {
-    if (getValues('phoneNumber').length === 0) {
-      setValue('phoneNumber', countries![0].phoneCode);
-    }
-  };
-
-  const phoneFlag = countries ? countries[0].flags.png : unknownFlag;
-
-  const onFormSubmit = () => {
-    submit();
-    router.push('/main-settings/fill-extended-data');
-  };
 
   return (
-    <View className="flex-1 gap-[15] pt-5">
-      <ProfileBasicFormFullName control={control} errors={errors.fullName} />
-      <ProfileBasicFormUsername control={control} errors={errors.username} />
-      <ProfileBasicFormDropdown control={control} errors={errors.gender} />
-      <ProfileBasicFormCalendar control={control} errors={errors.birthDate} />
-      <ProfileBasicFormPhone
-        control={control}
-        errors={errors.phoneNumber}
-        onFocus={onFocusPhoneNumber}
-        flag={phoneFlag}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <CustomBasicHeader
+        title="Fill Your Profile"
+        onPressLeft={() => {
+          dispatch({ type: 'SET_PROFILE_BASIC_FORM', payload: undefined });
+          router.back();
+        }}
+        onPressRight={onFormSubmit}
       />
-      <ProfileBasicFormOccupation control={control} errors={errors.occupation} />
-
-      <View className="mx-5">
-        <MainButton onPress={onFormSubmit}>Continue</MainButton>
-      </View>
-    </View>
+      <ScrollView>
+        <View className="gap-[15px] pt-5">
+          <ProfileBasicFormFullName control={control} errors={errors.fullName} />
+          <ProfileBasicFormUsername control={control} errors={errors.username} />
+          <ProfileBasicFormDropdown control={control} errors={errors.gender} />
+          <ProfileBasicFormCalendarButton
+            errors={errors.birthDate}
+            value={getValues('birthDate')}
+            toggleSheet={toggleSheet}
+          />
+          <ProfileBasicFormPhone
+            control={control}
+            errors={errors.phoneNumber}
+            onFocus={onFocusPhoneNumber}
+            flag={phoneFlag}
+          />
+          <ProfileBasicFormOccupation control={control} errors={errors.occupation} />
+        </View>
+      </ScrollView>
+      <ProfileBasicFormCalendarContainer
+        bottomSheetRef={bottomSheetRef}
+        collapseSheet={collapseSheet}
+        control={control}
+        errors={errors.birthDate}
+      />
+    </GestureHandlerRootView>
   );
 };
 

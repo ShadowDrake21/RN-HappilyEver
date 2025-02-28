@@ -22,7 +22,6 @@ const MainSettingsLayout = () => {
     headerStyle: {
       backgroundColor: COLORS.dark,
     },
-
     headerTitleStyle: {
       fontSize: 20,
     },
@@ -35,75 +34,30 @@ const MainSettingsLayout = () => {
         name="select-country"
         options={{
           title: 'Select Your Country',
-          headerLeft: ({ tintColor }) => (
-            <HeaderLeftButton
-              tintColor={tintColor}
-              onPress={() => {
-                dispatch({ type: 'SET_COUNTRY_ID', payload: '' });
-                router.back();
-              }}
-            />
-          ),
         }}
       />
       <Stack.Screen
         name="fill-profile-data"
         options={{
-          title: 'Fill Your Profile',
-          headerLeft: ({ tintColor }) => (
-            <HeaderLeftButton
-              tintColor={tintColor}
-              onPress={() => {
-                dispatch({ type: 'SET_PROFILE_BASIC_FORM', payload: undefined });
-                router.back();
-              }}
-            />
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="fill-extended-data"
         options={{
-          title: 'Fill Extended Information',
-          headerLeft: ({ tintColor }) => (
-            <HeaderLeftButton
-              tintColor={tintColor}
-              onPress={() => {
-                dispatch({ type: 'SET_PROFILE_EXTENDED_FORM', payload: undefined });
-                router.back();
-              }}
-            />
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="add-photos"
         options={{
-          title: 'Add Your Best Photos',
-          headerLeft: ({ tintColor }) => (
-            <HeaderLeftButton
-              tintColor={tintColor}
-              onPress={() => {
-                dispatch({ type: 'SET_PHOTOS', payload: [] });
-                router.back();
-              }}
-            />
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="select-interests"
         options={{
-          title: 'Select Your Interests',
-          headerLeft: ({ tintColor }) => (
-            <HeaderLeftButton
-              tintColor={tintColor}
-              onPress={() => {
-                dispatch({ type: 'SET_INTERESTS', payload: [] });
-                router.back();
-              }}
-            />
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen

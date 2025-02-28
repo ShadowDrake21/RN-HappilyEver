@@ -15,13 +15,7 @@ const SecondaryButton = ({ children, onPress, style, icon }: SecondaryButtonProp
   return (
     <Button
       mode="contained"
-      style={[
-        styles.container,
-        {
-          backgroundColor: COLORS.mainPurple,
-        },
-        style,
-      ]}
+      style={[styles.container, style]}
       contentStyle={styles.content}
       icon={icon}
       onPress={onPress}>
@@ -38,6 +32,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 40,
     flex: 1,
+    backgroundColor: COLORS.mainPurple,
   },
   content: { paddingVertical: 10 },
 });

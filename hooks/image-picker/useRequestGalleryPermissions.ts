@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect } from 'react';
-import { Linking, StyleSheet } from 'react-native';
+import { Linking } from 'react-native';
 
 import { callAlert } from '~/utils/ui.utils';
 
@@ -33,5 +33,3 @@ const useRequestGalleryPermissions = () => {
 };
 
 export default useRequestGalleryPermissions;
-
-const styles = StyleSheet.create({});

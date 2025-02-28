@@ -1,3 +1,4 @@
+import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 import { FieldErrors } from 'react-hook-form';
 
 import { IMainSettingsExtendedForm, ProfileInterestsIds } from '~/types/main-settings.types';
@@ -6,8 +7,14 @@ export const getErrorMessage = (
   errors: FieldErrors<IMainSettingsExtendedForm>,
   fieldName: string
 ): string | undefined => {
+  console.log('errors', errors);
+  console.log('fieldName', fieldName);
   const [firstField, secondField] = fieldName.split('.');
-  return (errors?.[firstField as keyof IMainSettingsExtendedForm] as any)?.[secondField]?.message;
+  const error = (errors?.[firstField as keyof IMainSettingsExtendedForm] as any)?.[secondField]
+    ?.message;
+
+  console.log('error', error);
+  return error;
 };
 
 export const addInterest = (all: ProfileInterestsIds[], newInterest: ProfileInterestsIds) => {

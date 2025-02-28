@@ -1,7 +1,7 @@
 import { useSignUp } from '@clerk/clerk-expo';
 import { useCallback, useState } from 'react';
 
-import { callAlert, callToast } from '~/utils/ui.utils';
+import { callToast } from '~/utils/ui.utils';
 
 const useRegister = () => {
   const [isLoading, setIsLoading] = useState(false);

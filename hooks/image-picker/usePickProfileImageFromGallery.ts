@@ -15,7 +15,7 @@ const usePickImageFromGallery = () => {
       return 'data:image/jpeg;base64,' + result.assets[0].base64 || '';
     } else {
       Alert.alert('You did not select any image.');
-      return '';
+      throw new Error('You did not select any image.');
     }
   };
 

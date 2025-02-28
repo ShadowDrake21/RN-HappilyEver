@@ -1,27 +1,37 @@
-import ProfileExtendedForm from '@components/fill-extended-data/ProfileExtendedForm';
-import TouchableKeyboardAvoidingView from '@components/shared/TouchableKeyboardAvoidingView';
-import TextLink from '@components/ui/TextLink';
+import ProfileExtended from '@components/fill-extended-data/ProfileExtended';
+import ProfileExtendedSkip from '@components/fill-extended-data/ProfileExtendedSkip';
+import CustomBasicHeader from '@components/shared/CustomBasicHeader';
+import MainButton from '@components/ui/MainButton';
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View } from 'react-native';
+
+import { useMainSettings } from '~/context/MainSettingsContext';
+import useProfileExtendedForm from '~/hooks/forms/useProfileExtendedForm';
 
 const Page = () => {
-  const { top, bottom } = useSafeAreaInsets();
+  // const { submit } = useProfileExtendedForm();
+  const router = useRouter();
+
+  // const onSubmit = async () => {
+  //   await submit();
+  //   router.push('/main-settings/add-photos');
+  // };
+  const { dispatch } = useMainSettings();
 
   return (
     <>
-      <TouchableKeyboardAvoidingView offset={top + 40}>
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: bottom, gap: 15 }}>
-          <ProfileExtendedForm />
-        </ScrollView>
-      </TouchableKeyboardAvoidingView>
-      <View className="flex-row justify-end">
-        <TextLink href="./add-photos" classes="py-4">
-          Skip for now
-        </TextLink>
+      <CustomBasicHeader
+        title="Fill Extended Information"
+        onPressLeft={() => {
+          dispatch({ type: 'SET_PROFILE_EXTENDED_FORM', payload: undefined });
+          router.back();
+        }}
+        onPressRight={() => router.push('/main-settings/add-photos')}
+      />
+      <ProfileExtended />
+      <View className=" flex-row items-center  justify-end gap-5 pt-10">
+        <ProfileExtendedSkip />
       </View>
     </>
   );

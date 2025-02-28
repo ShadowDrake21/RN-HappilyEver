@@ -1,34 +1,25 @@
-import CountryItem from '@components/select-country/CountryItem';
+import CountryList from '@components/select-country/CountryList';
+import CountrySearchBar from '@components/select-country/CountrySearchBar';
 import CustomLoader from '@components/ui/CustomLoader';
-import EmptyLabel from '@components/ui/EmptyLabel';
 import { useFocusEffect } from '@react-navigation/native';
-import { FlashList } from '@shopify/flash-list';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { View } from 'react-native';
-import { Searchbar } from 'react-native-paper';
 
 import MainButtonLink from '~/components/ui/MainButtonLink';
-import { COLORS } from '~/constants/colors';
-import { useMainSettings } from '~/context/MainSettingsContext';
-import useHandleCountries from '~/hooks/handlers/useHandleCountries';
-import useHandleCountrySearch from '~/hooks/handlers/useHandleCountrySearch';
-import { ICountry } from '~/types/country.types';
+import useCountrySearch from '~/hooks/main-settings/useCountrySearch';
+import useCountrySelection from '~/hooks/main-settings/useCountrySelection';
 
 const Page = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [countries, setCountries] = useState<ICountry[] | undefined>(undefined);
-
-  const { state, dispatch } = useMainSettings();
-
-  const handlePress = useCallback((id: string) => {
-    dispatch({ type: 'SET_COUNTRY_ID', payload: id });
-  }, []);
-  const { allCountries, isLoading } = useHandleCountries();
-  const debouncedSearch = useHandleCountrySearch(allCountries, setCountries);
-
-  useEffect(() => {
-    setCountries(allCountries);
-  }, [allCountries]);
+  const {
+    countries,
+    setCountries,
+    debouncedSearch,
+    isLoading,
+    searchQuery,
+    setSearchQuery,
+    allCountries,
+  } = useCountrySearch();
+  const { handlePress, selectedCountryId } = useCountrySelection();
 
   useFocusEffect(
     useCallback(() => {
@@ -43,38 +34,17 @@ const Page = () => {
 
   return (
     <View style={{ flex: 1, gap: 20 }}>
-      <Searchbar
-        placeholder="Search"
-        onChangeText={(text) => {
-          setSearchQuery(text);
-          debouncedSearch(text);
-        }}
-        value={searchQuery}
-        style={{ backgroundColor: COLORS.extraDark, borderRadius: 10 }}
-        placeholderTextColor={COLORS.grayish}
-        iconColor={COLORS.grayish}
-        inputStyle={{ color: COLORS.text }}
+      <CountrySearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        debouncedSearch={debouncedSearch}
       />
-
-      <FlashList
-        data={countries || []}
-        style={{ flex: 1 }}
-        ItemSeparatorComponent={() => <View className="h-5 bg-transparent" />}
-        renderItem={({ item }) => (
-          <CountryItem
-            country={item}
-            onPress={() => handlePress(item.id)}
-            isSelected={state.countryId === item.id}
-          />
-        )}
-        showsVerticalScrollIndicator={false}
-        estimatedItemSize={200}
-        keyExtractor={(item) => item.id}
-        extraData={state.countryId}
-        ListEmptyComponent={<EmptyLabel>There is no country for this request</EmptyLabel>}
+      <CountryList
+        countries={countries}
+        handlePress={handlePress}
+        selectedCountryId={selectedCountryId}
       />
-
-      <MainButtonLink href="./fill-profile-data" disabled={!state.countryId}>
+      <MainButtonLink href="./fill-profile-data" disabled={!selectedCountryId}>
         Continue
       </MainButtonLink>
     </View>

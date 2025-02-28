@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react';
 
 type SwipesContextType = {
   isSwipesLoading: boolean;
@@ -10,11 +10,9 @@ const SwipesContext = createContext<SwipesContextType | undefined>(undefined);
 export const SwipesProvider = ({ children }: PropsWithChildren) => {
   const [isSwipesLoading, setIsSwipesLoading] = useState(true);
 
-  return (
-    <SwipesContext.Provider value={{ isSwipesLoading, setIsSwipesLoading }}>
-      {children}
-    </SwipesContext.Provider>
-  );
+  const value = useMemo(() => ({ isSwipesLoading, setIsSwipesLoading }), [isSwipesLoading]);
+
+  return <SwipesContext.Provider value={value}>{children}</SwipesContext.Provider>;
 };
 
 export const useSwipesContext = () => {
