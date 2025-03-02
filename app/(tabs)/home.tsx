@@ -29,7 +29,7 @@ const Page = () => {
   return (
     <>
       <GestureHandlerRootView style={styles.container}>
-        <Header bottomSheetCurrent={bottomSheetRef.current} />
+        <Header bottomSheetCurrent={bottomSheetRef.current} testID="header" />
         <View className="flex-1 px-5">
           <Swipper carouselRef={carouselRef} />
         </View>
